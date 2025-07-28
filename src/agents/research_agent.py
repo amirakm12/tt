@@ -964,18 +964,160 @@ Synthesis:
     
     async def _initialize_research_kb(self):
         """Initialize research knowledge base."""
-        # Placeholder for research KB initialization
-        pass
+        try:
+            # Initialize research knowledge base with common domains
+            self.research_kb = {
+                'technology': {
+                    'sources': ['tech_docs', 'api_references', 'technical_papers'],
+                    'keywords': ['software', 'hardware', 'programming', 'algorithm', 'system'],
+                    'quality_indicators': ['peer-reviewed', 'official documentation', 'established source']
+                },
+                'business': {
+                    'sources': ['business_reports', 'market_analysis', 'case_studies'],
+                    'keywords': ['market', 'strategy', 'revenue', 'growth', 'analysis'],
+                    'quality_indicators': ['authoritative source', 'recent data', 'verified statistics']
+                },
+                'science': {
+                    'sources': ['research_papers', 'journals', 'academic_sources'],
+                    'keywords': ['research', 'study', 'experiment', 'hypothesis', 'data'],
+                    'quality_indicators': ['peer-reviewed', 'citations', 'methodology']
+                },
+                'general': {
+                    'sources': ['encyclopedias', 'reference_materials', 'verified_sources'],
+                    'keywords': ['information', 'facts', 'overview', 'explanation'],
+                    'quality_indicators': ['credible source', 'factual accuracy', 'comprehensive']
+                }
+            }
+            
+            # Load domain-specific research patterns
+            kb_file = self.config.data_dir / "research_kb.json"
+            if kb_file.exists():
+                with open(kb_file, 'r') as f:
+                    saved_kb = json.load(f)
+                    self.research_kb.update(saved_kb)
+                    
+            logger.info(f"Initialized research knowledge base with {len(self.research_kb)} domains")
+            
+        except Exception as e:
+            logger.error(f"Error initializing research knowledge base: {e}")
+            self.research_kb = {}
     
     async def _load_research_templates(self):
         """Load research templates from storage."""
-        # Placeholder for template loading
-        pass
+        try:
+            # Initialize research templates for different types of research
+            self.research_templates = {
+                'technical_analysis': {
+                    'structure': [
+                        'Problem Definition',
+                        'Technical Background',
+                        'Current Solutions',
+                        'Analysis and Comparison',
+                        'Recommendations',
+                        'Implementation Considerations'
+                    ],
+                    'questions': [
+                        'What is the core technical problem?',
+                        'What are the existing approaches?',
+                        'What are the trade-offs?',
+                        'What is the recommended solution?'
+                    ]
+                },
+                'market_research': {
+                    'structure': [
+                        'Market Overview',
+                        'Key Players',
+                        'Market Trends',
+                        'Opportunities and Challenges',
+                        'Competitive Analysis',
+                        'Market Projections'
+                    ],
+                    'questions': [
+                        'What is the market size?',
+                        'Who are the main competitors?',
+                        'What are the growth trends?',
+                        'What opportunities exist?'
+                    ]
+                },
+                'academic_research': {
+                    'structure': [
+                        'Literature Review',
+                        'Methodology',
+                        'Key Findings',
+                        'Analysis and Discussion',
+                        'Conclusions',
+                        'Future Research Directions'
+                    ],
+                    'questions': [
+                        'What does existing research show?',
+                        'What methodologies were used?',
+                        'What are the key findings?',
+                        'What are the implications?'
+                    ]
+                },
+                'general_inquiry': {
+                    'structure': [
+                        'Background Information',
+                        'Key Facts and Data',
+                        'Different Perspectives',
+                        'Analysis and Synthesis',
+                        'Summary and Conclusions'
+                    ],
+                    'questions': [
+                        'What are the basic facts?',
+                        'What are different viewpoints?',
+                        'What is the overall picture?',
+                        'What conclusions can be drawn?'
+                    ]
+                }
+            }
+            
+            # Load custom templates if available
+            templates_file = self.config.data_dir / "research_templates.json"
+            if templates_file.exists():
+                with open(templates_file, 'r') as f:
+                    custom_templates = json.load(f)
+                    self.research_templates.update(custom_templates)
+                    
+            logger.info(f"Loaded {len(self.research_templates)} research templates")
+            
+        except Exception as e:
+            logger.error(f"Error loading research templates: {e}")
+            self.research_templates = {}
     
     async def _save_research_results(self):
         """Save research results to persistent storage."""
-        # Placeholder for saving research results
-        pass
+        try:
+            # Save recent research results for future reference
+            if not hasattr(self, 'research_history') or not self.research_history:
+                return
+                
+            results_file = self.config.data_dir / "research_results.json"
+            
+            # Keep only recent results (last 100)
+            recent_results = list(self.research_history)[-100:]
+            
+            # Prepare data for saving (remove large content to save space)
+            save_data = []
+            for result in recent_results:
+                save_item = {
+                    'query': result.get('query', ''),
+                    'timestamp': result.get('timestamp', time.time()),
+                    'research_type': result.get('research_type', 'general'),
+                    'sources_count': len(result.get('sources', [])),
+                    'findings_count': len(result.get('findings', [])),
+                    'confidence': result.get('confidence', 0),
+                    'summary': result.get('summary', '')[:500]  # Truncate summary
+                }
+                save_data.append(save_item)
+            
+            with open(results_file, 'w') as f:
+                json.dump(save_data, f, indent=2)
+                
+            logger.info(f"Saved {len(save_data)} research results to storage")
+            
+        except Exception as e:
+            logger.error(f"Error saving research results: {e}")
     
     # Public API methods
     

@@ -762,3 +762,167 @@ class SensorFusionManager:
         await asyncio.sleep(1)
         await self.initialize()
         await self.start()
+
+    async def _bayesian_fusion(self, sensor_type: SensorType, readings: List[SensorReading]) -> Optional[FusedData]:
+        """Apply Bayesian fusion."""
+        if not readings:
+            return None
+
+        # Simple Bayesian fusion using weighted average with uncertainty
+        weights = []
+        values = []
+
+        for reading in readings:
+            # Weight inversely proportional to uncertainty (1 - quality)
+            uncertainty = 1.0 - reading.quality
+            weight = 1.0 / (uncertainty + 0.01)  # Add small epsilon to avoid division by zero
+            weights.append(weight)
+            values.append(reading.value)
+
+        total_weight = sum(weights)
+        if total_weight == 0:
+            return None
+
+        # Weighted average
+        fused_value = sum(v * w for v, w in zip(values, weights)) / total_weight
+        
+        # Confidence based on weight distribution
+        weight_variance = sum((w - total_weight/len(weights))**2 for w in weights) / len(weights)
+        confidence = max(0.1, min(1.0, 1.0 - weight_variance / (total_weight/len(weights))**2))
+
+        return FusedData(
+            sensor_types=[sensor_type],
+            fused_value=fused_value,
+            confidence=confidence,
+            timestamp=time.time(),
+            contributing_sensors=[r.sensor_id for r in readings],
+            fusion_method='bayesian_fusion'
+        )
+
+    async def _simple_average_fusion(self, sensor_type: SensorType, readings: List[SensorReading]) -> Optional[FusedData]:
+        """Apply simple average fusion as fallback."""
+        if not readings:
+            return None
+
+        # Simple arithmetic mean
+        values = [r.value for r in readings]
+        fused_value = sum(values) / len(values)
+        
+        # Confidence based on quality average
+        avg_quality = sum(r.quality for r in readings) / len(readings)
+
+        return FusedData(
+            sensor_types=[sensor_type],
+            fused_value=fused_value,
+            confidence=avg_quality,
+            timestamp=time.time(),
+            contributing_sensors=[r.sensor_id for r in readings],
+            fusion_method='simple_average'
+        )
+
+    async def _load_calibration_data(self):
+        """Load sensor calibration data from file."""
+        calibration_file = self.config.data_dir / "sensor_calibration.json"
+        
+        if calibration_file.exists():
+            try:
+                with open(calibration_file, 'r') as f:
+                    self.calibration_data = json.load(f)
+                logger.info(f"Loaded calibration data for {len(self.calibration_data)} sensors")
+            except Exception as e:
+                logger.error(f"Error loading calibration data: {e}")
+                self.calibration_data = {}
+        else:
+            self.calibration_data = {}
+
+    async def _save_calibration_data(self):
+        """Save sensor calibration data to file."""
+        calibration_file = self.config.data_dir / "sensor_calibration.json"
+        
+        try:
+            with open(calibration_file, 'w') as f:
+                json.dump(self.calibration_data, f, indent=2)
+            logger.info(f"Saved calibration data for {len(self.calibration_data)} sensors")
+        except Exception as e:
+            logger.error(f"Error saving calibration data: {e}")
+
+    async def _data_validation_loop(self):
+        """Validate fused data for anomalies."""
+        while self.is_running:
+            try:
+                if len(self.fused_data_history) > 10:
+                    # Get recent fused data
+                    recent_data = list(self.fused_data_history)[-10:]
+                    
+                    # Check for anomalies in each sensor type
+                    for sensor_type in SensorType:
+                        type_data = [d for d in recent_data if sensor_type in d.sensor_types]
+                        
+                        if len(type_data) > 3:
+                            values = [d.fused_value for d in type_data]
+                            mean_val = statistics.mean(values)
+                            std_val = statistics.stdev(values) if len(values) > 1 else 0
+                            
+                            # Check latest value for anomaly
+                            latest_val = type_data[-1].fused_value
+                            if std_val > 0 and abs(latest_val - mean_val) > 3 * std_val:
+                                logger.warning(f"Anomaly detected in {sensor_type.value}: {latest_val} (mean: {mean_val:.2f}, std: {std_val:.2f})")
+
+                await asyncio.sleep(5)  # Check every 5 seconds
+
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.error(f"Error in data validation loop: {e}")
+                await asyncio.sleep(1)
+
+    def get_sensor_statistics(self) -> Dict[str, Any]:
+        """Get comprehensive sensor statistics."""
+        stats = {
+            'total_sensors': len(self.sensors),
+            'active_sensors': sum(1 for s in self.sensors.values() if s.get('active', True)),
+            'fusion_algorithm': self.config.sensors.fusion_algorithm,
+            'sampling_rate': self.config.sensors.sampling_rate,
+            'total_readings': sum(len(readings) for readings in self.sensor_readings.values()),
+            'fused_data_points': len(self.fused_data_history),
+            'sensor_types': {}
+        }
+
+        # Per-sensor-type statistics
+        for sensor_type in SensorType:
+            readings = self.sensor_readings.get(sensor_type, [])
+            if readings:
+                values = [r.value for r in readings]
+                qualities = [r.quality for r in readings]
+                
+                stats['sensor_types'][sensor_type.value] = {
+                    'reading_count': len(readings),
+                    'avg_value': statistics.mean(values) if values else 0,
+                    'avg_quality': statistics.mean(qualities) if qualities else 0,
+                    'latest_reading': readings[-1].timestamp if readings else None
+                }
+
+        return stats
+
+    async def health_check(self) -> str:
+        """Perform health check on sensor fusion system."""
+        try:
+            if not self.is_running:
+                return "unhealthy"
+
+            # Check if sensors are producing data
+            active_sensors = 0
+            for sensor_type, readings in self.sensor_readings.items():
+                if readings and time.time() - readings[-1].timestamp < 30:  # Recent reading within 30 seconds
+                    active_sensors += 1
+
+            if active_sensors == 0:
+                return "unhealthy"
+            elif active_sensors < len(self.sensor_readings) / 2:
+                return "degraded"
+            else:
+                return "healthy"
+
+        except Exception as e:
+            logger.error(f"Health check failed: {e}")
+            return "unhealthy"

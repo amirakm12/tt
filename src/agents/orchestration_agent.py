@@ -793,18 +793,140 @@ class OrchestrationAgent:
     
     async def _load_workflow_definitions(self):
         """Load workflow definitions from storage."""
-        # Placeholder for loading workflow definitions
-        pass
+        try:
+            # Initialize default workflow definitions
+            self.workflow_definitions = {
+                'simple_query': {
+                    'steps': [
+                        {'agent': 'triage', 'action': 'classify'},
+                        {'agent': 'research', 'action': 'gather_info', 'condition': 'needs_research'},
+                        {'agent': 'orchestration', 'action': 'synthesize_response'}
+                    ],
+                    'conditions': {
+                        'needs_research': lambda ctx: ctx.get('classification', {}).get('type') in ['information', 'research']
+                    }
+                },
+                'complex_analysis': {
+                    'steps': [
+                        {'agent': 'triage', 'action': 'classify'},
+                        {'agent': 'research', 'action': 'deep_research'},
+                        {'agent': 'research', 'action': 'analyze_findings'},
+                        {'agent': 'orchestration', 'action': 'create_report'}
+                    ],
+                    'parallel_steps': [
+                        [{'agent': 'research', 'action': 'search_sources'}],
+                        [{'agent': 'research', 'action': 'validate_information'}]
+                    ]
+                },
+                'urgent_response': {
+                    'steps': [
+                        {'agent': 'triage', 'action': 'priority_classify'},
+                        {'agent': 'orchestration', 'action': 'immediate_response'}
+                    ],
+                    'timeout': 30,  # seconds
+                    'priority': 'high'
+                },
+                'multi_agent_collaboration': {
+                    'steps': [
+                        {'agent': 'triage', 'action': 'classify'},
+                        {'agent': 'research', 'action': 'parallel_research', 'parallel': True},
+                        {'agent': 'orchestration', 'action': 'coordinate_results'},
+                        {'agent': 'orchestration', 'action': 'final_synthesis'}
+                    ]
+                }
+            }
+            
+            # Load custom workflows if available
+            workflows_file = self.config.data_dir / "workflows.json"
+            if workflows_file.exists():
+                with open(workflows_file, 'r') as f:
+                    custom_workflows = json.load(f)
+                    self.workflow_definitions.update(custom_workflows)
+                    
+            logger.info(f"Loaded {len(self.workflow_definitions)} workflow definitions")
+            
+        except Exception as e:
+            logger.error(f"Error loading workflow definitions: {e}")
+            self.workflow_definitions = {}
     
     async def _initialize_execution_engine(self):
         """Initialize the workflow execution engine."""
-        # Placeholder for execution engine initialization
-        pass
+        try:
+            # Initialize execution engine components
+            self.execution_engine = {
+                'active_workflows': {},
+                'workflow_queue': asyncio.Queue(),
+                'result_cache': {},
+                'performance_metrics': {
+                    'total_executions': 0,
+                    'successful_executions': 0,
+                    'failed_executions': 0,
+                    'average_execution_time': 0.0
+                },
+                'resource_limits': {
+                    'max_concurrent_workflows': 10,
+                    'max_execution_time': 300,  # 5 minutes
+                    'memory_limit_mb': 1024
+                }
+            }
+            
+            # Initialize workflow execution context
+            self.execution_context = {
+                'shared_data': {},
+                'agent_connections': {
+                    'triage': self.triage_agent,
+                    'research': self.research_agent,
+                    'orchestration': self
+                },
+                'execution_history': deque(maxlen=1000)
+            }
+            
+            # Start execution engine background tasks
+            self.execution_tasks = []
+            
+            logger.info("Workflow execution engine initialized successfully")
+            
+        except Exception as e:
+            logger.error(f"Error initializing execution engine: {e}")
+            self.execution_engine = {}
     
     async def _save_execution_history(self):
         """Save execution history to persistent storage."""
-        # Placeholder for saving execution history
-        pass
+        try:
+            if not hasattr(self, 'execution_context') or not self.execution_context.get('execution_history'):
+                return
+                
+            history_file = self.config.data_dir / "orchestration_history.json"
+            
+            # Prepare execution history for saving
+            history_data = []
+            for execution in list(self.execution_context['execution_history'])[-100:]:  # Keep last 100
+                history_item = {
+                    'workflow_id': execution.get('workflow_id', ''),
+                    'workflow_type': execution.get('workflow_type', ''),
+                    'start_time': execution.get('start_time', 0),
+                    'end_time': execution.get('end_time', 0),
+                    'duration': execution.get('duration', 0),
+                    'status': execution.get('status', 'unknown'),
+                    'steps_completed': len(execution.get('completed_steps', [])),
+                    'success': execution.get('success', False),
+                    'error': execution.get('error', '')[:200] if execution.get('error') else None
+                }
+                history_data.append(history_item)
+            
+            with open(history_file, 'w') as f:
+                json.dump(history_data, f, indent=2)
+                
+            # Also save performance metrics
+            metrics_file = self.config.data_dir / "orchestration_metrics.json"
+            if hasattr(self, 'execution_engine'):
+                with open(metrics_file, 'w') as f:
+                    json.dump(self.execution_engine.get('performance_metrics', {}), f, indent=2)
+                    
+            logger.info(f"Saved {len(history_data)} execution history records")
+            
+        except Exception as e:
+            logger.error(f"Error saving execution history: {e}")
     
     # Public API methods
     

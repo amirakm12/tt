@@ -706,24 +706,126 @@ class TriageAgent:
     
     async def _initialize_ml_models(self):
         """Initialize ML models for classification."""
-        # Placeholder for ML model initialization
-        # In a real implementation, this would load trained models
-        pass
+        try:
+            # Initialize basic classification models
+            from sklearn.feature_extraction.text import TfidfVectorizer
+            from sklearn.naive_bayes import MultinomialNB
+            from sklearn.pipeline import Pipeline
+            
+            # Create a simple text classification pipeline
+            self.ml_classifier = Pipeline([
+                ('tfidf', TfidfVectorizer(max_features=1000, stop_words='english')),
+                ('classifier', MultinomialNB())
+            ])
+            
+            # Train with basic examples if no pre-trained model exists
+            sample_texts = [
+                "urgent help needed with system crash",
+                "how do I configure the settings",
+                "error message appears when starting",
+                "request for new feature implementation",
+                "system performance is very slow",
+                "need information about documentation"
+            ]
+            sample_labels = [
+                "urgent", "support", "error", "feature", "performance", "information"
+            ]
+            
+            self.ml_classifier.fit(sample_texts, sample_labels)
+            logger.info("ML classification models initialized successfully")
+            
+        except ImportError:
+            logger.warning("scikit-learn not available, using rule-based classification only")
+            self.ml_classifier = None
+        except Exception as e:
+            logger.error(f"Error initializing ML models: {e}")
+            self.ml_classifier = None
     
     async def _load_historical_patterns(self):
         """Load historical patterns for classification improvement."""
-        # Placeholder for loading historical data
-        pass
+        try:
+            patterns_file = self.config.data_dir / "triage_patterns.json"
+            
+            if patterns_file.exists():
+                with open(patterns_file, 'r') as f:
+                    self.historical_patterns = json.load(f)
+                logger.info(f"Loaded {len(self.historical_patterns)} historical patterns")
+            else:
+                # Initialize with default patterns
+                self.historical_patterns = {
+                    'urgent_keywords': ['urgent', 'critical', 'emergency', 'crash', 'down', 'failure'],
+                    'support_keywords': ['help', 'how to', 'configure', 'setup', 'install'],
+                    'error_keywords': ['error', 'exception', 'failed', 'broken', 'bug'],
+                    'feature_keywords': ['feature', 'enhancement', 'improvement', 'add', 'new'],
+                    'performance_keywords': ['slow', 'performance', 'optimization', 'speed', 'lag'],
+                    'information_keywords': ['documentation', 'info', 'explain', 'what is', 'guide']
+                }
+                await self._save_learned_patterns()
+                
+        except Exception as e:
+            logger.error(f"Error loading historical patterns: {e}")
+            self.historical_patterns = {}
     
     async def _save_learned_patterns(self):
         """Save learned patterns for future use."""
-        # Placeholder for saving learned patterns
-        pass
+        try:
+            patterns_file = self.config.data_dir / "triage_patterns.json"
+            
+            with open(patterns_file, 'w') as f:
+                json.dump(self.historical_patterns, f, indent=2)
+            
+            logger.info("Saved learned patterns to file")
+            
+        except Exception as e:
+            logger.error(f"Error saving learned patterns: {e}")
     
     async def _analyze_classification_patterns(self):
         """Analyze recent classifications to improve patterns."""
-        # Placeholder for pattern analysis and improvement
-        pass
+        try:
+            # Analyze recent classifications to improve patterns
+            if len(self.classification_history) < 10:
+                return
+            
+            # Get recent classifications
+            recent_classifications = list(self.classification_history)[-50:]
+            
+            # Analyze keyword effectiveness
+            keyword_performance = {}
+            
+            for classification in recent_classifications:
+                request_text = classification.get('request_text', '').lower()
+                classified_type = classification.get('type')
+                confidence = classification.get('confidence', 0)
+                
+                # Extract keywords that led to high-confidence classifications
+                if confidence > 0.8:
+                    words = request_text.split()
+                    for word in words:
+                        if len(word) > 3:  # Skip short words
+                            if word not in keyword_performance:
+                                keyword_performance[word] = {'count': 0, 'types': {}}
+                            keyword_performance[word]['count'] += 1
+                            if classified_type not in keyword_performance[word]['types']:
+                                keyword_performance[word]['types'][classified_type] = 0
+                            keyword_performance[word]['types'][classified_type] += 1
+            
+            # Update patterns with high-performing keywords
+            for word, performance in keyword_performance.items():
+                if performance['count'] >= 3:  # Word appeared in at least 3 high-confidence classifications
+                    # Find the most common type for this word
+                    most_common_type = max(performance['types'], key=performance['types'].get)
+                    type_key = f"{most_common_type}_keywords"
+                    
+                    if type_key in self.historical_patterns:
+                        if word not in self.historical_patterns[type_key]:
+                            self.historical_patterns[type_key].append(word)
+                            logger.info(f"Added learned keyword '{word}' to {most_common_type} patterns")
+            
+            # Save updated patterns
+            await self._save_learned_patterns()
+            
+        except Exception as e:
+            logger.error(f"Error analyzing classification patterns: {e}")
     
     def _generate_request_id(self, text: str) -> str:
         """Generate unique request ID."""
