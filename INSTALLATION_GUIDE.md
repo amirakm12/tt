@@ -2,26 +2,35 @@
 
 ## 🚀 Quick Installation (Recommended)
 
-### Option 1: Windows Executable Installer (Easiest)
+### Option 1: Windows Installers (Easiest - No Admin Required)
 
-1. **Download the installer:**
-   - Download `AI-System-Installer.exe` from the releases page
-   - Or run `python create_exe.py` to build it yourself
+**For Windows 10/11 (PowerShell):**
+1. **Right-click and "Run with PowerShell":**
+   ```powershell
+   .\install_windows.ps1
+   ```
+   - Or with custom path: `.\install_windows.ps1 -InstallPath "C:\MyApps"`
+   - Force reinstall: `.\install_windows.ps1 -Force`
 
-2. **Run the installer:**
-   - Double-click `AI-System-Installer.exe`
-   - Follow the installation wizard
-   - The installer will automatically:
-     - Check system requirements
-     - Create a virtual environment
-     - Install all dependencies
-     - Set up the system
-     - Create desktop shortcuts
+**For All Windows Versions (Batch):**
+1. **Double-click to run:**
+   ```batch
+   install_windows.bat
+   ```
 
-3. **Start the system:**
-   - Use the desktop shortcut "AI-System"
-   - Or run `AI-System.bat` from the installation directory
-   - Access the web dashboard at http://localhost:8080
+**Features:**
+- ✅ **No administrator privileges required**
+- ✅ Installs to user directory (`%LOCALAPPDATA%\AI-System`)
+- ✅ Creates virtual environment automatically
+- ✅ Installs all dependencies
+- ✅ Creates desktop shortcuts
+- ✅ Includes uninstaller
+- ✅ Tests installation automatically
+
+**After Installation:**
+- Use desktop shortcut "AI-System"
+- Or run from: `%LOCALAPPDATA%\AI-System\AI-System.bat`
+- Web dashboard: http://localhost:8080
 
 ### Option 2: One-Click Python Installer
 

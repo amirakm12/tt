@@ -23,12 +23,28 @@ class ExecutableInstaller:
         self.install_dir = self.get_install_directory()
         self.python_exe = sys.executable
         
+    def choose_install_directory(self):
+        """Allow user to choose custom installation directory."""
+        default_dir = self.get_install_directory()
+        print(f"\n📁 Installation Directory Selection")
+        print(f"Default: {default_dir}")
+        print("Press Enter to use default, or type a custom path:")
+        
+        custom_path = input("Custom path: ").strip()
+        if custom_path:
+            self.install_dir = Path(custom_path) / "AI-System"
+            print(f"Using custom directory: {self.install_dir}")
+        else:
+            print(f"Using default directory: {self.install_dir}")
+        
     def get_install_directory(self):
         """Get the appropriate installation directory."""
         if self.system == "Windows":
-            return Path(os.environ.get("PROGRAMFILES", "C:\\Program Files")) / "AI-System"
+            # Use user's AppData directory instead of Program Files to avoid permission issues
+            appdata = os.environ.get("LOCALAPPDATA", os.path.expanduser("~\\AppData\\Local"))
+            return Path(appdata) / "AI-System"
         elif self.system == "Darwin":  # macOS
-            return Path("/Applications/AI-System")
+            return Path.home() / "Applications" / "AI-System"
         else:  # Linux and others
             return Path.home() / ".local" / "share" / "ai-system"
             
@@ -48,6 +64,22 @@ class ExecutableInstaller:
                          check=True, capture_output=True)
         except subprocess.CalledProcessError:
             print("❌ pip is not available")
+            return False
+            
+        # Check write permissions for installation directory
+        try:
+            parent_dir = self.install_dir.parent
+            parent_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Test write permission by creating a temporary file
+            test_file = parent_dir / "test_write_permission.tmp"
+            test_file.write_text("test")
+            test_file.unlink()
+            
+        except (PermissionError, OSError) as e:
+            print(f"❌ Cannot write to installation directory: {parent_dir}")
+            print(f"   Error: {e}")
+            print("   Try running as administrator or choose a different location")
             return False
             
         print("✅ System requirements met")
@@ -366,6 +398,9 @@ except ImportError as e:
         print("=" * 60)
         print()
         
+        # Let user choose installation directory
+        self.choose_install_directory()
+        
         # Check if already installed
         if self.install_dir.exists():
             response = input(f"AI System is already installed at {self.install_dir}.\n"
@@ -373,10 +408,20 @@ except ImportError as e:
             if response.lower() != 'y':
                 print("Installation cancelled.")
                 return False
-            shutil.rmtree(self.install_dir)
+            try:
+                shutil.rmtree(self.install_dir)
+            except PermissionError as e:
+                print(f"❌ Cannot remove existing installation: {e}")
+                print("Please remove the directory manually or run as administrator")
+                return False
             
         # Create installation directory
-        self.install_dir.mkdir(parents=True, exist_ok=True)
+        try:
+            self.install_dir.mkdir(parents=True, exist_ok=True)
+        except PermissionError as e:
+            print(f"❌ Cannot create installation directory: {e}")
+            print("Please choose a different location or run as administrator")
+            return False
         
         # Run installation steps
         steps = [
