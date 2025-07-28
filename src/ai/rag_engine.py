@@ -15,14 +15,43 @@ from dataclasses import dataclass
 from enum import Enum
 
 # Vector database and embeddings
-import chromadb
-from chromadb.config import Settings
-import numpy as np
-from sentence_transformers import SentenceTransformer
-import openai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import TextLoader, PDFLoader, CSVLoader
-from langchain.schema import Document
+try:
+    import chromadb
+    from chromadb.config import Settings
+    CHROMADB_AVAILABLE = True
+except ImportError:
+    CHROMADB_AVAILABLE = False
+    chromadb = None
+    Settings = None
+try:
+    import numpy as np
+    NUMPY_AVAILABLE = True
+except ImportError:
+    NUMPY_AVAILABLE = False
+    np = None
+try:
+    from sentence_transformers import SentenceTransformer
+    SENTENCE_TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    SENTENCE_TRANSFORMERS_AVAILABLE = False
+    SentenceTransformer = None
+
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    openai = None
+
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.document_loaders import TextLoader, PDFLoader, CSVLoader
+    from langchain.schema import Document
+    LANGCHAIN_AVAILABLE = True
+except ImportError:
+    LANGCHAIN_AVAILABLE = False
+    RecursiveCharacterTextSplitter = None
+    TextLoader = PDFLoader = CSVLoader = Document = None
 
 from ..core.config import SystemConfig
 
@@ -160,6 +189,12 @@ class RAGEngine:
     
     async def _initialize_vector_db(self):
         """Initialize ChromaDB vector database."""
+        if not CHROMADB_AVAILABLE:
+            logger.warning("ChromaDB not available - vector database disabled")
+            self.vector_db = None
+            self.collection = None
+            return
+            
         db_path = Path(self.config.rag.vector_db_path)
         db_path.mkdir(parents=True, exist_ok=True)
         
@@ -185,6 +220,11 @@ class RAGEngine:
     
     async def _initialize_embedding_model(self):
         """Initialize sentence transformer embedding model."""
+        if not SENTENCE_TRANSFORMERS_AVAILABLE:
+            logger.warning("SentenceTransformers not available - embedding disabled")
+            self.embedding_model = None
+            return
+            
         model_name = self.config.rag.embedding_model
         
         try:
@@ -197,13 +237,22 @@ class RAGEngine:
         except Exception as e:
             logger.error(f"Failed to load embedding model: {e}")
             # Fallback to a smaller model
-            self.embedding_model = await loop.run_in_executor(
-                None, SentenceTransformer, "all-MiniLM-L6-v2"
-            )
-            logger.info("Loaded fallback embedding model")
+            try:
+                self.embedding_model = await loop.run_in_executor(
+                    None, SentenceTransformer, "all-MiniLM-L6-v2"
+                )
+                logger.info("Loaded fallback embedding model")
+            except Exception as e2:
+                logger.error(f"Failed to load fallback embedding model: {e2}")
+                self.embedding_model = None
     
     def _initialize_text_splitter(self):
         """Initialize text splitter for document chunking."""
+        if not LANGCHAIN_AVAILABLE:
+            logger.warning("Langchain not available - text splitting disabled")
+            self.text_splitter = None
+            return
+            
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=self.config.rag.chunk_size,
             chunk_overlap=self.config.rag.chunk_overlap,
@@ -213,6 +262,10 @@ class RAGEngine:
     
     def _initialize_openai(self):
         """Initialize OpenAI client."""
+        if not OPENAI_AVAILABLE:
+            logger.warning("OpenAI library not available - generation features disabled")
+            return
+            
         api_key = self.config.get_api_key("openai")
         if api_key:
             openai.api_key = api_key
@@ -532,7 +585,7 @@ Answer:"""
         
         try:
             # Use OpenAI API if available
-            if hasattr(openai, 'api_key') and openai.api_key:
+            if OPENAI_AVAILABLE and hasattr(openai, 'api_key') and openai.api_key:
                 response = await self._call_openai_api(prompt)
                 return response
             else:
@@ -545,6 +598,9 @@ Answer:"""
     
     async def _call_openai_api(self, prompt: str) -> str:
         """Call OpenAI API for response generation."""
+        if not OPENAI_AVAILABLE:
+            return "OpenAI API not available"
+            
         try:
             response = await openai.ChatCompletion.acreate(
                 model=self.config.ai_model.model_name,

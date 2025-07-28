@@ -1,0 +1,1111 @@
+2025-07-28 18:28:49,773 - __main__ - INFO - Starting AI System...
+2025-07-28 18:28:49,773 - __main__ - ERROR - System failed to start: name 'uvloop' is not defined
+2025-07-28 18:29:06,072 - __main__ - INFO - Starting AI System...
+2025-07-28 18:29:06,073 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:29:06,073 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:29:06,073 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:29:06,073 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:29:06,073 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:29:06,073 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:29:06,073 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:29:06,073 - src.kernel.integration - ERROR - Failed to initialize Kernel Manager: 'NoneType' object has no attribute 'cpu_count'
+2025-07-28 18:29:06,073 - __main__ - ERROR - Failed to initialize components: 'NoneType' object has no attribute 'cpu_count'
+2025-07-28 18:29:06,073 - __main__ - ERROR - System startup failed: 'NoneType' object has no attribute 'cpu_count'
+2025-07-28 18:29:39,532 - __main__ - INFO - Starting AI System...
+2025-07-28 18:29:39,533 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:29:39,533 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:29:39,533 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:29:39,533 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:29:39,533 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:29:39,533 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:29:39,533 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:29:39,533 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:29:39,533 - src.kernel.integration - ERROR - Failed to initialize Kernel Manager: 'NoneType' object has no attribute 'cpu_times'
+2025-07-28 18:29:39,533 - __main__ - ERROR - Failed to initialize components: 'NoneType' object has no attribute 'cpu_times'
+2025-07-28 18:29:39,533 - __main__ - ERROR - System startup failed: 'NoneType' object has no attribute 'cpu_times'
+2025-07-28 18:30:53,330 - __main__ - INFO - Starting AI System...
+2025-07-28 18:30:53,330 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:30:53,330 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:30:53,330 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:30:53,330 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:30:53,330 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:30:53,330 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:30:53,330 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:30:53,330 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:30:53,330 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:30:53,331 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:30:53,331 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:30:53,331 - __main__ - ERROR - Failed to initialize components: 'NoneType' object has no attribute 'random'
+2025-07-28 18:30:53,331 - __main__ - ERROR - System startup failed: 'NoneType' object has no attribute 'random'
+2025-07-28 18:31:29,273 - __main__ - INFO - Starting AI System...
+2025-07-28 18:31:29,273 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:31:29,273 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:31:29,273 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:31:29,273 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:31:29,274 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:31:29,274 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:31:29,274 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:31:29,274 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:31:29,274 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:31:29,274 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:31:29,274 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:31:29,274 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:31:29,274 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:31:29,274 - src.sensors.fusion - ERROR - Failed to initialize Sensor Fusion Manager: 'NoneType' object has no attribute 'disk_partitions'
+2025-07-28 18:31:29,274 - __main__ - ERROR - Failed to initialize components: 'NoneType' object has no attribute 'disk_partitions'
+2025-07-28 18:31:29,274 - __main__ - ERROR - System startup failed: 'NoneType' object has no attribute 'disk_partitions'
+2025-07-28 18:31:59,270 - __main__ - INFO - Starting AI System...
+2025-07-28 18:31:59,271 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:31:59,271 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:31:59,271 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:31:59,271 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:31:59,271 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:31:59,271 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:31:59,271 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:31:59,271 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:31:59,271 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:31:59,271 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:31:59,271 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:31:59,271 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:31:59,271 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:31:59,272 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 18:31:59,272 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 18:31:59,272 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 18:31:59,272 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 18:31:59,272 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 18:31:59,272 - src.ai.rag_engine - ERROR - Failed to initialize RAG Engine: 'NoneType' object is not callable
+2025-07-28 18:31:59,272 - __main__ - ERROR - Failed to initialize components: 'NoneType' object is not callable
+2025-07-28 18:31:59,272 - __main__ - ERROR - System startup failed: 'NoneType' object is not callable
+2025-07-28 18:32:58,057 - __main__ - INFO - Starting AI System...
+2025-07-28 18:32:58,057 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:32:58,057 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:32:58,057 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:32:58,058 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:32:58,058 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:32:58,058 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:32:58,058 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:32:58,058 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:32:58,058 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:32:58,058 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:32:58,058 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:32:58,058 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:32:58,058 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:32:58,058 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 18:32:58,058 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 18:32:58,058 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 18:32:58,058 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 18:32:58,059 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 18:32:58,059 - src.ai.rag_engine - ERROR - Failed to initialize RAG Engine: 'NoneType' object is not callable
+2025-07-28 18:32:58,059 - __main__ - ERROR - Failed to initialize components: 'NoneType' object is not callable
+2025-07-28 18:32:58,059 - __main__ - ERROR - System startup failed: 'NoneType' object is not callable
+2025-07-28 18:33:40,316 - __main__ - INFO - Starting AI System...
+2025-07-28 18:33:40,316 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:33:40,316 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:33:40,316 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:33:40,316 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:33:40,316 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:33:40,316 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:33:40,316 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:33:40,316 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:33:40,316 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:33:40,316 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:33:40,316 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:33:40,317 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:33:40,317 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:33:40,317 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 18:33:40,317 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 18:33:40,317 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 18:33:40,317 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 18:33:40,317 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 18:33:40,317 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 18:33:40,317 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 18:33:40,317 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 18:33:40,317 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 18:33:40,317 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 18:33:40,317 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 18:33:40,317 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 18:33:40,317 - src.ai.speculative_decoder - ERROR - Error loading models: 'NoneType' object has no attribute 'from_pretrained'
+2025-07-28 18:33:40,317 - src.ai.speculative_decoder - ERROR - Failed to initialize Speculative Decoder: 'NoneType' object has no attribute 'from_pretrained'
+2025-07-28 18:33:40,317 - __main__ - ERROR - Failed to initialize components: 'NoneType' object has no attribute 'from_pretrained'
+2025-07-28 18:33:40,317 - __main__ - ERROR - System startup failed: 'NoneType' object has no attribute 'from_pretrained'
+2025-07-28 18:34:02,801 - __main__ - INFO - Starting AI System...
+2025-07-28 18:34:02,801 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:34:02,801 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:34:02,801 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:34:02,801 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:34:02,801 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:34:02,801 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:34:02,801 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:34:02,801 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:34:02,801 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:34:02,801 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:34:02,801 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:34:02,802 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:34:02,802 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:34:02,802 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 18:34:02,802 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 18:34:02,802 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 18:34:02,802 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 18:34:02,802 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 18:34:02,802 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 18:34:02,802 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 18:34:02,802 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 18:34:02,802 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 18:34:02,802 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 18:34:02,802 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 18:34:02,802 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 18:34:02,802 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 18:34:02,802 - src.ai.speculative_decoder - ERROR - Failed to initialize Speculative Decoder: 'NoneType' object has no attribute 'random'
+2025-07-28 18:34:02,802 - __main__ - ERROR - Failed to initialize components: 'NoneType' object has no attribute 'random'
+2025-07-28 18:34:02,802 - __main__ - ERROR - System startup failed: 'NoneType' object has no attribute 'random'
+2025-07-28 18:34:53,982 - __main__ - INFO - Starting AI System...
+2025-07-28 18:34:53,982 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:34:53,982 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:34:53,982 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:34:53,982 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:34:53,982 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:34:53,982 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:34:53,982 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:34:53,982 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:34:53,982 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:34:53,982 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:34:53,982 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:34:53,983 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:34:53,983 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:34:53,983 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 18:34:53,983 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 18:34:53,983 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 18:34:53,983 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 18:34:53,983 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 18:34:53,983 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 18:34:53,983 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 18:34:53,983 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 18:34:53,983 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 18:34:53,983 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 18:34:53,983 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 18:34:53,983 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 18:34:53,983 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 18:34:57,384 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 18:34:57,384 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 18:34:57,384 - __main__ - ERROR - Failed to initialize components: TriageAgent.__init__() takes 2 positional arguments but 4 were given
+2025-07-28 18:34:57,384 - __main__ - ERROR - System startup failed: TriageAgent.__init__() takes 2 positional arguments but 4 were given
+2025-07-28 18:35:55,938 - __main__ - INFO - Starting AI System...
+2025-07-28 18:35:55,938 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:35:55,938 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:35:55,938 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:35:55,938 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:35:55,938 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:35:55,938 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:35:55,938 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:35:55,938 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:35:55,938 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:35:55,938 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:35:55,938 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:35:55,939 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:35:55,939 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:35:55,939 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 18:35:55,939 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 18:35:55,939 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 18:35:55,939 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 18:35:55,939 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 18:35:55,939 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 18:35:55,939 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 18:35:55,939 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 18:35:55,939 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 18:35:55,939 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 18:35:55,939 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 18:35:55,939 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 18:35:55,939 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 18:35:58,967 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 18:35:58,968 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 18:35:58,968 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 18:35:58,968 - src.agents.research_agent - INFO - Research Agent initialized
+2025-07-28 18:35:58,968 - src.agents.orchestration_agent - INFO - Orchestration Agent initialized
+2025-07-28 18:35:58,968 - src.core.orchestrator - INFO - System Orchestrator initialized
+2025-07-28 18:35:58,968 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 18:35:58,968 - src.ui.voice_interface - INFO - Voice Interface initialized
+2025-07-28 18:35:58,968 - __main__ - INFO - All components initialized successfully
+2025-07-28 18:35:58,968 - __main__ - INFO - Starting AI System...
+2025-07-28 18:35:58,968 - src.monitoring.system_monitor - INFO - Starting System Monitor...
+2025-07-28 18:35:58,968 - src.monitoring.system_monitor - INFO - System Monitor started successfully
+2025-07-28 18:35:58,968 - src.monitoring.security_monitor - INFO - Starting Security Monitor...
+2025-07-28 18:35:58,968 - src.monitoring.security_monitor - INFO - Security Monitor started successfully
+2025-07-28 18:35:58,968 - src.kernel.integration - INFO - Starting Kernel Manager...
+2025-07-28 18:35:58,968 - src.kernel.integration - INFO - Kernel Manager started successfully
+2025-07-28 18:35:58,968 - src.sensors.fusion - INFO - Starting Sensor Fusion Manager...
+2025-07-28 18:35:58,968 - src.sensors.fusion - INFO - Sensor Fusion Manager started successfully
+2025-07-28 18:35:58,968 - src.ai.rag_engine - INFO - Starting RAG Engine...
+2025-07-28 18:35:58,968 - src.ai.rag_engine - INFO - RAG Engine started successfully
+2025-07-28 18:35:58,968 - src.ai.speculative_decoder - INFO - Starting Speculative Decoder...
+2025-07-28 18:35:58,969 - src.ai.speculative_decoder - INFO - Speculative Decoder started successfully
+2025-07-28 18:35:58,969 - src.agents.triage_agent - INFO - Starting Triage Agent...
+2025-07-28 18:35:58,969 - src.agents.triage_agent - INFO - Triage Agent started successfully
+2025-07-28 18:35:58,969 - src.agents.research_agent - INFO - Starting Research Agent...
+2025-07-28 18:35:58,969 - src.agents.research_agent - INFO - Research Agent started successfully
+2025-07-28 18:35:58,969 - src.agents.orchestration_agent - INFO - Starting Orchestration Agent...
+2025-07-28 18:35:58,969 - src.agents.orchestration_agent - INFO - Orchestration Agent started successfully
+2025-07-28 18:35:58,969 - src.core.orchestrator - INFO - Starting System Orchestrator...
+2025-07-28 18:35:58,969 - src.core.orchestrator - INFO - System Orchestrator started successfully
+2025-07-28 18:35:58,969 - src.ui.dashboard - INFO - Starting Dashboard Server...
+2025-07-28 18:35:58,969 - src.ui.dashboard - ERROR - Failed to start Dashboard Server: 'NoneType' object has no attribute 'AppRunner'
+2025-07-28 18:35:58,969 - __main__ - ERROR - Failed to start system: 'NoneType' object has no attribute 'AppRunner'
+2025-07-28 18:35:58,969 - __main__ - ERROR - System startup failed: 'NoneType' object has no attribute 'AppRunner'
+2025-07-28 18:36:14,807 - __main__ - INFO - Starting AI System...
+2025-07-28 18:36:14,808 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 18:36:14,808 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 18:36:14,808 - __main__ - INFO - Initializing AI System components...
+2025-07-28 18:36:14,808 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 18:36:14,808 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 18:36:14,808 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 18:36:14,808 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 18:36:14,808 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 18:36:14,808 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 18:36:14,808 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 18:36:14,808 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 18:36:14,808 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 18:36:14,808 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 18:36:14,808 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 18:36:14,808 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 18:36:14,808 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 18:36:14,809 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 18:36:14,809 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 18:36:14,809 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 18:36:14,809 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 18:36:14,809 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 18:36:14,809 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 18:36:14,809 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 18:36:14,809 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 18:36:14,809 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 18:36:14,809 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 18:36:17,842 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 18:36:17,842 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 18:36:17,842 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 18:36:17,842 - src.agents.research_agent - INFO - Research Agent initialized
+2025-07-28 18:36:17,843 - src.agents.orchestration_agent - INFO - Orchestration Agent initialized
+2025-07-28 18:36:17,843 - src.core.orchestrator - INFO - System Orchestrator initialized
+2025-07-28 18:36:17,843 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 18:36:17,843 - src.ui.voice_interface - INFO - Voice Interface initialized
+2025-07-28 18:36:17,843 - __main__ - INFO - All components initialized successfully
+2025-07-28 18:36:17,843 - __main__ - INFO - Starting AI System...
+2025-07-28 18:36:17,843 - src.monitoring.system_monitor - INFO - Starting System Monitor...
+2025-07-28 18:36:17,843 - src.monitoring.system_monitor - INFO - System Monitor started successfully
+2025-07-28 18:36:17,843 - src.monitoring.security_monitor - INFO - Starting Security Monitor...
+2025-07-28 18:36:17,843 - src.monitoring.security_monitor - INFO - Security Monitor started successfully
+2025-07-28 18:36:17,843 - src.kernel.integration - INFO - Starting Kernel Manager...
+2025-07-28 18:36:17,843 - src.kernel.integration - INFO - Kernel Manager started successfully
+2025-07-28 18:36:17,843 - src.sensors.fusion - INFO - Starting Sensor Fusion Manager...
+2025-07-28 18:36:17,843 - src.sensors.fusion - INFO - Sensor Fusion Manager started successfully
+2025-07-28 18:36:17,843 - src.ai.rag_engine - INFO - Starting RAG Engine...
+2025-07-28 18:36:17,843 - src.ai.rag_engine - INFO - RAG Engine started successfully
+2025-07-28 18:36:17,843 - src.ai.speculative_decoder - INFO - Starting Speculative Decoder...
+2025-07-28 18:36:17,843 - src.ai.speculative_decoder - INFO - Speculative Decoder started successfully
+2025-07-28 18:36:17,843 - src.agents.triage_agent - INFO - Starting Triage Agent...
+2025-07-28 18:36:17,843 - src.agents.triage_agent - INFO - Triage Agent started successfully
+2025-07-28 18:36:17,843 - src.agents.research_agent - INFO - Starting Research Agent...
+2025-07-28 18:36:17,843 - src.agents.research_agent - INFO - Research Agent started successfully
+2025-07-28 18:36:17,843 - src.agents.orchestration_agent - INFO - Starting Orchestration Agent...
+2025-07-28 18:36:17,843 - src.agents.orchestration_agent - INFO - Orchestration Agent started successfully
+2025-07-28 18:36:17,843 - src.core.orchestrator - INFO - Starting System Orchestrator...
+2025-07-28 18:36:17,843 - src.core.orchestrator - INFO - System Orchestrator started successfully
+2025-07-28 18:36:17,843 - src.ui.dashboard - WARNING - aiohttp not available, dashboard server disabled
+2025-07-28 18:36:17,843 - src.ui.voice_interface - INFO - Starting Voice Interface...
+2025-07-28 18:36:17,844 - src.ui.voice_interface - INFO - Voice Interface started successfully
+2025-07-28 18:36:17,845 - __main__ - INFO - AI System started successfully
+2025-07-28 18:36:17,845 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:17,846 - src.monitoring.system_monitor - INFO - System Monitor Performance - Uptime: 0.0s, Cycles: 0, Avg Cycle Time: 0.000s, Active Alerts: 0
+2025-07-28 18:36:17,846 - src.monitoring.system_monitor - INFO - Cleaned up old metrics data
+2025-07-28 18:36:17,846 - src.monitoring.security_monitor - ERROR - Error in process monitoring loop: 'NoneType' object has no attribute 'process_iter'
+2025-07-28 18:36:17,848 - src.monitoring.security_monitor - ERROR - Error in network monitoring loop: 'NoneType' object has no attribute 'net_connections'
+2025-07-28 18:36:17,849 - src.monitoring.security_monitor - ERROR - Error in malware scanning loop: 'NoneType' object has no attribute 'process_iter'
+2025-07-28 18:36:17,849 - src.kernel.integration - WARNING - psutil not available, system monitoring disabled
+2025-07-28 18:36:17,850 - src.kernel.integration - WARNING - psutil not available, resource monitoring disabled
+2025-07-28 18:36:17,850 - src.kernel.integration - WARNING - psutil not available, process monitoring disabled
+2025-07-28 18:36:17,850 - src.kernel.integration - WARNING - psutil not available, security monitoring disabled
+2025-07-28 18:36:17,851 - src.ai.rag_engine - ERROR - Error in index optimization: 'NoneType' object has no attribute 'persist'
+2025-07-28 18:36:17,852 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:17,852 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:18,847 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:18,854 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:18,854 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:19,848 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:19,856 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:19,856 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:20,850 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:20,857 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:20,858 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:21,851 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:21,859 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:21,860 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:22,852 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:22,861 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:22,862 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:23,853 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:23,863 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:23,863 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:24,855 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:24,865 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:24,865 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:25,856 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:25,867 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:25,867 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:26,857 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:26,868 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:26,868 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:27,859 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:27,869 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:27,870 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:28,860 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:28,871 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:28,872 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:29,861 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:29,873 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:29,874 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:30,864 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:30,875 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:30,876 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:31,866 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:31,877 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:31,878 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:32,867 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:32,879 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:32,879 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:33,869 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:33,882 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:33,882 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:34,871 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:34,883 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:34,884 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:35,872 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:35,885 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:35,886 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:36,874 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:36,887 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:36,888 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:37,875 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:37,888 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:37,889 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:38,876 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:38,890 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:38,891 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:39,877 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:39,892 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:39,892 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:40,878 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:40,895 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:40,895 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:41,879 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:41,896 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:41,897 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:42,881 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:42,898 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:42,899 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:43,882 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 18:36:43,900 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 18:36:43,901 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 18:36:44,730 - __main__ - INFO - Received signal 15
+2025-07-28 18:36:44,731 - __main__ - INFO - Shutting down AI System...
+2025-07-28 18:36:44,732 - src.ui.voice_interface - INFO - Shutting down Voice Interface...
+2025-07-28 18:36:44,733 - src.ui.voice_interface - INFO - Voice Interface shutdown complete
+2025-07-28 18:36:44,734 - __main__ - INFO - Shutdown voice_interface
+2025-07-28 18:36:44,735 - src.ui.dashboard - INFO - Shutting down Dashboard Server...
+2025-07-28 18:36:44,736 - __main__ - ERROR - Error shutting down dashboard: 'DashboardServer' object has no attribute 'background_tasks'
+2025-07-28 18:36:44,737 - src.core.orchestrator - INFO - Shutting down System Orchestrator...
+2025-07-28 18:36:44,738 - src.core.orchestrator - INFO - System Orchestrator shutdown complete
+2025-07-28 18:36:44,739 - __main__ - INFO - Shutdown orchestrator
+2025-07-28 18:36:44,740 - src.agents.orchestration_agent - INFO - Shutting down Orchestration Agent...
+2025-07-28 18:36:44,740 - src.agents.orchestration_agent - INFO - Orchestration Agent shutdown complete
+2025-07-28 18:36:44,741 - __main__ - INFO - Shutdown orchestration_agent
+2025-07-28 18:36:44,742 - src.agents.research_agent - INFO - Shutting down Research Agent...
+2025-07-28 18:36:44,743 - src.agents.research_agent - INFO - Research Agent shutdown complete
+2025-07-28 18:36:44,744 - __main__ - INFO - Shutdown research_agent
+2025-07-28 18:36:44,745 - src.agents.triage_agent - INFO - Shutting down Triage Agent...
+2025-07-28 18:36:44,746 - src.agents.triage_agent - ERROR - Error saving learned patterns: 'TriageAgent' object has no attribute 'historical_patterns'
+2025-07-28 18:36:44,747 - src.agents.triage_agent - INFO - Triage Agent shutdown complete
+2025-07-28 18:36:44,748 - __main__ - INFO - Shutdown triage_agent
+2025-07-28 18:36:44,748 - src.ai.speculative_decoder - INFO - Shutting down Speculative Decoder...
+2025-07-28 18:36:44,749 - src.ai.speculative_decoder - INFO - Speculative Decoder shutdown complete
+2025-07-28 18:36:44,750 - __main__ - INFO - Shutdown speculative_decoder
+2025-07-28 18:36:44,751 - src.ai.rag_engine - INFO - Shutting down RAG Engine...
+2025-07-28 18:36:44,752 - src.ai.rag_engine - INFO - Query cache saved
+2025-07-28 18:36:44,753 - src.ai.rag_engine - INFO - Document index saved
+2025-07-28 18:36:44,754 - src.ai.rag_engine - INFO - RAG Engine shutdown complete
+2025-07-28 18:36:44,755 - __main__ - INFO - Shutdown rag_engine
+2025-07-28 18:36:44,755 - src.sensors.fusion - INFO - Shutting down Sensor Fusion Manager...
+2025-07-28 18:36:44,758 - src.sensors.fusion - INFO - Saved calibration data for 0 sensors
+2025-07-28 18:36:44,759 - src.sensors.fusion - INFO - Sensor Fusion Manager shutdown complete
+2025-07-28 18:36:44,760 - __main__ - INFO - Shutdown sensor_fusion
+2025-07-28 18:36:44,761 - src.kernel.integration - INFO - Shutting down Kernel Manager...
+2025-07-28 18:36:44,762 - src.kernel.integration - INFO - System hooks removed
+2025-07-28 18:36:44,763 - src.kernel.integration - INFO - Kernel Manager shutdown complete
+2025-07-28 18:36:44,763 - __main__ - INFO - Shutdown kernel_manager
+2025-07-28 18:36:44,764 - src.monitoring.security_monitor - INFO - Shutting down Security Monitor...
+2025-07-28 18:36:44,765 - src.monitoring.security_monitor - INFO - Security Monitor shutdown complete
+2025-07-28 18:36:44,768 - __main__ - INFO - Shutdown security_monitor
+2025-07-28 18:36:44,769 - src.monitoring.system_monitor - INFO - Shutting down System Monitor...
+2025-07-28 18:36:44,769 - src.monitoring.system_monitor - INFO - System Monitor shutdown complete
+2025-07-28 18:36:44,770 - __main__ - INFO - Shutdown system_monitor
+2025-07-28 18:36:44,771 - __main__ - INFO - AI System shutdown complete
+2025-07-28 19:23:19,199 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 19:23:19,199 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 19:23:36,901 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 19:23:36,901 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 19:23:36,901 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 19:23:36,912 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 19:23:36,913 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 19:23:41,943 - __main__ - INFO - Starting AI System...
+2025-07-28 19:23:41,943 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 19:23:41,943 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 19:23:41,944 - __main__ - INFO - Initializing AI System components...
+2025-07-28 19:23:41,944 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 19:23:41,944 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 19:23:41,944 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 19:23:41,944 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 19:23:41,944 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 19:23:41,944 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 19:23:41,944 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 19:23:41,944 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 19:23:41,944 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 19:23:41,944 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 19:23:41,944 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 19:23:41,944 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 19:23:41,944 - src.sensors.fusion - INFO - Loaded calibration data for 0 sensors
+2025-07-28 19:23:41,944 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 19:23:41,944 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 19:23:41,944 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 19:23:41,944 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 19:23:41,944 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 19:23:41,944 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 19:23:41,945 - src.ai.rag_engine - INFO - Loaded 0 documents from index
+2025-07-28 19:23:41,945 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 19:23:41,945 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 19:23:41,945 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 19:23:41,945 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 19:23:41,945 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 19:23:45,323 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 19:23:45,324 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 19:23:45,324 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 19:23:45,324 - src.agents.research_agent - INFO - Research Agent initialized
+2025-07-28 19:23:45,324 - src.agents.orchestration_agent - INFO - Orchestration Agent initialized
+2025-07-28 19:23:45,324 - src.core.orchestrator - INFO - System Orchestrator initialized
+2025-07-28 19:23:45,324 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 19:23:45,324 - src.ui.voice_interface - INFO - Voice Interface initialized
+2025-07-28 19:23:45,324 - __main__ - INFO - All components initialized successfully
+2025-07-28 19:23:45,324 - __main__ - INFO - Starting AI System...
+2025-07-28 19:23:45,324 - src.monitoring.system_monitor - INFO - Starting System Monitor...
+2025-07-28 19:23:45,324 - src.monitoring.system_monitor - INFO - System Monitor started successfully
+2025-07-28 19:23:45,324 - src.monitoring.security_monitor - INFO - Starting Security Monitor...
+2025-07-28 19:23:45,324 - src.monitoring.security_monitor - INFO - Security Monitor started successfully
+2025-07-28 19:23:45,324 - src.kernel.integration - INFO - Starting Kernel Manager...
+2025-07-28 19:23:45,324 - src.kernel.integration - INFO - Kernel Manager started successfully
+2025-07-28 19:23:45,324 - src.sensors.fusion - INFO - Starting Sensor Fusion Manager...
+2025-07-28 19:23:45,325 - src.sensors.fusion - INFO - Sensor Fusion Manager started successfully
+2025-07-28 19:23:45,325 - src.ai.rag_engine - INFO - Starting RAG Engine...
+2025-07-28 19:23:45,325 - src.ai.rag_engine - INFO - RAG Engine started successfully
+2025-07-28 19:23:45,325 - src.ai.speculative_decoder - INFO - Starting Speculative Decoder...
+2025-07-28 19:23:45,325 - src.ai.speculative_decoder - INFO - Speculative Decoder started successfully
+2025-07-28 19:23:45,325 - src.agents.triage_agent - INFO - Starting Triage Agent...
+2025-07-28 19:23:45,325 - src.agents.triage_agent - INFO - Triage Agent started successfully
+2025-07-28 19:23:45,325 - src.agents.research_agent - INFO - Starting Research Agent...
+2025-07-28 19:23:45,325 - src.agents.research_agent - INFO - Research Agent started successfully
+2025-07-28 19:23:45,325 - src.agents.orchestration_agent - INFO - Starting Orchestration Agent...
+2025-07-28 19:23:45,325 - src.agents.orchestration_agent - INFO - Orchestration Agent started successfully
+2025-07-28 19:23:45,325 - src.core.orchestrator - INFO - Starting System Orchestrator...
+2025-07-28 19:23:45,325 - src.core.orchestrator - INFO - System Orchestrator started successfully
+2025-07-28 19:23:45,325 - src.ui.dashboard - WARNING - aiohttp not available, dashboard server disabled
+2025-07-28 19:23:45,325 - src.ui.voice_interface - INFO - Starting Voice Interface...
+2025-07-28 19:23:45,326 - src.ui.voice_interface - INFO - Voice Interface started successfully
+2025-07-28 19:23:45,326 - __main__ - INFO - AI System started successfully
+2025-07-28 19:23:45,326 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 19:23:45,326 - src.monitoring.system_monitor - INFO - System Monitor Performance - Uptime: 0.0s, Cycles: 0, Avg Cycle Time: 0.000s, Active Alerts: 0
+2025-07-28 19:23:45,326 - src.monitoring.system_monitor - INFO - Cleaned up old metrics data
+2025-07-28 19:23:45,326 - src.monitoring.security_monitor - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:23:45,326 - src.monitoring.security_monitor - WARNING - psutil not available, network monitoring disabled
+2025-07-28 19:23:45,326 - src.monitoring.security_monitor - WARNING - psutil not available, malware scanning disabled
+2025-07-28 19:23:45,327 - src.kernel.integration - WARNING - psutil not available, system monitoring disabled
+2025-07-28 19:23:45,327 - src.kernel.integration - WARNING - psutil not available, resource monitoring disabled
+2025-07-28 19:23:45,327 - src.kernel.integration - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:23:45,327 - src.kernel.integration - WARNING - psutil not available, security monitoring disabled
+2025-07-28 19:23:45,327 - src.ai.rag_engine - ERROR - Error in index optimization: 'NoneType' object has no attribute 'persist'
+2025-07-28 19:23:45,327 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:23:45,327 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:23:46,327 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 19:23:46,328 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:23:46,328 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:23:47,328 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 19:23:47,329 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:23:47,329 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:23:48,328 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 19:23:48,330 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:23:48,330 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:23:49,329 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 19:23:49,331 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:23:49,331 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:23:50,330 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 19:23:50,332 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:23:50,332 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:23:51,331 - src.monitoring.system_monitor - ERROR - Error in system metrics loop: 'SystemMonitor' object has no attribute 'metric_collectors'
+2025-07-28 19:23:51,332 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:23:51,333 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:23:51,870 - __main__ - INFO - Received signal 15
+2025-07-28 19:23:51,870 - __main__ - INFO - Shutting down AI System...
+2025-07-28 19:23:51,870 - src.ui.voice_interface - INFO - Shutting down Voice Interface...
+2025-07-28 19:23:51,870 - src.ui.voice_interface - INFO - Voice Interface shutdown complete
+2025-07-28 19:23:51,871 - __main__ - INFO - Shutdown voice_interface
+2025-07-28 19:23:51,871 - src.ui.dashboard - INFO - Shutting down Dashboard Server...
+2025-07-28 19:23:51,871 - __main__ - ERROR - Error shutting down dashboard: 'DashboardServer' object has no attribute 'background_tasks'
+2025-07-28 19:23:51,871 - src.core.orchestrator - INFO - Shutting down System Orchestrator...
+2025-07-28 19:23:51,871 - src.core.orchestrator - INFO - System Orchestrator shutdown complete
+2025-07-28 19:23:51,871 - __main__ - INFO - Shutdown orchestrator
+2025-07-28 19:23:51,871 - src.agents.orchestration_agent - INFO - Shutting down Orchestration Agent...
+2025-07-28 19:23:51,871 - src.agents.orchestration_agent - INFO - Orchestration Agent shutdown complete
+2025-07-28 19:23:51,871 - __main__ - INFO - Shutdown orchestration_agent
+2025-07-28 19:23:51,871 - src.agents.research_agent - INFO - Shutting down Research Agent...
+2025-07-28 19:23:51,871 - src.agents.research_agent - INFO - Research Agent shutdown complete
+2025-07-28 19:23:51,871 - __main__ - INFO - Shutdown research_agent
+2025-07-28 19:23:51,871 - src.agents.triage_agent - INFO - Shutting down Triage Agent...
+2025-07-28 19:23:51,871 - src.agents.triage_agent - ERROR - Error saving learned patterns: 'TriageAgent' object has no attribute 'historical_patterns'
+2025-07-28 19:23:51,872 - src.agents.triage_agent - INFO - Triage Agent shutdown complete
+2025-07-28 19:23:51,872 - __main__ - INFO - Shutdown triage_agent
+2025-07-28 19:23:51,872 - src.ai.speculative_decoder - INFO - Shutting down Speculative Decoder...
+2025-07-28 19:23:51,872 - src.ai.speculative_decoder - INFO - Speculative Decoder shutdown complete
+2025-07-28 19:23:51,872 - __main__ - INFO - Shutdown speculative_decoder
+2025-07-28 19:23:51,872 - src.ai.rag_engine - INFO - Shutting down RAG Engine...
+2025-07-28 19:23:51,874 - src.ai.rag_engine - INFO - Query cache saved
+2025-07-28 19:23:51,875 - src.ai.rag_engine - INFO - Document index saved
+2025-07-28 19:23:51,875 - src.ai.rag_engine - INFO - RAG Engine shutdown complete
+2025-07-28 19:23:51,875 - __main__ - INFO - Shutdown rag_engine
+2025-07-28 19:23:51,875 - src.sensors.fusion - INFO - Shutting down Sensor Fusion Manager...
+2025-07-28 19:23:51,875 - src.sensors.fusion - INFO - Saved calibration data for 0 sensors
+2025-07-28 19:23:51,875 - src.sensors.fusion - INFO - Sensor Fusion Manager shutdown complete
+2025-07-28 19:23:51,875 - __main__ - INFO - Shutdown sensor_fusion
+2025-07-28 19:23:51,875 - src.kernel.integration - INFO - Shutting down Kernel Manager...
+2025-07-28 19:23:51,875 - src.kernel.integration - INFO - System hooks removed
+2025-07-28 19:23:51,875 - src.kernel.integration - INFO - Kernel Manager shutdown complete
+2025-07-28 19:23:51,875 - __main__ - INFO - Shutdown kernel_manager
+2025-07-28 19:23:51,875 - src.monitoring.security_monitor - INFO - Shutting down Security Monitor...
+2025-07-28 19:23:51,875 - src.monitoring.security_monitor - INFO - Security Monitor shutdown complete
+2025-07-28 19:23:51,875 - __main__ - INFO - Shutdown security_monitor
+2025-07-28 19:23:51,875 - src.monitoring.system_monitor - INFO - Shutting down System Monitor...
+2025-07-28 19:23:51,875 - src.monitoring.system_monitor - INFO - System Monitor shutdown complete
+2025-07-28 19:23:51,875 - __main__ - INFO - Shutdown system_monitor
+2025-07-28 19:23:51,875 - __main__ - INFO - AI System shutdown complete
+2025-07-28 19:25:15,798 - __main__ - INFO - Starting AI System...
+2025-07-28 19:25:15,798 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 19:25:15,799 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 19:25:15,799 - __main__ - INFO - Initializing AI System components...
+2025-07-28 19:25:15,799 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 19:25:15,799 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 19:25:15,799 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 19:25:15,799 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 19:25:15,799 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 19:25:15,799 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 19:25:15,799 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 19:25:15,799 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 19:25:15,799 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 19:25:15,799 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 19:25:15,799 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 19:25:15,799 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 19:25:15,799 - src.sensors.fusion - INFO - Loaded calibration data for 0 sensors
+2025-07-28 19:25:15,799 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 19:25:15,799 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 19:25:15,799 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 19:25:15,799 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 19:25:15,799 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 19:25:15,799 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 19:25:15,799 - src.ai.rag_engine - INFO - Loaded 0 documents from index
+2025-07-28 19:25:15,799 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 19:25:15,800 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 19:25:15,800 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 19:25:15,800 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 19:25:15,800 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 19:25:18,949 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 19:25:18,949 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 19:25:18,949 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 19:25:18,950 - src.agents.research_agent - INFO - Research Agent initialized
+2025-07-28 19:25:18,950 - src.agents.orchestration_agent - INFO - Orchestration Agent initialized
+2025-07-28 19:25:18,950 - src.core.orchestrator - INFO - System Orchestrator initialized
+2025-07-28 19:25:18,950 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 19:25:18,950 - src.ui.voice_interface - INFO - Voice Interface initialized
+2025-07-28 19:25:18,950 - __main__ - INFO - All components initialized successfully
+2025-07-28 19:25:18,950 - __main__ - INFO - Starting AI System...
+2025-07-28 19:25:18,950 - src.monitoring.system_monitor - INFO - Starting System Monitor...
+2025-07-28 19:25:18,950 - src.monitoring.system_monitor - INFO - System Monitor started successfully
+2025-07-28 19:25:18,950 - src.monitoring.security_monitor - INFO - Starting Security Monitor...
+2025-07-28 19:25:18,950 - src.monitoring.security_monitor - INFO - Security Monitor started successfully
+2025-07-28 19:25:18,950 - src.kernel.integration - INFO - Starting Kernel Manager...
+2025-07-28 19:25:18,950 - src.kernel.integration - INFO - Kernel Manager started successfully
+2025-07-28 19:25:18,950 - src.sensors.fusion - INFO - Starting Sensor Fusion Manager...
+2025-07-28 19:25:18,950 - src.sensors.fusion - INFO - Sensor Fusion Manager started successfully
+2025-07-28 19:25:18,950 - src.ai.rag_engine - INFO - Starting RAG Engine...
+2025-07-28 19:25:18,950 - src.ai.rag_engine - INFO - RAG Engine started successfully
+2025-07-28 19:25:18,950 - src.ai.speculative_decoder - INFO - Starting Speculative Decoder...
+2025-07-28 19:25:18,950 - src.ai.speculative_decoder - INFO - Speculative Decoder started successfully
+2025-07-28 19:25:18,950 - src.agents.triage_agent - INFO - Starting Triage Agent...
+2025-07-28 19:25:18,950 - src.agents.triage_agent - INFO - Triage Agent started successfully
+2025-07-28 19:25:18,950 - src.agents.research_agent - INFO - Starting Research Agent...
+2025-07-28 19:25:18,950 - src.agents.research_agent - INFO - Research Agent started successfully
+2025-07-28 19:25:18,950 - src.agents.orchestration_agent - INFO - Starting Orchestration Agent...
+2025-07-28 19:25:18,950 - src.agents.orchestration_agent - INFO - Orchestration Agent started successfully
+2025-07-28 19:25:18,950 - src.core.orchestrator - INFO - Starting System Orchestrator...
+2025-07-28 19:25:18,950 - src.core.orchestrator - INFO - System Orchestrator started successfully
+2025-07-28 19:25:18,950 - src.ui.dashboard - WARNING - aiohttp not available, dashboard server disabled
+2025-07-28 19:25:18,950 - src.ui.voice_interface - INFO - Starting Voice Interface...
+2025-07-28 19:25:18,951 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface activated. Say 'Hey System' to begin.
+2025-07-28 19:25:18,951 - src.ui.voice_interface - INFO - Voice Interface started successfully
+2025-07-28 19:25:18,951 - __main__ - INFO - AI System started successfully
+2025-07-28 19:25:18,951 - src.monitoring.system_monitor - INFO - System Monitor Performance - Uptime: 0.0s, Cycles: 1, Avg Cycle Time: 0.000s, Active Alerts: 0
+2025-07-28 19:25:18,951 - src.monitoring.system_monitor - INFO - Cleaned up old metrics data
+2025-07-28 19:25:18,951 - src.monitoring.security_monitor - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:25:18,951 - src.monitoring.security_monitor - WARNING - psutil not available, network monitoring disabled
+2025-07-28 19:25:18,951 - src.monitoring.security_monitor - WARNING - psutil not available, malware scanning disabled
+2025-07-28 19:25:18,951 - src.kernel.integration - WARNING - psutil not available, system monitoring disabled
+2025-07-28 19:25:18,951 - src.kernel.integration - WARNING - psutil not available, resource monitoring disabled
+2025-07-28 19:25:18,951 - src.kernel.integration - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:25:18,951 - src.kernel.integration - WARNING - psutil not available, security monitoring disabled
+2025-07-28 19:25:18,952 - src.ai.rag_engine - ERROR - Error in index optimization: 'NoneType' object has no attribute 'persist'
+2025-07-28 19:25:18,952 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:25:18,952 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:25:19,953 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:25:19,953 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:25:20,953 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:25:20,953 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:25:21,954 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:25:21,954 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:25:22,955 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:25:22,955 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:25:23,715 - __main__ - INFO - Received signal 15
+2025-07-28 19:25:23,716 - __main__ - INFO - Shutting down AI System...
+2025-07-28 19:25:23,716 - src.ui.voice_interface - INFO - Shutting down Voice Interface...
+2025-07-28 19:25:23,716 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface shutting down.
+2025-07-28 19:25:23,716 - src.ui.voice_interface - INFO - Voice Interface shutdown complete
+2025-07-28 19:25:23,716 - __main__ - INFO - Shutdown voice_interface
+2025-07-28 19:25:23,716 - src.ui.dashboard - INFO - Shutting down Dashboard Server...
+2025-07-28 19:25:23,716 - __main__ - ERROR - Error shutting down dashboard: 'DashboardServer' object has no attribute 'background_tasks'
+2025-07-28 19:25:23,716 - src.core.orchestrator - INFO - Shutting down System Orchestrator...
+2025-07-28 19:25:23,716 - src.core.orchestrator - INFO - Cancelled task: health_checker
+2025-07-28 19:25:23,716 - src.core.orchestrator - INFO - System Orchestrator shutdown complete
+2025-07-28 19:25:23,716 - __main__ - INFO - Shutdown orchestrator
+2025-07-28 19:25:23,716 - src.agents.orchestration_agent - INFO - Shutting down Orchestration Agent...
+2025-07-28 19:25:23,716 - src.agents.orchestration_agent - INFO - Orchestration Agent shutdown complete
+2025-07-28 19:25:23,716 - __main__ - INFO - Shutdown orchestration_agent
+2025-07-28 19:25:23,717 - src.agents.research_agent - INFO - Shutting down Research Agent...
+2025-07-28 19:25:23,717 - src.agents.research_agent - INFO - Research Agent shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown research_agent
+2025-07-28 19:25:23,717 - src.agents.triage_agent - INFO - Shutting down Triage Agent...
+2025-07-28 19:25:23,717 - src.agents.triage_agent - INFO - Saved learned patterns to file
+2025-07-28 19:25:23,717 - src.agents.triage_agent - INFO - Triage Agent shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown triage_agent
+2025-07-28 19:25:23,717 - src.ai.speculative_decoder - INFO - Shutting down Speculative Decoder...
+2025-07-28 19:25:23,717 - src.ai.speculative_decoder - INFO - Speculative Decoder shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown speculative_decoder
+2025-07-28 19:25:23,717 - src.ai.rag_engine - INFO - Shutting down RAG Engine...
+2025-07-28 19:25:23,717 - src.ai.rag_engine - INFO - Query cache saved
+2025-07-28 19:25:23,717 - src.ai.rag_engine - INFO - Document index saved
+2025-07-28 19:25:23,717 - src.ai.rag_engine - INFO - RAG Engine shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown rag_engine
+2025-07-28 19:25:23,717 - src.sensors.fusion - INFO - Shutting down Sensor Fusion Manager...
+2025-07-28 19:25:23,717 - src.sensors.fusion - INFO - Saved calibration data for 0 sensors
+2025-07-28 19:25:23,717 - src.sensors.fusion - INFO - Sensor Fusion Manager shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown sensor_fusion
+2025-07-28 19:25:23,717 - src.kernel.integration - INFO - Shutting down Kernel Manager...
+2025-07-28 19:25:23,717 - src.kernel.integration - INFO - System hooks removed
+2025-07-28 19:25:23,717 - src.kernel.integration - INFO - Kernel Manager shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown kernel_manager
+2025-07-28 19:25:23,717 - src.monitoring.security_monitor - INFO - Shutting down Security Monitor...
+2025-07-28 19:25:23,717 - src.monitoring.security_monitor - INFO - Security Monitor shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown security_monitor
+2025-07-28 19:25:23,717 - src.monitoring.system_monitor - INFO - Shutting down System Monitor...
+2025-07-28 19:25:23,717 - src.monitoring.system_monitor - INFO - System Monitor shutdown complete
+2025-07-28 19:25:23,717 - __main__ - INFO - Shutdown system_monitor
+2025-07-28 19:25:23,717 - __main__ - INFO - AI System shutdown complete
+2025-07-28 19:26:54,795 - __main__ - INFO - Starting AI System...
+2025-07-28 19:26:54,795 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 19:26:54,795 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 19:26:54,795 - __main__ - INFO - Initializing AI System components...
+2025-07-28 19:26:54,795 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 19:26:54,795 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 19:26:54,795 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 19:26:54,795 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 19:26:54,795 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 19:26:54,795 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 19:26:54,795 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 19:26:54,795 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 19:26:54,795 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 19:26:54,795 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 19:26:54,796 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 19:26:54,796 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 19:26:54,796 - src.sensors.fusion - INFO - Loaded calibration data for 0 sensors
+2025-07-28 19:26:54,796 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 19:26:54,796 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 19:26:54,796 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 19:26:54,796 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 19:26:54,796 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 19:26:54,796 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 19:26:54,796 - src.ai.rag_engine - INFO - Loaded 0 documents from index
+2025-07-28 19:26:54,796 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 19:26:54,796 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 19:26:54,796 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 19:26:54,796 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 19:26:54,796 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 19:26:57,795 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 19:26:57,796 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 19:26:57,796 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 19:26:57,796 - src.agents.research_agent - INFO - Research Agent initialized
+2025-07-28 19:26:57,796 - src.agents.orchestration_agent - INFO - Orchestration Agent initialized
+2025-07-28 19:26:57,796 - src.core.orchestrator - INFO - System Orchestrator initialized
+2025-07-28 19:26:57,796 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 19:26:57,796 - src.ui.voice_interface - INFO - Voice Interface initialized
+2025-07-28 19:26:57,796 - __main__ - INFO - All components initialized successfully
+2025-07-28 19:26:57,796 - __main__ - INFO - Starting AI System...
+2025-07-28 19:26:57,796 - src.monitoring.system_monitor - INFO - Starting System Monitor...
+2025-07-28 19:26:57,796 - src.monitoring.system_monitor - INFO - System Monitor started successfully
+2025-07-28 19:26:57,796 - src.monitoring.security_monitor - INFO - Starting Security Monitor...
+2025-07-28 19:26:57,796 - src.monitoring.security_monitor - INFO - Security Monitor started successfully
+2025-07-28 19:26:57,796 - src.kernel.integration - INFO - Starting Kernel Manager...
+2025-07-28 19:26:57,796 - src.kernel.integration - INFO - Kernel Manager started successfully
+2025-07-28 19:26:57,796 - src.sensors.fusion - INFO - Starting Sensor Fusion Manager...
+2025-07-28 19:26:57,796 - src.sensors.fusion - INFO - Sensor Fusion Manager started successfully
+2025-07-28 19:26:57,796 - src.ai.rag_engine - INFO - Starting RAG Engine...
+2025-07-28 19:26:57,796 - src.ai.rag_engine - INFO - RAG Engine started successfully
+2025-07-28 19:26:57,796 - src.ai.speculative_decoder - INFO - Starting Speculative Decoder...
+2025-07-28 19:26:57,796 - src.ai.speculative_decoder - INFO - Speculative Decoder started successfully
+2025-07-28 19:26:57,796 - src.agents.triage_agent - INFO - Starting Triage Agent...
+2025-07-28 19:26:57,796 - src.agents.triage_agent - INFO - Triage Agent started successfully
+2025-07-28 19:26:57,796 - src.agents.research_agent - INFO - Starting Research Agent...
+2025-07-28 19:26:57,796 - src.agents.research_agent - INFO - Research Agent started successfully
+2025-07-28 19:26:57,797 - src.agents.orchestration_agent - INFO - Starting Orchestration Agent...
+2025-07-28 19:26:57,797 - src.agents.orchestration_agent - INFO - Orchestration Agent started successfully
+2025-07-28 19:26:57,797 - src.core.orchestrator - INFO - Starting System Orchestrator...
+2025-07-28 19:26:57,797 - src.core.orchestrator - INFO - System Orchestrator started successfully
+2025-07-28 19:26:57,797 - src.ui.dashboard - WARNING - aiohttp not available, dashboard server disabled
+2025-07-28 19:26:57,797 - src.ui.voice_interface - INFO - Starting Voice Interface...
+2025-07-28 19:26:57,797 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface activated. Say 'Hey System' to begin.
+2025-07-28 19:26:57,797 - src.ui.voice_interface - INFO - Voice Interface started successfully
+2025-07-28 19:26:57,798 - __main__ - INFO - AI System started successfully
+2025-07-28 19:26:57,798 - src.monitoring.system_monitor - INFO - System Monitor Performance - Uptime: 0.0s, Cycles: 1, Avg Cycle Time: 0.000s, Active Alerts: 0
+2025-07-28 19:26:57,798 - src.monitoring.system_monitor - INFO - Cleaned up old metrics data
+2025-07-28 19:26:57,798 - src.monitoring.security_monitor - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:26:57,798 - src.monitoring.security_monitor - WARNING - psutil not available, network monitoring disabled
+2025-07-28 19:26:57,798 - src.monitoring.security_monitor - WARNING - psutil not available, malware scanning disabled
+2025-07-28 19:26:57,798 - src.kernel.integration - WARNING - psutil not available, system monitoring disabled
+2025-07-28 19:26:57,798 - src.kernel.integration - WARNING - psutil not available, resource monitoring disabled
+2025-07-28 19:26:57,798 - src.kernel.integration - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:26:57,798 - src.kernel.integration - WARNING - psutil not available, security monitoring disabled
+2025-07-28 19:26:57,798 - src.ai.rag_engine - ERROR - Error in index optimization: 'NoneType' object has no attribute 'persist'
+2025-07-28 19:26:57,798 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:26:57,798 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:26:58,799 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:26:58,799 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:26:59,800 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:26:59,800 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:27:00,801 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:27:00,801 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:27:01,802 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:27:01,802 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:27:02,802 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:27:02,803 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:27:03,803 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:27:03,804 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:27:04,711 - __main__ - INFO - Received signal 15
+2025-07-28 19:27:04,712 - __main__ - INFO - Shutting down AI System...
+2025-07-28 19:27:04,712 - src.ui.voice_interface - INFO - Shutting down Voice Interface...
+2025-07-28 19:27:04,712 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface shutting down.
+2025-07-28 19:27:04,712 - src.ui.voice_interface - INFO - Voice Interface shutdown complete
+2025-07-28 19:27:04,712 - __main__ - INFO - Shutdown voice_interface
+2025-07-28 19:27:04,712 - src.ui.dashboard - INFO - Shutting down Dashboard Server...
+2025-07-28 19:27:04,713 - __main__ - ERROR - Error shutting down dashboard: 'DashboardServer' object has no attribute 'websocket_connections'
+2025-07-28 19:27:04,713 - src.core.orchestrator - INFO - Shutting down System Orchestrator...
+2025-07-28 19:27:04,713 - src.core.orchestrator - INFO - System Orchestrator shutdown complete
+2025-07-28 19:27:04,713 - __main__ - INFO - Shutdown orchestrator
+2025-07-28 19:27:04,713 - src.agents.orchestration_agent - INFO - Shutting down Orchestration Agent...
+2025-07-28 19:27:04,713 - src.agents.orchestration_agent - INFO - Orchestration Agent shutdown complete
+2025-07-28 19:27:04,713 - __main__ - INFO - Shutdown orchestration_agent
+2025-07-28 19:27:04,713 - src.agents.research_agent - INFO - Shutting down Research Agent...
+2025-07-28 19:27:04,713 - src.agents.research_agent - INFO - Research Agent shutdown complete
+2025-07-28 19:27:04,713 - __main__ - INFO - Shutdown research_agent
+2025-07-28 19:27:04,713 - src.agents.triage_agent - INFO - Shutting down Triage Agent...
+2025-07-28 19:27:04,713 - src.agents.triage_agent - INFO - Saved learned patterns to file
+2025-07-28 19:27:04,713 - src.agents.triage_agent - INFO - Triage Agent shutdown complete
+2025-07-28 19:27:04,713 - __main__ - INFO - Shutdown triage_agent
+2025-07-28 19:27:04,713 - src.ai.speculative_decoder - INFO - Shutting down Speculative Decoder...
+2025-07-28 19:27:04,713 - src.ai.speculative_decoder - INFO - Speculative Decoder shutdown complete
+2025-07-28 19:27:04,713 - __main__ - INFO - Shutdown speculative_decoder
+2025-07-28 19:27:04,713 - src.ai.rag_engine - INFO - Shutting down RAG Engine...
+2025-07-28 19:27:04,713 - src.ai.rag_engine - INFO - Query cache saved
+2025-07-28 19:27:04,713 - src.ai.rag_engine - INFO - Document index saved
+2025-07-28 19:27:04,713 - src.ai.rag_engine - INFO - RAG Engine shutdown complete
+2025-07-28 19:27:04,713 - __main__ - INFO - Shutdown rag_engine
+2025-07-28 19:27:04,713 - src.sensors.fusion - INFO - Shutting down Sensor Fusion Manager...
+2025-07-28 19:27:04,714 - src.sensors.fusion - INFO - Saved calibration data for 0 sensors
+2025-07-28 19:27:04,714 - src.sensors.fusion - INFO - Sensor Fusion Manager shutdown complete
+2025-07-28 19:27:04,714 - __main__ - INFO - Shutdown sensor_fusion
+2025-07-28 19:27:04,714 - src.kernel.integration - INFO - Shutting down Kernel Manager...
+2025-07-28 19:27:04,714 - src.kernel.integration - INFO - System hooks removed
+2025-07-28 19:27:04,714 - src.kernel.integration - INFO - Kernel Manager shutdown complete
+2025-07-28 19:27:04,714 - __main__ - INFO - Shutdown kernel_manager
+2025-07-28 19:27:04,714 - src.monitoring.security_monitor - INFO - Shutting down Security Monitor...
+2025-07-28 19:27:04,714 - src.monitoring.security_monitor - INFO - Security Monitor shutdown complete
+2025-07-28 19:27:04,714 - __main__ - INFO - Shutdown security_monitor
+2025-07-28 19:27:04,714 - src.monitoring.system_monitor - INFO - Shutting down System Monitor...
+2025-07-28 19:27:04,714 - src.monitoring.system_monitor - INFO - System Monitor shutdown complete
+2025-07-28 19:27:04,714 - __main__ - INFO - Shutdown system_monitor
+2025-07-28 19:27:04,714 - __main__ - INFO - AI System shutdown complete
+2025-07-28 19:27:32,692 - __main__ - INFO - Starting AI System...
+2025-07-28 19:27:32,693 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 19:27:32,693 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 19:27:32,693 - __main__ - INFO - Initializing AI System components...
+2025-07-28 19:27:32,693 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 19:27:32,693 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 19:27:32,693 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 19:27:32,693 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 19:27:32,693 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 19:27:32,693 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 19:27:32,693 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 19:27:32,693 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 19:27:32,693 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 19:27:32,693 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 19:27:32,693 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 19:27:32,693 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 19:27:32,694 - src.sensors.fusion - INFO - Loaded calibration data for 0 sensors
+2025-07-28 19:27:32,694 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 19:27:32,694 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 19:27:32,694 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 19:27:32,694 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 19:27:32,694 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 19:27:32,694 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 19:27:32,694 - src.ai.rag_engine - INFO - Loaded 0 documents from index
+2025-07-28 19:27:32,694 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 19:27:32,694 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 19:27:32,694 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 19:27:32,694 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 19:27:32,694 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 19:27:35,656 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 19:27:35,656 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 19:27:35,656 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 19:27:35,656 - src.agents.research_agent - INFO - Research Agent initialized
+2025-07-28 19:27:35,656 - src.agents.orchestration_agent - INFO - Orchestration Agent initialized
+2025-07-28 19:27:35,656 - src.core.orchestrator - INFO - System Orchestrator initialized
+2025-07-28 19:27:35,656 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 19:27:35,656 - src.ui.voice_interface - INFO - Voice Interface initialized
+2025-07-28 19:27:35,657 - __main__ - INFO - All components initialized successfully
+2025-07-28 19:27:35,657 - __main__ - INFO - Starting AI System...
+2025-07-28 19:27:35,657 - src.monitoring.system_monitor - INFO - Starting System Monitor...
+2025-07-28 19:27:35,657 - src.monitoring.system_monitor - INFO - System Monitor started successfully
+2025-07-28 19:27:35,657 - src.monitoring.security_monitor - INFO - Starting Security Monitor...
+2025-07-28 19:27:35,657 - src.monitoring.security_monitor - INFO - Security Monitor started successfully
+2025-07-28 19:27:35,657 - src.kernel.integration - INFO - Starting Kernel Manager...
+2025-07-28 19:27:35,657 - src.kernel.integration - INFO - Kernel Manager started successfully
+2025-07-28 19:27:35,657 - src.sensors.fusion - INFO - Starting Sensor Fusion Manager...
+2025-07-28 19:27:35,657 - src.sensors.fusion - INFO - Sensor Fusion Manager started successfully
+2025-07-28 19:27:35,657 - src.ai.rag_engine - INFO - Starting RAG Engine...
+2025-07-28 19:27:35,657 - src.ai.rag_engine - INFO - RAG Engine started successfully
+2025-07-28 19:27:35,657 - src.ai.speculative_decoder - INFO - Starting Speculative Decoder...
+2025-07-28 19:27:35,657 - src.ai.speculative_decoder - INFO - Speculative Decoder started successfully
+2025-07-28 19:27:35,657 - src.agents.triage_agent - INFO - Starting Triage Agent...
+2025-07-28 19:27:35,657 - src.agents.triage_agent - INFO - Triage Agent started successfully
+2025-07-28 19:27:35,657 - src.agents.research_agent - INFO - Starting Research Agent...
+2025-07-28 19:27:35,657 - src.agents.research_agent - INFO - Research Agent started successfully
+2025-07-28 19:27:35,657 - src.agents.orchestration_agent - INFO - Starting Orchestration Agent...
+2025-07-28 19:27:35,657 - src.agents.orchestration_agent - INFO - Orchestration Agent started successfully
+2025-07-28 19:27:35,657 - src.core.orchestrator - INFO - Starting System Orchestrator...
+2025-07-28 19:27:35,657 - src.core.orchestrator - INFO - System Orchestrator started successfully
+2025-07-28 19:27:35,657 - src.ui.dashboard - WARNING - aiohttp not available, dashboard server disabled
+2025-07-28 19:27:35,657 - src.ui.voice_interface - INFO - Starting Voice Interface...
+2025-07-28 19:27:35,658 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface activated. Say 'Hey System' to begin.
+2025-07-28 19:27:35,658 - src.ui.voice_interface - INFO - Voice Interface started successfully
+2025-07-28 19:27:35,658 - __main__ - INFO - AI System started successfully
+2025-07-28 19:27:35,658 - src.monitoring.system_monitor - INFO - System Monitor Performance - Uptime: 0.0s, Cycles: 1, Avg Cycle Time: 0.000s, Active Alerts: 0
+2025-07-28 19:27:35,658 - src.monitoring.system_monitor - INFO - Cleaned up old metrics data
+2025-07-28 19:27:35,658 - src.monitoring.security_monitor - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:27:35,658 - src.monitoring.security_monitor - WARNING - psutil not available, network monitoring disabled
+2025-07-28 19:27:35,658 - src.monitoring.security_monitor - WARNING - psutil not available, malware scanning disabled
+2025-07-28 19:27:35,658 - src.kernel.integration - WARNING - psutil not available, system monitoring disabled
+2025-07-28 19:27:35,658 - src.kernel.integration - WARNING - psutil not available, resource monitoring disabled
+2025-07-28 19:27:35,658 - src.kernel.integration - WARNING - psutil not available, process monitoring disabled
+2025-07-28 19:27:35,658 - src.kernel.integration - WARNING - psutil not available, security monitoring disabled
+2025-07-28 19:27:35,659 - src.ai.rag_engine - ERROR - Error in index optimization: 'NoneType' object has no attribute 'persist'
+2025-07-28 19:27:35,659 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:27:35,659 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:27:36,659 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 19:27:36,659 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 19:27:37,624 - __main__ - INFO - Received signal 15
+2025-07-28 19:27:37,624 - __main__ - INFO - Shutting down AI System...
+2025-07-28 19:27:37,624 - src.ui.voice_interface - INFO - Shutting down Voice Interface...
+2025-07-28 19:27:37,624 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface shutting down.
+2025-07-28 19:27:37,625 - src.ui.voice_interface - INFO - Voice Interface shutdown complete
+2025-07-28 19:27:37,625 - __main__ - INFO - Shutdown voice_interface
+2025-07-28 19:27:37,625 - src.ui.dashboard - INFO - Shutting down Dashboard Server...
+2025-07-28 19:27:37,625 - src.ui.dashboard - INFO - Dashboard Server shutdown complete
+2025-07-28 19:27:37,625 - __main__ - INFO - Shutdown dashboard
+2025-07-28 19:27:37,625 - src.core.orchestrator - INFO - Shutting down System Orchestrator...
+2025-07-28 19:27:37,625 - src.core.orchestrator - INFO - System Orchestrator shutdown complete
+2025-07-28 19:27:37,625 - __main__ - INFO - Shutdown orchestrator
+2025-07-28 19:27:37,625 - src.agents.orchestration_agent - INFO - Shutting down Orchestration Agent...
+2025-07-28 19:27:37,625 - src.agents.orchestration_agent - INFO - Orchestration Agent shutdown complete
+2025-07-28 19:27:37,625 - __main__ - INFO - Shutdown orchestration_agent
+2025-07-28 19:27:37,625 - src.agents.research_agent - INFO - Shutting down Research Agent...
+2025-07-28 19:27:37,625 - src.agents.research_agent - INFO - Research Agent shutdown complete
+2025-07-28 19:27:37,625 - __main__ - INFO - Shutdown research_agent
+2025-07-28 19:27:37,625 - src.agents.triage_agent - INFO - Shutting down Triage Agent...
+2025-07-28 19:27:37,625 - src.agents.triage_agent - INFO - Saved learned patterns to file
+2025-07-28 19:27:37,625 - src.agents.triage_agent - INFO - Triage Agent shutdown complete
+2025-07-28 19:27:37,625 - __main__ - INFO - Shutdown triage_agent
+2025-07-28 19:27:37,625 - src.ai.speculative_decoder - INFO - Shutting down Speculative Decoder...
+2025-07-28 19:27:37,626 - src.ai.speculative_decoder - INFO - Speculative Decoder shutdown complete
+2025-07-28 19:27:37,626 - __main__ - INFO - Shutdown speculative_decoder
+2025-07-28 19:27:37,626 - src.ai.rag_engine - INFO - Shutting down RAG Engine...
+2025-07-28 19:27:37,626 - src.ai.rag_engine - INFO - Query cache saved
+2025-07-28 19:27:37,626 - src.ai.rag_engine - INFO - Document index saved
+2025-07-28 19:27:37,626 - src.ai.rag_engine - INFO - RAG Engine shutdown complete
+2025-07-28 19:27:37,626 - __main__ - INFO - Shutdown rag_engine
+2025-07-28 19:27:37,626 - src.sensors.fusion - INFO - Shutting down Sensor Fusion Manager...
+2025-07-28 19:27:37,626 - src.sensors.fusion - INFO - Saved calibration data for 0 sensors
+2025-07-28 19:27:37,626 - src.sensors.fusion - INFO - Sensor Fusion Manager shutdown complete
+2025-07-28 19:27:37,626 - __main__ - INFO - Shutdown sensor_fusion
+2025-07-28 19:27:37,626 - src.kernel.integration - INFO - Shutting down Kernel Manager...
+2025-07-28 19:27:37,626 - src.kernel.integration - INFO - System hooks removed
+2025-07-28 19:27:37,626 - src.kernel.integration - INFO - Kernel Manager shutdown complete
+2025-07-28 19:27:37,626 - __main__ - INFO - Shutdown kernel_manager
+2025-07-28 19:27:37,626 - src.monitoring.security_monitor - INFO - Shutting down Security Monitor...
+2025-07-28 19:27:37,626 - src.monitoring.security_monitor - INFO - Security Monitor shutdown complete
+2025-07-28 19:27:37,626 - __main__ - INFO - Shutdown security_monitor
+2025-07-28 19:27:37,626 - src.monitoring.system_monitor - INFO - Shutting down System Monitor...
+2025-07-28 19:27:37,626 - src.monitoring.system_monitor - INFO - System Monitor shutdown complete
+2025-07-28 19:27:37,626 - __main__ - INFO - Shutdown system_monitor
+2025-07-28 19:27:37,626 - __main__ - INFO - AI System shutdown complete
+2025-07-28 22:14:03,923 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 22:14:03,923 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 22:14:03,935 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 22:14:03,935 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 22:14:03,935 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 22:14:07,895 - __main__ - INFO - Starting AI System...
+2025-07-28 22:14:07,895 - src.core.config - INFO - Configuration loaded from config/system_config.json
+2025-07-28 22:14:07,896 - src.core.config - WARNING - Cryptography library not available, encryption disabled
+2025-07-28 22:14:07,896 - __main__ - INFO - Initializing AI System components...
+2025-07-28 22:14:07,896 - src.monitoring.system_monitor - INFO - System Monitor initialized
+2025-07-28 22:14:07,896 - src.monitoring.security_monitor - INFO - Security Monitor initialized
+2025-07-28 22:14:07,896 - src.kernel.integration - INFO - Kernel Manager initialized for linux (x86_64)
+2025-07-28 22:14:07,896 - src.kernel.integration - INFO - Initializing Kernel Manager...
+2025-07-28 22:14:07,896 - src.kernel.integration - INFO - Initializing system monitoring...
+2025-07-28 22:14:07,896 - src.kernel.integration - WARNING - Not running with admin privileges - limited kernel access
+2025-07-28 22:14:07,896 - src.kernel.integration - INFO - System hooks setup complete
+2025-07-28 22:14:07,896 - src.kernel.integration - INFO - Kernel Manager initialized successfully
+2025-07-28 22:14:07,896 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized
+2025-07-28 22:14:07,896 - src.sensors.fusion - INFO - Initializing Sensor Fusion Manager...
+2025-07-28 22:14:07,897 - src.sensors.fusion - WARNING - GPUtil not available, skipping GPU sensors
+2025-07-28 22:14:07,897 - src.sensors.fusion - INFO - Initialized 3 sensors
+2025-07-28 22:14:07,897 - src.sensors.fusion - INFO - Loaded calibration data for 0 sensors
+2025-07-28 22:14:07,897 - src.sensors.fusion - INFO - Sensor Fusion Manager initialized successfully
+2025-07-28 22:14:07,897 - src.ai.rag_engine - INFO - RAG Engine initialized
+2025-07-28 22:14:07,897 - src.ai.rag_engine - INFO - Initializing RAG Engine...
+2025-07-28 22:14:07,897 - src.ai.rag_engine - WARNING - ChromaDB not available - vector database disabled
+2025-07-28 22:14:07,897 - src.ai.rag_engine - WARNING - SentenceTransformers not available - embedding disabled
+2025-07-28 22:14:07,897 - src.ai.rag_engine - WARNING - Langchain not available - text splitting disabled
+2025-07-28 22:14:07,897 - src.ai.rag_engine - INFO - Loaded 0 documents from index
+2025-07-28 22:14:07,897 - src.ai.rag_engine - WARNING - OpenAI library not available - generation features disabled
+2025-07-28 22:14:07,897 - src.ai.rag_engine - INFO - RAG Engine initialized successfully
+2025-07-28 22:14:07,897 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized
+2025-07-28 22:14:07,897 - src.ai.speculative_decoder - INFO - Initializing Speculative Decoder...
+2025-07-28 22:14:07,897 - src.ai.speculative_decoder - WARNING - Transformers not available - model loading disabled
+2025-07-28 22:14:11,324 - src.ai.speculative_decoder - INFO - Speculation mechanisms initialized
+2025-07-28 22:14:11,324 - src.ai.speculative_decoder - INFO - Speculative Decoder initialized successfully
+2025-07-28 22:14:11,324 - src.agents.triage_agent - INFO - Triage Agent initialized
+2025-07-28 22:14:11,324 - src.agents.research_agent - INFO - Research Agent initialized
+2025-07-28 22:14:11,324 - src.agents.orchestration_agent - INFO - Orchestration Agent initialized
+2025-07-28 22:14:11,324 - src.core.orchestrator - INFO - System Orchestrator initialized
+2025-07-28 22:14:11,324 - src.ui.dashboard - WARNING - aiohttp not available, dashboard will be disabled
+2025-07-28 22:14:11,325 - src.ui.voice_interface - INFO - Voice Interface initialized
+2025-07-28 22:14:11,325 - __main__ - INFO - All components initialized successfully
+2025-07-28 22:14:11,325 - __main__ - INFO - Starting AI System...
+2025-07-28 22:14:11,325 - src.monitoring.system_monitor - INFO - Starting System Monitor...
+2025-07-28 22:14:11,325 - src.monitoring.system_monitor - INFO - System Monitor started successfully
+2025-07-28 22:14:11,325 - src.monitoring.security_monitor - INFO - Starting Security Monitor...
+2025-07-28 22:14:11,325 - src.monitoring.security_monitor - INFO - Security Monitor started successfully
+2025-07-28 22:14:11,325 - src.kernel.integration - INFO - Starting Kernel Manager...
+2025-07-28 22:14:11,325 - src.kernel.integration - INFO - Kernel Manager started successfully
+2025-07-28 22:14:11,325 - src.sensors.fusion - INFO - Starting Sensor Fusion Manager...
+2025-07-28 22:14:11,325 - src.sensors.fusion - INFO - Sensor Fusion Manager started successfully
+2025-07-28 22:14:11,325 - src.ai.rag_engine - INFO - Starting RAG Engine...
+2025-07-28 22:14:11,325 - src.ai.rag_engine - INFO - RAG Engine started successfully
+2025-07-28 22:14:11,325 - src.ai.speculative_decoder - INFO - Starting Speculative Decoder...
+2025-07-28 22:14:11,325 - src.ai.speculative_decoder - INFO - Speculative Decoder started successfully
+2025-07-28 22:14:11,325 - src.agents.triage_agent - INFO - Starting Triage Agent...
+2025-07-28 22:14:11,325 - src.agents.triage_agent - INFO - Triage Agent started successfully
+2025-07-28 22:14:11,325 - src.agents.research_agent - INFO - Starting Research Agent...
+2025-07-28 22:14:11,325 - src.agents.research_agent - INFO - Research Agent started successfully
+2025-07-28 22:14:11,325 - src.agents.orchestration_agent - INFO - Starting Orchestration Agent...
+2025-07-28 22:14:11,325 - src.agents.orchestration_agent - INFO - Orchestration Agent started successfully
+2025-07-28 22:14:11,325 - src.core.orchestrator - INFO - Starting System Orchestrator...
+2025-07-28 22:14:11,325 - src.core.orchestrator - INFO - System Orchestrator started successfully
+2025-07-28 22:14:11,326 - src.ui.dashboard - WARNING - aiohttp not available, dashboard server disabled
+2025-07-28 22:14:11,326 - src.ui.voice_interface - INFO - Starting Voice Interface...
+2025-07-28 22:14:11,326 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface activated. Say 'Hey System' to begin.
+2025-07-28 22:14:11,327 - src.ui.voice_interface - INFO - Voice Interface started successfully
+2025-07-28 22:14:11,327 - __main__ - INFO - AI System started successfully
+2025-07-28 22:14:11,327 - src.monitoring.system_monitor - INFO - System Monitor Performance - Uptime: 0.0s, Cycles: 1, Avg Cycle Time: 0.000s, Active Alerts: 0
+2025-07-28 22:14:11,327 - src.monitoring.system_monitor - INFO - Cleaned up old metrics data
+2025-07-28 22:14:11,327 - src.monitoring.security_monitor - WARNING - psutil not available, process monitoring disabled
+2025-07-28 22:14:11,327 - src.monitoring.security_monitor - WARNING - psutil not available, network monitoring disabled
+2025-07-28 22:14:11,327 - src.monitoring.security_monitor - WARNING - psutil not available, malware scanning disabled
+2025-07-28 22:14:11,327 - src.kernel.integration - WARNING - psutil not available, system monitoring disabled
+2025-07-28 22:14:11,327 - src.kernel.integration - WARNING - psutil not available, resource monitoring disabled
+2025-07-28 22:14:11,327 - src.kernel.integration - WARNING - psutil not available, process monitoring disabled
+2025-07-28 22:14:11,327 - src.kernel.integration - WARNING - psutil not available, security monitoring disabled
+2025-07-28 22:14:11,328 - src.ai.rag_engine - ERROR - Error in index optimization: 'NoneType' object has no attribute 'persist'
+2025-07-28 22:14:11,328 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 22:14:11,328 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 22:14:12,328 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 22:14:12,328 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 22:14:13,329 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 22:14:13,329 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 22:14:14,330 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 22:14:14,330 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 22:14:15,331 - src.core.orchestrator - ERROR - Health check failed for system_monitor: 'system_monitor'
+2025-07-28 22:14:15,331 - src.core.orchestrator - ERROR - Error in health checker: 'system_monitor'
+2025-07-28 22:14:15,815 - __main__ - INFO - Received signal 15
+2025-07-28 22:14:15,815 - __main__ - INFO - Shutting down AI System...
+2025-07-28 22:14:15,816 - src.ui.voice_interface - INFO - Shutting down Voice Interface...
+2025-07-28 22:14:15,816 - src.ui.voice_interface - WARNING - Text-to-speech not available, cannot speak: Voice interface shutting down.
+2025-07-28 22:14:15,816 - src.ui.voice_interface - INFO - Voice Interface shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown voice_interface
+2025-07-28 22:14:15,817 - src.ui.dashboard - INFO - Shutting down Dashboard Server...
+2025-07-28 22:14:15,817 - src.ui.dashboard - INFO - Dashboard Server shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown dashboard
+2025-07-28 22:14:15,817 - src.core.orchestrator - INFO - Shutting down System Orchestrator...
+2025-07-28 22:14:15,817 - src.core.orchestrator - INFO - System Orchestrator shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown orchestrator
+2025-07-28 22:14:15,817 - src.agents.orchestration_agent - INFO - Shutting down Orchestration Agent...
+2025-07-28 22:14:15,817 - src.agents.orchestration_agent - INFO - Orchestration Agent shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown orchestration_agent
+2025-07-28 22:14:15,817 - src.agents.research_agent - INFO - Shutting down Research Agent...
+2025-07-28 22:14:15,817 - src.agents.research_agent - INFO - Research Agent shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown research_agent
+2025-07-28 22:14:15,817 - src.agents.triage_agent - INFO - Shutting down Triage Agent...
+2025-07-28 22:14:15,817 - src.agents.triage_agent - INFO - Saved learned patterns to file
+2025-07-28 22:14:15,817 - src.agents.triage_agent - INFO - Triage Agent shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown triage_agent
+2025-07-28 22:14:15,817 - src.ai.speculative_decoder - INFO - Shutting down Speculative Decoder...
+2025-07-28 22:14:15,817 - src.ai.speculative_decoder - INFO - Speculative Decoder shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown speculative_decoder
+2025-07-28 22:14:15,817 - src.ai.rag_engine - INFO - Shutting down RAG Engine...
+2025-07-28 22:14:15,817 - src.ai.rag_engine - INFO - Query cache saved
+2025-07-28 22:14:15,817 - src.ai.rag_engine - INFO - Document index saved
+2025-07-28 22:14:15,817 - src.ai.rag_engine - INFO - RAG Engine shutdown complete
+2025-07-28 22:14:15,817 - __main__ - INFO - Shutdown rag_engine
+2025-07-28 22:14:15,818 - src.sensors.fusion - INFO - Shutting down Sensor Fusion Manager...
+2025-07-28 22:14:15,818 - src.sensors.fusion - INFO - Saved calibration data for 0 sensors
+2025-07-28 22:14:15,818 - src.sensors.fusion - INFO - Sensor Fusion Manager shutdown complete
+2025-07-28 22:14:15,818 - __main__ - INFO - Shutdown sensor_fusion
+2025-07-28 22:14:15,818 - src.kernel.integration - INFO - Shutting down Kernel Manager...
+2025-07-28 22:14:15,818 - src.kernel.integration - INFO - System hooks removed
+2025-07-28 22:14:15,818 - src.kernel.integration - INFO - Kernel Manager shutdown complete
+2025-07-28 22:14:15,818 - __main__ - INFO - Shutdown kernel_manager
+2025-07-28 22:14:15,818 - src.monitoring.security_monitor - INFO - Shutting down Security Monitor...
+2025-07-28 22:14:15,818 - src.monitoring.security_monitor - ERROR - Error saving security data: name 'Path' is not defined
+2025-07-28 22:14:15,818 - src.monitoring.security_monitor - INFO - Security Monitor shutdown complete
+2025-07-28 22:14:15,818 - __main__ - INFO - Shutdown security_monitor
+2025-07-28 22:14:15,818 - src.monitoring.system_monitor - INFO - Shutting down System Monitor...
+2025-07-28 22:14:15,818 - src.monitoring.system_monitor - ERROR - Error saving monitoring data: name 'Path' is not defined
+2025-07-28 22:14:15,818 - src.monitoring.system_monitor - INFO - System Monitor shutdown complete
+2025-07-28 22:14:15,818 - __main__ - INFO - Shutdown system_monitor
+2025-07-28 22:14:15,818 - __main__ - INFO - AI System shutdown complete

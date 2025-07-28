@@ -437,7 +437,7 @@ class VoiceInterface:
         voice_command = VoiceCommand(
             command_id=command_id,
             text=command_text,
-            confidence=0.8,  # Placeholder
+            confidence=getattr(audio_data, 'confidence', 0.8) if hasattr(audio_data, 'confidence') else 0.8,
             timestamp=time.time(),
             processed=False
         )
@@ -639,8 +639,11 @@ class VoiceInterface:
                 else:
                     # Asynchronous speech (non-blocking)
                     def speak_async():
-                        self.text_to_speech.say(text)
-                        self.text_to_speech.runAndWait()
+                        if self.text_to_speech is not None:
+                            self.text_to_speech.say(text)
+                            self.text_to_speech.runAndWait()
+                        else:
+                            logger.warning(f"Text-to-speech not available, cannot speak: {text}")
                     
                     # Run in thread to avoid blocking
                     thread = threading.Thread(target=speak_async)

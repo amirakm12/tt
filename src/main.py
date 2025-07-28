@@ -10,22 +10,44 @@ import signal
 import sys
 from pathlib import Path
 from typing import Dict, Any
-import uvloop
 
-# Import core system components
-from .core.orchestrator import SystemOrchestrator
-from .core.config import SystemConfig
-from .kernel.integration import KernelManager
-from .sensors.fusion import SensorFusionManager
-from .ai.rag_engine import RAGEngine
-from .ai.speculative_decoder import SpeculativeDecoder
-from .agents.triage_agent import TriageAgent
-from .agents.research_agent import ResearchAgent
-from .agents.orchestration_agent import OrchestrationAgent
-from .ui.dashboard import DashboardServer
-from .ui.voice_interface import VoiceInterface
-from .monitoring.system_monitor import SystemMonitor
-from .monitoring.security_monitor import SecurityMonitor
+# Add the src directory to Python path for direct execution
+if __name__ == "__main__":
+    sys.path.insert(0, str(Path(__file__).parent.parent))
+
+try:
+    import uvloop
+    UVLOOP_AVAILABLE = True
+except ImportError:
+    UVLOOP_AVAILABLE = False
+
+# Import core system components - handle both relative and absolute imports
+try:
+    from .core.orchestrator import SystemOrchestrator
+    from .core.config import SystemConfig
+    from .kernel.integration import KernelManager
+    from .sensors.fusion import SensorFusionManager
+    from .ai.rag_engine import RAGEngine
+    from .ai.speculative_decoder import SpeculativeDecoder
+    from .agents.triage_agent import TriageAgent
+    from .agents.research_agent import ResearchAgent
+    from .agents.orchestration_agent import OrchestrationAgent
+    from .ui.dashboard import DashboardServer
+    from .ui.voice_interface import VoiceInterface
+except ImportError:
+    from src.core.orchestrator import SystemOrchestrator
+    from src.core.config import SystemConfig
+    from src.kernel.integration import KernelManager
+    from src.sensors.fusion import SensorFusionManager
+    from src.ai.rag_engine import RAGEngine
+    from src.ai.speculative_decoder import SpeculativeDecoder
+    from src.agents.triage_agent import TriageAgent
+    from src.agents.research_agent import ResearchAgent
+    from src.agents.orchestration_agent import OrchestrationAgent
+    from src.ui.dashboard import DashboardServer
+    from src.ui.voice_interface import VoiceInterface
+    from src.monitoring.system_monitor import SystemMonitor
+    from src.monitoring.security_monitor import SecurityMonitor
 
 # Configure logging
 logging.basicConfig(
@@ -234,7 +256,7 @@ async def main():
     logger.info("Starting AI System...")
     
     # Use uvloop for better performance
-    if sys.platform != 'win32':
+    if UVLOOP_AVAILABLE and sys.platform != 'win32':
         uvloop.install()
     
     # Create and initialize system
@@ -253,7 +275,7 @@ def run_system():
     """Entry point for running the AI system."""
     try:
         # Set up uvloop for better performance on Unix systems
-        if sys.platform != 'win32':
+        if UVLOOP_AVAILABLE and sys.platform != 'win32':
             asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
         
         asyncio.run(main())

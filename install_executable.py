@@ -41,7 +41,7 @@ class ExecutableInstaller:
         """Get the appropriate installation directory."""
         if self.system == "Windows":
             # Use user's AppData directory instead of Program Files to avoid permission issues
-            appdata = os.environ.get("LOCALAPPDATA", os.path.expanduser("~\\AppData\\Local"))
+            appdata = os.environ.get("LOCALAPPDATA", os.path.expanduser(r"~\AppData\Local"))
             return Path(appdata) / "AI-System"
         elif self.system == "Darwin":  # macOS
             return Path.home() / "Applications" / "AI-System"

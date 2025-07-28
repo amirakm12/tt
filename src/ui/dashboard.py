@@ -9,11 +9,37 @@ import json
 import time
 from typing import Dict, Any, Optional
 from pathlib import Path
-import aiohttp
-from aiohttp import web, WSMsgType
-import aiohttp_cors
-import jinja2
-import aiofiles
+
+try:
+    import aiohttp
+    from aiohttp import web, WSMsgType
+    AIOHTTP_AVAILABLE = True
+except ImportError:
+    AIOHTTP_AVAILABLE = False
+    aiohttp = None
+    web = None
+    WSMsgType = None
+
+try:
+    import aiohttp_cors
+    AIOHTTP_CORS_AVAILABLE = True
+except ImportError:
+    AIOHTTP_CORS_AVAILABLE = False
+    aiohttp_cors = None
+
+try:
+    import jinja2
+    JINJA2_AVAILABLE = True
+except ImportError:
+    JINJA2_AVAILABLE = False
+    jinja2 = None
+
+try:
+    import aiofiles
+    AIOFILES_AVAILABLE = True
+except ImportError:
+    AIOFILES_AVAILABLE = False
+    aiofiles = None
 
 from ..core.config import SystemConfig
 
@@ -22,13 +48,18 @@ logger = logging.getLogger(__name__)
 class DashboardServer:
     """Web dashboard server for system monitoring and control."""
     
-    def __init__(self, config: SystemConfig, orchestrator):
+    def __init__(self, config: SystemConfig, orchestrator=None):
         self.config = config
         self.orchestrator = orchestrator
         self.app = None
         self.runner = None
         self.site = None
         self.is_running = False
+        
+        # Check if required dependencies are available
+        if not AIOHTTP_AVAILABLE:
+            logger.warning("aiohttp not available, dashboard will be disabled")
+            return
         
         # WebSocket connections
         self.websocket_connections = set()
@@ -45,18 +76,36 @@ class DashboardServer:
         # Update interval
         self.update_interval = 5  # seconds
         
+        # Background tasks
+        self.background_tasks = {}
+        
         logger.info("Dashboard Server initialized")
     
     async def initialize(self):
         """Initialize the dashboard server."""
         logger.info("Initializing Dashboard Server...")
+    
+    def _safe_web_response(self, data=None, text=None, content_type='application/json', status=200):
+        """Safe web response that handles unavailable aiohttp."""
+        if not AIOHTTP_AVAILABLE:
+            return None
+        if data is not None:
+            return self._safe_web_response(data, status=status)
+        else:
+            return web.Response(text=text, content_type=content_type, status=status)
         
         try:
+            if not AIOHTTP_AVAILABLE:
+                logger.warning("aiohttp not available, dashboard initialization skipped")
+                self.app = None
+                return
+                
             # Create aiohttp application
             self.app = web.Application()
             
             # Setup CORS
-            cors = aiohttp_cors.setup(self.app, defaults={
+            if AIOHTTP_CORS_AVAILABLE:
+                cors = aiohttp_cors.setup(self.app, defaults={
                 "*": aiohttp_cors.ResourceOptions(
                     allow_credentials=True,
                     expose_headers="*",
@@ -66,17 +115,18 @@ class DashboardServer:
             })
             
             # Setup routes
-            await self._setup_routes()
+            self._setup_routes()
             
             # Setup static files
-            await self._setup_static_files()
+            self._setup_static_files()
             
             # Setup WebSocket endpoint
             self.app.router.add_get('/ws', self._websocket_handler)
             
             # Add CORS to all routes
-            for route in list(self.app.router.routes()):
-                cors.add(route)
+            if AIOHTTP_CORS_AVAILABLE:
+                for route in list(self.app.router.routes()):
+                    cors.add(route)
             
             logger.info("Dashboard Server initialized successfully")
             
@@ -86,9 +136,16 @@ class DashboardServer:
     
     async def start(self):
         """Start the dashboard server."""
+        if not AIOHTTP_AVAILABLE:
+            logger.warning("aiohttp not available, dashboard server disabled")
+            return
+            
         logger.info("Starting Dashboard Server...")
         
         try:
+            # Create dashboard template
+            await self._create_dashboard_template()
+            
             # Create runner
             self.runner = web.AppRunner(self.app)
             await self.runner.setup()
@@ -122,17 +179,19 @@ class DashboardServer:
         self.is_running = False
         
         # Cancel background tasks
-        for task_name, task in self.background_tasks.items():
-            if not task.done():
-                task.cancel()
-                try:
-                    await task
-                except asyncio.CancelledError:
-                    logger.info(f"Cancelled {task_name}")
+        if hasattr(self, 'background_tasks'):
+            for task_name, task in self.background_tasks.items():
+                if not task.done():
+                    task.cancel()
+                    try:
+                        await task
+                    except asyncio.CancelledError:
+                        logger.info(f"Cancelled {task_name}")
         
         # Close WebSocket connections
-        for ws in self.websocket_connections.copy():
-            await ws.close()
+        if hasattr(self, 'websocket_connections'):
+            for ws in self.websocket_connections.copy():
+                await ws.close()
         
         # Cleanup server
         if self.site:
@@ -142,7 +201,7 @@ class DashboardServer:
         
         logger.info("Dashboard Server shutdown complete")
     
-    async def _setup_routes(self):
+    def _setup_routes(self):
         """Setup HTTP routes."""
         # Main dashboard
         self.app.router.add_get('/', self._dashboard_handler)
@@ -164,14 +223,14 @@ class DashboardServer:
         # Health check
         self.app.router.add_get('/health', self._health_handler)
     
-    async def _setup_static_files(self):
+    def _setup_static_files(self):
         """Setup static file serving."""
         # Create static directory if it doesn't exist
         static_dir = Path("static")
         static_dir.mkdir(exist_ok=True)
         
         # Create basic HTML template
-        await self._create_dashboard_template()
+        # Note: Template creation moved to async initialization
         
         # Serve static files
         self.app.router.add_static('/static/', path=static_dir, name='static')
@@ -744,34 +803,34 @@ class DashboardServer:
         async with aiofiles.open(template_file, 'r') as f:
             content = await f.read()
         
-        return web.Response(text=content, content_type='text/html')
+        return self._safe_web_response(text=content, content_type='text/html')
     
     async def _api_status_handler(self, request):
         """API endpoint for system status."""
         try:
             status_data = await self._collect_dashboard_data()
-            return web.json_response(status_data)
+            return self._safe_web_response(status_data)
         except Exception as e:
             logger.error(f"Error in status API: {e}")
-            return web.json_response({'error': str(e)}, status=500)
+            return self._safe_web_response({'error': str(e)}, status=500)
     
     async def _api_system_handler(self, request):
         """API endpoint for system information."""
         try:
             system_data = self.orchestrator.get_system_status()
-            return web.json_response(system_data)
+            return self._safe_web_response(system_data)
         except Exception as e:
             logger.error(f"Error in system API: {e}")
-            return web.json_response({'error': str(e)}, status=500)
+            return self._safe_web_response({'error': str(e)}, status=500)
     
     async def _api_workflows_handler(self, request):
         """API endpoint for workflow information."""
         try:
             workflows_data = self.orchestrator.get_statistics()
-            return web.json_response(workflows_data)
+            return self._safe_web_response(workflows_data)
         except Exception as e:
             logger.error(f"Error in workflows API: {e}")
-            return web.json_response({'error': str(e)}, status=500)
+            return self._safe_web_response({'error': str(e)}, status=500)
     
     async def _api_agents_handler(self, request):
         """API endpoint for agent information."""
@@ -793,10 +852,10 @@ class DashboardServer:
                 else:
                     agents_data[agent_name] = 'not_available'
             
-            return web.json_response(agents_data)
+            return self._safe_web_response(agents_data)
         except Exception as e:
             logger.error(f"Error in agents API: {e}")
-            return web.json_response({'error': str(e)}, status=500)
+            return self._safe_web_response({'error': str(e)}, status=500)
     
     async def _api_monitoring_handler(self, request):
         """API endpoint for monitoring information."""
@@ -808,10 +867,10 @@ class DashboardServer:
                 system_monitor = self.orchestrator.components['system_monitor']
                 monitoring_data = system_monitor.get_system_status()
             
-            return web.json_response(monitoring_data)
+            return self._safe_web_response(monitoring_data)
         except Exception as e:
             logger.error(f"Error in monitoring API: {e}")
-            return web.json_response({'error': str(e)}, status=500)
+            return self._safe_web_response({'error': str(e)}, status=500)
     
     async def _api_security_handler(self, request):
         """API endpoint for security information."""
@@ -823,10 +882,10 @@ class DashboardServer:
                 security_monitor = self.orchestrator.components['security_monitor']
                 security_data = security_monitor.get_security_status()
             
-            return web.json_response(security_data)
+            return self._safe_web_response(security_data)
         except Exception as e:
             logger.error(f"Error in security API: {e}")
-            return web.json_response({'error': str(e)}, status=500)
+            return self._safe_web_response({'error': str(e)}, status=500)
     
     async def _api_workflow_start_handler(self, request):
         """API endpoint to start a workflow."""
@@ -837,14 +896,14 @@ class DashboardServer:
             
             execution = await self.orchestrator.orchestrate(workflow_name, parameters)
             
-            return web.json_response({
+            return self._safe_web_response({
                 'success': True,
                 'execution_id': execution.execution_id,
                 'workflow_id': execution.workflow_id
             })
         except Exception as e:
             logger.error(f"Error starting workflow: {e}")
-            return web.json_response({'success': False, 'error': str(e)}, status=500)
+            return self._safe_web_response({'success': False, 'error': str(e)}, status=500)
     
     async def _api_workflow_stop_handler(self, request):
         """API endpoint to stop a workflow."""
@@ -853,14 +912,14 @@ class DashboardServer:
             execution_id = data.get('execution_id')
             
             if not execution_id:
-                return web.json_response({'success': False, 'error': 'execution_id required'}, status=400)
+                return self._safe_web_response({'success': False, 'error': 'execution_id required'}, status=400)
             
             success = await self.orchestrator.cancel_workflow(execution_id)
             
-            return web.json_response({'success': success})
+            return self._safe_web_response({'success': success})
         except Exception as e:
             logger.error(f"Error stopping workflow: {e}")
-            return web.json_response({'success': False, 'error': str(e)}, status=500)
+            return self._safe_web_response({'success': False, 'error': str(e)}, status=500)
     
     async def _api_system_restart_handler(self, request):
         """API endpoint to restart the system."""
@@ -869,25 +928,28 @@ class DashboardServer:
             logger.info("System restart requested via API")
             
             # In a real implementation, this might trigger a graceful restart
-            return web.json_response({'success': True, 'message': 'Restart initiated'})
+            return self._safe_web_response({'success': True, 'message': 'Restart initiated'})
         except Exception as e:
             logger.error(f"Error restarting system: {e}")
-            return web.json_response({'success': False, 'error': str(e)}, status=500)
+            return self._safe_web_response({'success': False, 'error': str(e)}, status=500)
     
     async def _health_handler(self, request):
         """Health check endpoint."""
         try:
             health_status = await self.health_check()
-            return web.json_response({
+            return self._safe_web_response({
                 'status': health_status,
                 'timestamp': time.time(),
                 'version': '1.0.0'
             })
         except Exception as e:
-            return web.json_response({'status': 'unhealthy', 'error': str(e)}, status=500)
+            return self._safe_web_response({'status': 'unhealthy', 'error': str(e)}, status=500)
     
     async def _websocket_handler(self, request):
         """WebSocket handler for real-time updates."""
+        if not AIOHTTP_AVAILABLE:
+            return None
+            
         ws = web.WebSocketResponse()
         await ws.prepare(request)
         

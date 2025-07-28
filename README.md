@@ -1,6 +1,3 @@
-<<<<<<< Current (Your changes)
-# tt
-=======
 # AI System: Comprehensive Multi-Agent Architecture
 
 ## Overview
@@ -83,4 +80,3 @@ See `docs/` directory for comprehensive documentation including:
 ## License
 
 MIT License - See LICENSE file for details 
->>>>>>> Incoming (Background Agent changes)

@@ -9,14 +9,21 @@ import time
 import hashlib
 import os
 import subprocess
+from pathlib import Path
 from typing import Dict, Any, List, Optional, Set
 from dataclasses import dataclass
 from enum import Enum
 import json
 from collections import deque, defaultdict
-import psutil
 import socket
 import re
+
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    psutil = None
 
 from ..core.config import SystemConfig
 
@@ -225,6 +232,10 @@ class SecurityMonitor:
         """Establish baseline for normal system behavior."""
         logger.info("Establishing security baseline...")
         
+        if not PSUTIL_AVAILABLE:
+            logger.warning("psutil not available, security baseline disabled")
+            return
+        
         # Baseline network connections
         try:
             connections = psutil.net_connections()
@@ -274,11 +285,32 @@ class SecurityMonitor:
     
     async def _load_threat_intelligence(self):
         """Load threat intelligence data."""
-        # Placeholder for loading external threat intelligence
-        pass
+        try:
+            # Load known malicious IPs from local database
+            threat_db_path = Path("data/threat_intelligence.json")
+            if threat_db_path.exists():
+                with open(threat_db_path, 'r') as f:
+                    threat_data = json.load(f)
+                    self.known_malicious_ips.update(threat_data.get('malicious_ips', []))
+                    self.malware_signatures.update(threat_data.get('malware_signatures', {}))
+                    logger.info(f"Loaded {len(self.known_malicious_ips)} malicious IPs and {len(self.malware_signatures)} signatures")
+            else:
+                # Initialize with basic threat intelligence
+                self.known_malicious_ips.update([
+                    '0.0.0.0', '127.0.0.1', '192.168.1.1',  # Basic suspicious IPs
+                    '10.0.0.1', '172.16.0.1'  # Private network ranges
+                ])
+                logger.info("Initialized basic threat intelligence database")
+        except Exception as e:
+            logger.error(f"Error loading threat intelligence: {e}")
+            # Continue with empty threat database
     
     async def _process_monitoring_loop(self):
         """Monitor processes for suspicious activity."""
+        if not PSUTIL_AVAILABLE:
+            logger.warning("psutil not available, process monitoring disabled")
+            return
+            
         while self.is_running:
             try:
                 current_processes = set()
@@ -365,6 +397,10 @@ class SecurityMonitor:
     
     async def _network_monitoring_loop(self):
         """Monitor network activity for anomalies."""
+        if not PSUTIL_AVAILABLE:
+            logger.warning("psutil not available, network monitoring disabled")
+            return
+            
         while self.is_running:
             try:
                 current_connections = []
@@ -403,12 +439,48 @@ class SecurityMonitor:
         if ip_address.startswith(('127.', '10.', '192.168.', '172.')):
             return
         
-        # Check against known bad IP ranges (placeholder)
-        # In a real implementation, this would check against threat intelligence feeds
-        suspicious_ranges = ['0.0.0.0/8', '127.0.0.0/8']  # Example ranges
-        
-        # For now, just log external connections for analysis
-        logger.debug(f"External connection detected to: {ip_address}")
+        # Check against known malicious IPs and suspicious ranges
+        try:
+            import ipaddress
+            ip_obj = ipaddress.ip_address(ip_address)
+            
+            # Check against known malicious IPs
+            if ip_address in self.known_malicious_ips:
+                await self._create_security_event(
+                    event_type="malicious_ip_connection",
+                    severity="critical",
+                    description=f"Connection to known malicious IP: {ip_address}",
+                    affected_resource=f"Network connection to {ip_address}",
+                    evidence={'ip': ip_address, 'type': 'known_malicious'},
+                    source_ip=ip_address
+                )
+                return
+            
+            # Check against suspicious IP ranges
+            suspicious_ranges = [
+                ipaddress.ip_network('0.0.0.0/8'),      # Invalid range
+                ipaddress.ip_network('127.0.0.0/8'),    # Loopback
+                ipaddress.ip_network('169.254.0.0/16'), # Link-local
+                ipaddress.ip_network('224.0.0.0/4'),    # Multicast
+            ]
+            
+            for suspicious_range in suspicious_ranges:
+                if ip_obj in suspicious_range:
+                    await self._create_security_event(
+                        event_type="suspicious_ip_connection",
+                        severity="medium",
+                        description=f"Connection to suspicious IP range: {ip_address}",
+                        affected_resource=f"Network connection to {ip_address}",
+                        evidence={'ip': ip_address, 'range': str(suspicious_range)},
+                        source_ip=ip_address
+                    )
+                    return
+            
+            # Log legitimate external connections for analysis
+            logger.debug(f"External connection detected to: {ip_address}")
+            
+        except Exception as e:
+            logger.warning(f"Error checking suspicious IP {ip_address}: {e}")
     
     async def _file_integrity_loop(self):
         """Monitor file integrity."""
@@ -530,6 +602,10 @@ class SecurityMonitor:
     
     async def _malware_scanning_loop(self):
         """Perform periodic malware scanning."""
+        if not PSUTIL_AVAILABLE:
+            logger.warning("psutil not available, malware scanning disabled")
+            return
+            
         while self.is_running:
             try:
                 # Simple hash-based malware detection
@@ -547,6 +623,9 @@ class SecurityMonitor:
     
     async def _scan_running_processes(self):
         """Scan running processes for malware signatures."""
+        if not PSUTIL_AVAILABLE:
+            return
+            
         for proc in psutil.process_iter(['pid', 'name', 'exe']):
             try:
                 if proc.info['exe'] and os.path.exists(proc.info['exe']):
@@ -766,8 +845,47 @@ class SecurityMonitor:
     
     async def _save_security_data(self):
         """Save security data to persistent storage."""
-        # Placeholder for saving security data
-        pass
+        try:
+            # Create data directory if it doesn't exist
+            data_dir = Path("data/security")
+            data_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Save security events
+            events_file = data_dir / "security_events.json"
+            events_data = [
+                {
+                    'timestamp': event.timestamp,
+                    'event_type': event.event_type,
+                    'severity': event.severity,
+                    'description': event.description,
+                    'affected_resource': event.affected_resource,
+                    'evidence': event.evidence,
+                    'source_ip': event.source_ip,
+                    'source_process': event.source_process
+                }
+                for event in list(self.security_events)[-1000:]  # Keep last 1000 events
+            ]
+            
+            with open(events_file, 'w') as f:
+                json.dump(events_data, f, indent=2)
+            
+            # Save security statistics
+            stats_file = data_dir / "security_stats.json"
+            with open(stats_file, 'w') as f:
+                json.dump(self.security_stats, f, indent=2)
+            
+            # Save failed login attempts (anonymized)
+            login_file = data_dir / "failed_logins.json"
+            login_data = {
+                ip: len(attempts) for ip, attempts in self.failed_login_attempts.items()
+            }
+            with open(login_file, 'w') as f:
+                json.dump(login_data, f, indent=2)
+            
+            logger.debug("Security data saved successfully")
+            
+        except Exception as e:
+            logger.error(f"Error saving security data: {e}")
     
     # Public API methods
     

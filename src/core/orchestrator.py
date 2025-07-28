@@ -51,9 +51,9 @@ class SystemMetrics:
 class SystemOrchestrator:
     """Central orchestrator for the AI system."""
     
-    def __init__(self, config: SystemConfig, components: Dict[str, Any]):
+    def __init__(self, config: SystemConfig, components: Dict[str, Any] = None):
         self.config = config
-        self.components = components
+        self.components = components or {}
         self.state = SystemState.INITIALIZING
         self.is_running = False
         
@@ -422,9 +422,29 @@ class SystemOrchestrator:
         if self.response_times:
             self.metrics.average_response_time = sum(self.response_times) / len(self.response_times)
         
-        # Get system resource usage (placeholder - would use actual system monitoring)
-        self.metrics.memory_usage = 0.0  # Would get from system monitor
-        self.metrics.cpu_usage = 0.0     # Would get from system monitor
+        # Get system resource usage from system monitor if available
+        try:
+            if 'system_monitor' in self.components:
+                system_monitor = self.components['system_monitor']
+                if hasattr(system_monitor, 'get_current_metrics'):
+                    current_metrics = system_monitor.get_current_metrics()
+                    
+                    # Extract CPU and memory usage from metrics
+                    for metric_name, metric in current_metrics.items():
+                        if 'cpu_usage_percent' in metric_name and metric.metadata.get('type') == 'overall':
+                            self.metrics.cpu_usage = metric.value
+                        elif 'memory_usage_percent' in metric_name:
+                            self.metrics.memory_usage = metric.value
+                else:
+                    self.metrics.memory_usage = 0.0
+                    self.metrics.cpu_usage = 0.0
+            else:
+                self.metrics.memory_usage = 0.0
+                self.metrics.cpu_usage = 0.0
+        except Exception as e:
+            logger.warning(f"Error getting system metrics: {e}")
+            self.metrics.memory_usage = 0.0
+            self.metrics.cpu_usage = 0.0
     
     def _update_response_time(self, response_time: float):
         """Update response time tracking."""

@@ -1,0 +1,70 @@
+# Core Python Dependencies
+asyncio-mqtt>=0.11.1
+uvloop>=0.17.0; sys_platform != "win32"
+
+# Cryptography
+cryptography>=41.0.0
+
+# System Monitoring
+psutil>=5.9.0
+
+# Web Framework
+aiohttp>=3.8.0
+aiohttp-cors>=0.7.0
+jinja2>=3.1.0
+aiofiles>=22.1.0
+
+# Scientific Computing
+numpy>=1.21.0
+scipy>=1.9.0
+scikit-learn>=1.1.0
+pandas>=1.5.0
+matplotlib>=3.6.0
+seaborn>=0.12.0
+
+# Machine Learning
+torch>=2.0.0
+transformers>=4.21.0
+sentence-transformers>=2.2.0
+openai>=0.27.0
+langchain>=0.0.200
+chromadb>=0.4.0
+
+# Database
+redis>=4.3.0
+
+# Audio Processing
+pyaudio>=0.2.11
+pyttsx3>=2.90
+SpeechRecognition>=3.10.0
+
+# GPU Support
+GPUtil>=1.4.0
+
+# Networking
+websockets>=11.0.0
+requests>=2.28.0
+
+# Configuration
+toml>=0.10.2
+pyyaml>=6.0
+
+# Development Tools
+pytest>=7.1.0
+pytest-asyncio>=0.21.0
+black>=22.6.0
+flake8>=5.0.0
+mypy>=0.971
+
+# Packaging
+setuptools>=65.0.0
+wheel>=0.37.0
+pyinstaller>=5.0.0
+
+# Windows-specific
+pywin32>=305; sys_platform == "win32"
+wmi>=1.5.1; sys_platform == "win32"
+
+# Optional GUI
+pillow>=9.2.0
+tkinter-tooltip>=2.1.0

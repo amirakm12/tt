@@ -87,7 +87,7 @@ class WorkflowExecution:
 class OrchestrationAgent:
     """Agent responsible for orchestrating multi-agent workflows."""
     
-    def __init__(self, config: SystemConfig, triage_agent, research_agent):
+    def __init__(self, config: SystemConfig, triage_agent=None, research_agent=None):
         self.config = config
         self.triage_agent = triage_agent
         self.research_agent = research_agent

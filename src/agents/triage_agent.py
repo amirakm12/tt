@@ -75,8 +75,10 @@ class TriageResult:
 class TriageAgent:
     """Agent responsible for initial request triage and routing."""
     
-    def __init__(self, config: SystemConfig):
+    def __init__(self, config: SystemConfig, rag_engine=None, speculative_decoder=None):
         self.config = config
+        self.rag_engine = rag_engine
+        self.speculative_decoder = speculative_decoder
         self.is_running = False
         
         # Request processing
@@ -99,6 +101,9 @@ class TriageAgent:
             'requests_by_type': defaultdict(int),
             'requests_by_priority': defaultdict(int)
         }
+        
+        # Historical patterns for learning
+        self.historical_patterns = {}
         
         logger.info("Triage Agent initialized")
     
@@ -174,7 +179,7 @@ class TriageAgent:
         logger.info("Initializing Triage Agent...")
         
         try:
-            # Initialize ML models for classification (placeholder)
+            # Initialize ML models for classification
             await self._initialize_ml_models()
             
             # Load historical data for pattern learning

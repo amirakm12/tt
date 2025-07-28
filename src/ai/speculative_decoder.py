@@ -10,12 +10,40 @@ import random
 from typing import Dict, Any, List, Optional, Tuple, Union
 from dataclasses import dataclass
 from enum import Enum
-import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import openai
+try:
+    import numpy as np
+    NUMPY_AVAILABLE = True
+    NDArray = np.ndarray
+except ImportError:
+    NUMPY_AVAILABLE = False
+    np = None
+    NDArray = Any  # Fallback type
+try:
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    TORCH_AVAILABLE = True
+    TorchTensor = torch.Tensor
+except ImportError:
+    TORCH_AVAILABLE = False
+    torch = None
+    nn = None
+    F = None
+    TorchTensor = Any  # Fallback type
+
+try:
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+    TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    TRANSFORMERS_AVAILABLE = False
+    AutoTokenizer = None
+    AutoModelForCausalLM = None
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    openai = None
 from concurrent.futures import ThreadPoolExecutor
 import threading
 
@@ -61,29 +89,53 @@ class QuantumInspiredSpeculator:
         self.hidden_dim = hidden_dim
         
         # Quantum-inspired parameters
-        self.superposition_weights = np.random.normal(0, 0.1, (vocab_size, hidden_dim))
-        self.entanglement_matrix = np.random.orthogonal(hidden_dim)
-        self.measurement_basis = np.random.orthogonal(hidden_dim)
+        if NUMPY_AVAILABLE:
+            self.superposition_weights = np.random.normal(0, 0.1, (vocab_size, hidden_dim))
+            self.entanglement_matrix = np.random.orthogonal(hidden_dim)
+            self.measurement_basis = np.random.orthogonal(hidden_dim)
+        else:
+            # Fallback to basic Python structures
+            import random
+            self.superposition_weights = [[random.gauss(0, 0.1) for _ in range(hidden_dim)] for _ in range(vocab_size)]
+            self.entanglement_matrix = [[random.gauss(0, 1) for _ in range(hidden_dim)] for _ in range(hidden_dim)]
+            self.measurement_basis = [[random.gauss(0, 1) for _ in range(hidden_dim)] for _ in range(hidden_dim)]
         
         # Adaptation parameters
         self.learning_rate = 0.01
         self.success_history = []
         
-    def speculate(self, context_embedding: np.ndarray, num_tokens: int) -> List[Tuple[int, float]]:
+    def speculate(self, context_embedding: NDArray, num_tokens: int) -> List[Tuple[int, float]]:
         """Generate speculative tokens using quantum-inspired approach."""
+        if not NUMPY_AVAILABLE:
+            # Simple fallback
+            import random
+            return [(random.randint(0, self.vocab_size - 1), random.random()) for _ in range(num_tokens)]
+            
         speculated_tokens = []
         current_state = context_embedding.copy()
         
         for _ in range(num_tokens):
-            # Apply superposition
-            superposed_state = np.dot(current_state, self.superposition_weights.T)
+            if NUMPY_AVAILABLE:
+                # Apply superposition
+                superposed_state = np.dot(current_state, self.superposition_weights.T)
+                
+                # Apply entanglement
+                entangled_state = np.dot(superposed_state, self.entanglement_matrix)
+                
+                # Measurement (collapse to token probabilities)
+                measured_state = np.dot(entangled_state, self.measurement_basis.T)
+            else:
+                # Simple fallback without matrix operations
+                measured_state = current_state
             
-            # Apply entanglement
-            entangled_state = np.dot(superposed_state, self.entanglement_matrix)
-            
-            # Measurement (collapse to token probabilities)
-            measured_state = np.dot(entangled_state, self.measurement_basis.T)
-            probabilities = F.softmax(torch.tensor(measured_state), dim=-1).numpy()
+            if TORCH_AVAILABLE and F is not None:
+                probabilities = F.softmax(torch.tensor(measured_state), dim=-1).numpy()
+            else:
+                # Simple softmax fallback
+                import math
+                exp_vals = [math.exp(x) for x in measured_state]
+                sum_exp = sum(exp_vals)
+                probabilities = [x / sum_exp for x in exp_vals]
             
             # Sample token
             token_id = np.random.choice(self.vocab_size, p=probabilities)
@@ -96,8 +148,11 @@ class QuantumInspiredSpeculator:
         
         return speculated_tokens
     
-    def _update_quantum_state(self, state: np.ndarray, token_id: int) -> np.ndarray:
+    def _update_quantum_state(self, state: NDArray, token_id: int) -> NDArray:
         """Update quantum state based on selected token."""
+        if not NUMPY_AVAILABLE:
+            return state  # Simple fallback
+            
         # Simple state evolution (in practice, this would be more sophisticated)
         token_embedding = self.superposition_weights[token_id]
         updated_state = 0.7 * state + 0.3 * token_embedding
@@ -106,6 +161,9 @@ class QuantumInspiredSpeculator:
     def adapt(self, success_rate: float):
         """Adapt quantum parameters based on success rate."""
         self.success_history.append(success_rate)
+        
+        if not NUMPY_AVAILABLE:
+            return  # Simple fallback
         
         if len(self.success_history) > 10:
             recent_performance = np.mean(self.success_history[-10:])
@@ -276,6 +334,13 @@ class SpeculativeDecoder:
     
     async def _initialize_models(self):
         """Initialize draft and target models."""
+        if not TRANSFORMERS_AVAILABLE:
+            logger.warning("Transformers not available - model loading disabled")
+            self.tokenizer = None
+            self.draft_model = None
+            self.target_model = None
+            return
+            
         draft_model_name = self.config.speculative_decoding.draft_model
         target_model_name = self.config.speculative_decoding.target_model
         
@@ -549,7 +614,10 @@ class SpeculativeDecoder:
         text = self.tokenizer.decode(tokens, skip_special_tokens=True)
         
         # Calculate acceptance rate (simulate verification)
-        acceptance_rate = np.mean(confidence_scores)
+        if NUMPY_AVAILABLE:
+            acceptance_rate = np.mean(confidence_scores)
+        else:
+            acceptance_rate = sum(confidence_scores) / len(confidence_scores) if confidence_scores else 0.0
         
         # Adapt quantum parameters
         self.quantum_speculator.adapt(acceptance_rate)
@@ -590,7 +658,7 @@ class SpeculativeDecoder:
             metadata={}
         )
     
-    def _generate_draft_sequence(self, inputs: torch.Tensor, length: int, temperature: float) -> List[int]:
+    def _generate_draft_sequence(self, inputs: TorchTensor, length: int, temperature: float) -> List[int]:
         """Generate draft sequence using draft model."""
         generated_tokens = []
         current_inputs = inputs
@@ -613,7 +681,7 @@ class SpeculativeDecoder:
         
         return generated_tokens
     
-    def _verify_with_target(self, inputs: torch.Tensor, draft_tokens: List[int], temperature: float) -> Dict[str, Any]:
+    def _verify_with_target(self, inputs: TorchTensor, draft_tokens: List[int], temperature: float) -> Dict[str, Any]:
         """Verify draft tokens with target model."""
         accepted_tokens = []
         confidence_scores = []
@@ -755,8 +823,29 @@ class SpeculativeDecoder:
         """Optimize models based on performance."""
         while self.is_running:
             try:
-                # Perform model optimization (placeholder)
-                # In practice, this could involve model pruning, quantization, etc.
+                # Perform model optimization based on performance metrics
+                if hasattr(self, 'performance_metrics') and self.performance_metrics:
+                    avg_latency = sum(self.performance_metrics) / len(self.performance_metrics)
+                    
+                    # Adjust speculation parameters based on performance
+                    if avg_latency > 0.5:  # If average latency > 500ms
+                        # Reduce speculation aggressiveness
+                        self.speculation_depth = max(1, self.speculation_depth - 1)
+                        logger.info(f"Reduced speculation depth to {self.speculation_depth} due to high latency")
+                    elif avg_latency < 0.1:  # If average latency < 100ms
+                        # Increase speculation aggressiveness
+                        self.speculation_depth = min(8, self.speculation_depth + 1)
+                        logger.info(f"Increased speculation depth to {self.speculation_depth} due to low latency")
+                    
+                    # Optimize quantum parameters
+                    if hasattr(self, 'quantum_speculator'):
+                        acceptance_rate = getattr(self, 'last_acceptance_rate', 0.5)
+                        self.quantum_speculator.adapt(acceptance_rate)
+                        logger.debug(f"Optimized quantum parameters with acceptance rate: {acceptance_rate}")
+                
+                # Clear old performance metrics to prevent memory growth
+                if hasattr(self, 'performance_metrics'):
+                    self.performance_metrics = self.performance_metrics[-100:]  # Keep last 100 measurements
                 
                 await asyncio.sleep(1800)  # Optimize every 30 minutes
                 

@@ -66,7 +66,7 @@ class ResearchResult:
 class ResearchAgent:
     """Agent specialized in comprehensive research and analysis."""
     
-    def __init__(self, config: SystemConfig, rag_engine: RAGEngine, speculative_decoder: SpeculativeDecoder):
+    def __init__(self, config: SystemConfig, rag_engine: RAGEngine = None, speculative_decoder: SpeculativeDecoder = None):
         self.config = config
         self.rag_engine = rag_engine
         self.speculative_decoder = speculative_decoder

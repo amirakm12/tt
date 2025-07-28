@@ -6,15 +6,26 @@ Advanced sensor data aggregation and fusion using multiple algorithms
 import asyncio
 import logging
 import time
-import numpy as np
+try:
+    import numpy as np
+    NUMPY_AVAILABLE = True
+except ImportError:
+    NUMPY_AVAILABLE = False
+    np = None
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
 import json
-import psutil
 import threading
 from collections import deque
 import statistics
+
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    psutil = None
 
 from ..core.config import SystemConfig
 
@@ -109,28 +120,72 @@ class ParticleFilter:
     
     def __init__(self, num_particles: int = 100):
         self.num_particles = num_particles
-        self.particles = np.random.normal(0, 1, num_particles)
-        self.weights = np.ones(num_particles) / num_particles
+        if NUMPY_AVAILABLE:
+            self.particles = np.random.normal(0, 1, num_particles)
+            self.weights = np.ones(num_particles) / num_particles
+        else:
+            # Fallback to basic Python lists
+            import random
+            self.particles = [random.gauss(0, 1) for _ in range(num_particles)]
+            self.weights = [1.0 / num_particles] * num_particles
         
     def update(self, measurement: float, measurement_noise: float = 0.1) -> float:
         """Update particle filter with new measurement."""
-        # Prediction step (random walk)
-        self.particles += np.random.normal(0, 0.1, self.num_particles)
-        
-        # Update weights based on measurement likelihood
-        likelihood = np.exp(-0.5 * ((self.particles - measurement) / measurement_noise) ** 2)
-        self.weights *= likelihood
-        self.weights /= np.sum(self.weights)
-        
-        # Resample if effective sample size is low
-        effective_sample_size = 1.0 / np.sum(self.weights ** 2)
-        if effective_sample_size < self.num_particles / 2:
-            indices = np.random.choice(self.num_particles, self.num_particles, p=self.weights)
-            self.particles = self.particles[indices]
-            self.weights = np.ones(self.num_particles) / self.num_particles
-        
-        # Return weighted average
-        return np.average(self.particles, weights=self.weights)
+        if NUMPY_AVAILABLE:
+            # Prediction step (random walk)
+            self.particles += np.random.normal(0, 0.1, self.num_particles)
+            
+            # Update weights based on measurement likelihood
+            likelihood = np.exp(-0.5 * ((self.particles - measurement) / measurement_noise) ** 2)
+            self.weights *= likelihood
+            self.weights /= np.sum(self.weights)
+            
+            # Resample if effective sample size is low
+            effective_sample_size = 1.0 / np.sum(self.weights ** 2)
+            if effective_sample_size < self.num_particles / 2:
+                indices = np.random.choice(self.num_particles, self.num_particles, p=self.weights)
+                self.particles = self.particles[indices]
+                self.weights = np.ones(self.num_particles) / self.num_particles
+            
+            # Return weighted average
+            return np.average(self.particles, weights=self.weights)
+        else:
+            # Fallback implementation using basic Python
+            import random
+            import math
+            
+            # Prediction step (random walk)
+            self.particles = [p + random.gauss(0, 0.1) for p in self.particles]
+            
+            # Update weights based on measurement likelihood
+            likelihood = [math.exp(-0.5 * ((p - measurement) / measurement_noise) ** 2) for p in self.particles]
+            self.weights = [w * l for w, l in zip(self.weights, likelihood)]
+            weight_sum = sum(self.weights)
+            if weight_sum > 0:
+                self.weights = [w / weight_sum for w in self.weights]
+            
+            # Simple resampling
+            if sum(w * w for w in self.weights) > 2.0 / self.num_particles:
+                # Resample
+                cumulative = []
+                total = 0
+                for w in self.weights:
+                    total += w
+                    cumulative.append(total)
+                
+                new_particles = []
+                for _ in range(self.num_particles):
+                    r = random.random()
+                    for i, c in enumerate(cumulative):
+                        if r <= c:
+                            new_particles.append(self.particles[i])
+                            break
+                
+                self.particles = new_particles
+                self.weights = [1.0 / self.num_particles] * self.num_particles
+            
+            # Return weighted average
+            return sum(p * w for p, w in zip(self.particles, self.weights))
 
 class SensorFusionManager:
     """Manages sensor data collection and fusion."""
@@ -267,7 +322,7 @@ class SensorFusionManager:
             }
         
         # Disk sensors
-        if 'disk' in enabled_sensors:
+        if 'disk' in enabled_sensors and PSUTIL_AVAILABLE:
             for i, partition in enumerate(psutil.disk_partitions()):
                 sensor_id = f'disk_usage_{i}'
                 self.sensors[sensor_id] = {
@@ -358,14 +413,20 @@ class SensorFusionManager:
     
     def _read_cpu_sensor(self) -> float:
         """Read CPU usage sensor."""
-        return psutil.cpu_percent(interval=0.1)
+        if PSUTIL_AVAILABLE:
+            return psutil.cpu_percent(interval=0.1)
+        return 0.0
     
     def _read_memory_sensor(self) -> float:
         """Read memory usage sensor."""
-        return psutil.virtual_memory().percent
+        if PSUTIL_AVAILABLE:
+            return psutil.virtual_memory().percent
+        return 0.0
     
     def _read_disk_sensor(self, partition) -> float:
         """Read disk usage sensor."""
+        if not PSUTIL_AVAILABLE:
+            return 0.0
         try:
             usage = psutil.disk_usage(partition.mountpoint)
             return (usage.used / usage.total) * 100
@@ -374,6 +435,8 @@ class SensorFusionManager:
     
     def _read_network_sensor(self) -> float:
         """Read network usage sensor."""
+        if not PSUTIL_AVAILABLE:
+            return 0.0
         try:
             net_io = psutil.net_io_counters()
             if hasattr(self, '_last_net_io'):

@@ -6,13 +6,20 @@ Comprehensive system monitoring and performance tracking
 import asyncio
 import logging
 import time
-import psutil
 import platform
+from pathlib import Path
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass
 from enum import Enum
 import json
 from collections import deque, defaultdict
+
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    psutil = None
 import statistics
 
 from ..core.config import SystemConfig
@@ -75,6 +82,16 @@ class SystemMonitor:
             'critical_alerts': 0,
             'monitoring_cycles': 0,
             'average_cycle_time': 0.0
+        }
+        
+        # Metric collectors
+        self.metric_collectors = {
+            'cpu': self._collect_cpu_metrics,
+            'memory': self._collect_memory_metrics,
+            'disk': self._collect_disk_metrics,
+            'network': self._collect_network_metrics,
+            'process': self._collect_process_metrics,
+            'system': self._collect_system_metrics
         }
         
         logger.info("System Monitor initialized")
@@ -267,6 +284,9 @@ class SystemMonitor:
         """Collect CPU metrics."""
         metrics = []
         
+        if not PSUTIL_AVAILABLE:
+            return metrics
+        
         # Overall CPU usage
         cpu_percent = psutil.cpu_percent(interval=0)
         metrics.append(SystemMetric(
@@ -322,6 +342,9 @@ class SystemMonitor:
         """Collect memory metrics."""
         metrics = []
         
+        if not PSUTIL_AVAILABLE:
+            return metrics
+        
         # Virtual memory
         vmem = psutil.virtual_memory()
         metrics.extend([
@@ -346,6 +369,9 @@ class SystemMonitor:
     async def _collect_disk_metrics(self) -> List[SystemMetric]:
         """Collect disk metrics."""
         metrics = []
+        
+        if not PSUTIL_AVAILABLE:
+            return metrics
         
         # Disk usage per partition
         for partition in psutil.disk_partitions():
@@ -386,6 +412,9 @@ class SystemMonitor:
         """Collect network metrics."""
         metrics = []
         
+        if not PSUTIL_AVAILABLE:
+            return metrics
+        
         # Network I/O
         try:
             net_io = psutil.net_io_counters()
@@ -420,6 +449,9 @@ class SystemMonitor:
     async def _collect_process_metrics(self) -> List[SystemMetric]:
         """Collect process metrics."""
         metrics = []
+        
+        if not PSUTIL_AVAILABLE:
+            return metrics
         
         # Process count
         process_count = len(psutil.pids())
@@ -464,6 +496,9 @@ class SystemMonitor:
     async def _collect_system_metrics(self) -> List[SystemMetric]:
         """Collect general system metrics."""
         metrics = []
+        
+        if not PSUTIL_AVAILABLE:
+            return metrics
         
         # Uptime
         uptime = time.time() - psutil.boot_time()
@@ -676,8 +711,60 @@ class SystemMonitor:
     
     async def _save_monitoring_data(self):
         """Save monitoring data to persistent storage."""
-        # Placeholder for saving monitoring data
-        pass
+        try:
+            # Create data directory if it doesn't exist
+            data_dir = Path("data/monitoring")
+            data_dir.mkdir(parents=True, exist_ok=True)
+            
+            # Save current metrics
+            metrics_file = data_dir / "current_metrics.json"
+            metrics_data = {
+                name: {
+                    'name': metric.name,
+                    'value': metric.value,
+                    'unit': metric.unit,
+                    'timestamp': metric.timestamp,
+                    'metadata': metric.metadata
+                }
+                for name, metric in self.current_metrics.items()
+            }
+            
+            with open(metrics_file, 'w') as f:
+                json.dump(metrics_data, f, indent=2)
+            
+            # Save performance statistics
+            stats_file = data_dir / "performance_stats.json"
+            with open(stats_file, 'w') as f:
+                json.dump(self.performance_stats, f, indent=2)
+            
+            # Save alert history (last 500 alerts)
+            alerts_file = data_dir / "alert_history.json"
+            alerts_data = [
+                {
+                    'timestamp': alert.timestamp,
+                    'alert_type': alert.alert_type,
+                    'severity': alert.severity,
+                    'message': alert.message,
+                    'metric_name': alert.metric_name,
+                    'metric_value': alert.metric_value,
+                    'threshold': alert.threshold,
+                    'metadata': alert.metadata
+                }
+                for alert in list(self.alert_history)[-500:]  # Keep last 500 alerts
+            ]
+            
+            with open(alerts_file, 'w') as f:
+                json.dump(alerts_data, f, indent=2)
+            
+            # Save system information
+            info_file = data_dir / "system_info.json"
+            with open(info_file, 'w') as f:
+                json.dump(self.system_info, f, indent=2)
+            
+            logger.debug("Monitoring data saved successfully")
+            
+        except Exception as e:
+            logger.error(f"Error saving monitoring data: {e}")
     
     # Public API methods
     
