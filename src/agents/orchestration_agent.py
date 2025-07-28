@@ -14,7 +14,7 @@ import hashlib
 from collections import defaultdict, deque
 import uuid
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

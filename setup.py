@@ -72,9 +72,9 @@ setup(
     },
     entry_points={
         "console_scripts": [
-            "ai-system=main:main",
-            "ai-system-config=core.config:main",
-            "ai-system-dashboard=ui.dashboard:main",
+            "ai-system=src.main:run_system",
+            "ai-system-config=src.core.config:main",
+            "ai-system-dashboard=src.ui.dashboard:main",
         ],
     },
     include_package_data=True,

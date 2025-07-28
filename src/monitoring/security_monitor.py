@@ -18,7 +18,7 @@ import psutil
 import socket
 import re
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

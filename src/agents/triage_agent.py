@@ -14,7 +14,7 @@ import hashlib
 import re
 from collections import defaultdict
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

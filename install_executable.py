@@ -334,7 +334,9 @@ read -p "Press Enter to continue..."
             # Test if the main module can be imported
             test_script = f'''
 import sys
+import os
 sys.path.insert(0, "{self.install_dir}")
+os.chdir("{self.install_dir}")
 try:
     from src.main import AISystem
     print("✅ Installation test passed")

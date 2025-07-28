@@ -14,9 +14,9 @@ import hashlib
 from collections import defaultdict
 import re
 
-from core.config import SystemConfig
-from ai.rag_engine import RAGEngine, QueryResult
-from ai.speculative_decoder import SpeculativeDecoder, DecodingRequest, SpeculationStrategy
+from ..core.config import SystemConfig
+from ..ai.rag_engine import RAGEngine, QueryResult
+from ..ai.speculative_decoder import SpeculativeDecoder, DecodingRequest, SpeculationStrategy
 
 logger = logging.getLogger(__name__)
 

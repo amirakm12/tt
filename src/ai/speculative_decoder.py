@@ -19,7 +19,7 @@ import openai
 from concurrent.futures import ThreadPoolExecutor
 import threading
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

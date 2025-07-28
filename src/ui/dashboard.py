@@ -15,7 +15,7 @@ import aiohttp_cors
 import jinja2
 import aiofiles
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

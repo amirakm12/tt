@@ -15,7 +15,7 @@ import json
 from collections import deque, defaultdict
 import statistics
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

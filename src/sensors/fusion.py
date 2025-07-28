@@ -16,7 +16,7 @@ import threading
 from collections import deque
 import statistics
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

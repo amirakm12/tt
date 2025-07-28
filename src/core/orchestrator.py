@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 
-from core.config import SystemConfig
+from .config import SystemConfig
 
 logger = logging.getLogger(__name__)
 

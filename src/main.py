@@ -13,19 +13,19 @@ from typing import Dict, Any
 import uvloop
 
 # Import core system components
-from core.orchestrator import SystemOrchestrator
-from core.config import SystemConfig
-from kernel.integration import KernelManager
-from sensors.fusion import SensorFusionManager
-from ai.rag_engine import RAGEngine
-from ai.speculative_decoder import SpeculativeDecoder
-from agents.triage_agent import TriageAgent
-from agents.research_agent import ResearchAgent
-from agents.orchestration_agent import OrchestrationAgent
-from ui.dashboard import DashboardServer
-from ui.voice_interface import VoiceInterface
-from monitoring.system_monitor import SystemMonitor
-from monitoring.security_monitor import SecurityMonitor
+from .core.orchestrator import SystemOrchestrator
+from .core.config import SystemConfig
+from .kernel.integration import KernelManager
+from .sensors.fusion import SensorFusionManager
+from .ai.rag_engine import RAGEngine
+from .ai.speculative_decoder import SpeculativeDecoder
+from .agents.triage_agent import TriageAgent
+from .agents.research_agent import ResearchAgent
+from .agents.orchestration_agent import OrchestrationAgent
+from .ui.dashboard import DashboardServer
+from .ui.voice_interface import VoiceInterface
+from .monitoring.system_monitor import SystemMonitor
+from .monitoring.security_monitor import SecurityMonitor
 
 # Configure logging
 logging.basicConfig(
@@ -249,5 +249,19 @@ async def main():
         logger.error(f"System startup failed: {e}")
         sys.exit(1)
 
+def run_system():
+    """Entry point for running the AI system."""
+    try:
+        # Set up uvloop for better performance on Unix systems
+        if sys.platform != 'win32':
+            asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
+        
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        logger.info("System shutdown requested by user")
+    except Exception as e:
+        logger.error(f"System failed to start: {e}")
+        sys.exit(1)
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    run_system()

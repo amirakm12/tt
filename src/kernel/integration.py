@@ -15,7 +15,7 @@ from pathlib import Path
 import psutil
 import signal
 
-from core.config import SystemConfig
+from ..core.config import SystemConfig
 
 logger = logging.getLogger(__name__)
 
