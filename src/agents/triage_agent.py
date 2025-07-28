@@ -9,26 +9,24 @@ import time
 from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
-import re
 import json
-from collections import defaultdict
 import hashlib
+import re
+from collections import defaultdict
 
 from core.config import SystemConfig
-from ai.rag_engine import RAGEngine
-from ai.speculative_decoder import SpeculativeDecoder
 
 logger = logging.getLogger(__name__)
 
 class RequestType(Enum):
-    """Types of requests the system can handle."""
-    QUESTION = "question"
-    COMMAND = "command"
-    ANALYSIS = "analysis"
-    RESEARCH = "research"
-    MONITORING = "monitoring"
+    """Types of requests the triage agent can handle."""
+    INFORMATION_REQUEST = "information_request"
     SYSTEM_CONTROL = "system_control"
-    UNKNOWN = "unknown"
+    RESEARCH_QUERY = "research_query"
+    TROUBLESHOOTING = "troubleshooting"
+    WORKFLOW_MANAGEMENT = "workflow_management"
+    STATUS_CHECK = "status_check"
+    GENERAL_QUERY = "general_query"
 
 class Priority(Enum):
     """Request priority levels."""
@@ -41,97 +39,134 @@ class Priority(Enum):
 class RequestStatus(Enum):
     """Request processing status."""
     RECEIVED = "received"
-    PROCESSING = "processing"
+    ANALYZING = "analyzing"
+    CLASSIFIED = "classified"
+    ROUTED = "routed"
     COMPLETED = "completed"
     FAILED = "failed"
-    ESCALATED = "escalated"
+
+@dataclass
+class TriageRequest:
+    """Request data for triage processing."""
+    request_id: str
+    original_text: str
+    request_type: RequestType
+    priority: Priority
+    status: RequestStatus
+    timestamp: float
+    context: Dict[str, Any]
+    routing_target: Optional[str] = None
+    confidence: float = 0.0
+    metadata: Dict[str, Any] = None
 
 @dataclass
 class TriageResult:
-    """Result of request triage."""
+    """Result of triage processing."""
     request_id: str
-    request_type: RequestType
+    classification: RequestType
     priority: Priority
-    complexity_score: float
+    routing_target: str
     confidence: float
-    routing_destination: str
-    estimated_processing_time: float
-    required_capabilities: List[str]
-    metadata: Dict[str, Any]
-
-@dataclass
-class ProcessedRequest:
-    """Processed request with response."""
-    request_id: str
-    original_request: str
-    triage_result: TriageResult
-    response: str
     processing_time: float
-    status: RequestStatus
-    timestamp: float
-    metadata: Dict[str, Any]
+    extracted_entities: Dict[str, Any]
+    recommended_actions: List[str]
+    context_analysis: Dict[str, Any]
 
 class TriageAgent:
-    """Agent responsible for request triage and initial processing."""
+    """Agent responsible for initial request triage and routing."""
     
-    def __init__(self, config: SystemConfig, rag_engine: RAGEngine, speculative_decoder: SpeculativeDecoder):
+    def __init__(self, config: SystemConfig):
         self.config = config
-        self.rag_engine = rag_engine
-        self.speculative_decoder = speculative_decoder
         self.is_running = False
         
         # Request processing
-        self.request_queue = asyncio.Queue()
-        self.processed_requests = {}
         self.active_requests = {}
+        self.request_history = []
+        self.request_queue = asyncio.Queue()
         
         # Classification patterns
         self.classification_patterns = self._initialize_classification_patterns()
+        self.entity_extractors = self._initialize_entity_extractors()
+        self.routing_rules = self._initialize_routing_rules()
         
         # Performance metrics
         self.metrics = {
             'total_requests': 0,
-            'requests_by_type': defaultdict(int),
-            'requests_by_priority': defaultdict(int),
-            'average_triage_time': 0.0,
+            'successful_classifications': 0,
+            'failed_classifications': 0,
             'average_processing_time': 0.0,
-            'success_rate': 0.0,
-            'escalation_rate': 0.0
+            'classification_accuracy': 0.0,
+            'requests_by_type': defaultdict(int),
+            'requests_by_priority': defaultdict(int)
         }
-        
-        # Processing history for learning
-        self.processing_history = []
-        self.max_history_size = 10000
         
         logger.info("Triage Agent initialized")
     
     def _initialize_classification_patterns(self) -> Dict[RequestType, List[str]]:
         """Initialize patterns for request classification."""
         return {
-            RequestType.QUESTION: [
-                r'\bwhat\b', r'\bhow\b', r'\bwhy\b', r'\bwhen\b', r'\bwhere\b', r'\bwho\b',
-                r'\?', r'\bexplain\b', r'\btell me\b', r'\bdefine\b'
-            ],
-            RequestType.COMMAND: [
-                r'\bstart\b', r'\bstop\b', r'\brestart\b', r'\brun\b', r'\bexecute\b',
-                r'\bshutdown\b', r'\bpause\b', r'\bresume\b', r'\bconfigure\b'
-            ],
-            RequestType.ANALYSIS: [
-                r'\banalyze\b', r'\bcompare\b', r'\bevaluate\b', r'\bassess\b',
-                r'\breport\b', r'\bsummarize\b', r'\bstatistics\b', r'\bmetrics\b'
-            ],
-            RequestType.RESEARCH: [
-                r'\bresearch\b', r'\binvestigate\b', r'\bfind\b', r'\bsearch\b',
-                r'\blook up\b', r'\bgather\b', r'\bcollect\b', r'\bexplore\b'
-            ],
-            RequestType.MONITORING: [
-                r'\bmonitor\b', r'\bwatch\b', r'\btrack\b', r'\bobserve\b',
-                r'\bstatus\b', r'\bhealth\b', r'\bperformance\b', r'\balert\b'
+            RequestType.INFORMATION_REQUEST: [
+                r'\b(what|who|when|where|why|how)\b',
+                r'\b(tell me|explain|describe|define)\b',
+                r'\b(information|details|facts)\b',
+                r'\b(learn|understand|know)\b'
             ],
             RequestType.SYSTEM_CONTROL: [
-                r'\bsystem\b', r'\bkernel\b', r'\bdriver\b', r'\bservice\b',
-                r'\bprocess\b', r'\bmemory\b', r'\bcpu\b', r'\bdisk\b'
+                r'\b(start|stop|restart|shutdown|pause|resume)\b',
+                r'\b(enable|disable|activate|deactivate)\b',
+                r'\b(configure|setup|install|update)\b',
+                r'\b(system|service|process)\b'
+            ],
+            RequestType.RESEARCH_QUERY: [
+                r'\b(research|investigate|analyze|study)\b',
+                r'\b(compare|contrast|evaluate)\b',
+                r'\b(trends|patterns|insights)\b',
+                r'\b(literature|papers|studies)\b'
+            ],
+            RequestType.TROUBLESHOOTING: [
+                r'\b(error|problem|issue|bug|fault)\b',
+                r'\b(fix|solve|resolve|repair)\b',
+                r'\b(troubleshoot|debug|diagnose)\b',
+                r'\b(not working|broken|failed)\b'
+            ],
+            RequestType.WORKFLOW_MANAGEMENT: [
+                r'\b(workflow|process|task|job)\b',
+                r'\b(execute|run|schedule|queue)\b',
+                r'\b(pipeline|automation|orchestration)\b',
+                r'\b(batch|sequence|chain)\b'
+            ],
+            RequestType.STATUS_CHECK: [
+                r'\b(status|health|state|condition)\b',
+                r'\b(check|monitor|report|summary)\b',
+                r'\b(running|active|available|online)\b',
+                r'\b(performance|metrics|statistics)\b'
             ]
+        }
+    
+    def _initialize_entity_extractors(self) -> Dict[str, str]:
+        """Initialize entity extraction patterns."""
+        return {
+            'system_component': r'\b(agent|service|module|component|system)\s+(\w+)\b',
+            'action_verb': r'\b(start|stop|restart|create|delete|update|get|set)\b',
+            'time_reference': r'\b(now|today|tomorrow|yesterday|last|next)\s+(\w+)\b',
+            'priority_indicator': r'\b(urgent|critical|important|high|low)\s+(priority)?\b',
+            'workflow_name': r'\bworkflow\s+["\']?(\w+)["\']?\b',
+            'file_path': r'["\']?([/\\][\w/\\.-]+)["\']?',
+            'url': r'https?://[^\s]+',
+            'email': r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b',
+            'number': r'\b\d+(?:\.\d+)?\b'
+        }
+    
+    def _initialize_routing_rules(self) -> Dict[RequestType, str]:
+        """Initialize routing rules for different request types."""
+        return {
+            RequestType.INFORMATION_REQUEST: 'research_agent',
+            RequestType.SYSTEM_CONTROL: 'system_controller',
+            RequestType.RESEARCH_QUERY: 'research_agent',
+            RequestType.TROUBLESHOOTING: 'diagnostic_agent',
+            RequestType.WORKFLOW_MANAGEMENT: 'orchestration_agent',
+            RequestType.STATUS_CHECK: 'monitoring_agent',
+            RequestType.GENERAL_QUERY: 'research_agent'
         }
     
     async def initialize(self):
@@ -139,11 +174,11 @@ class TriageAgent:
         logger.info("Initializing Triage Agent...")
         
         try:
-            # Load historical data if available
-            await self._load_processing_history()
+            # Initialize ML models for classification (placeholder)
+            await self._initialize_ml_models()
             
-            # Initialize classification models if needed
-            await self._initialize_classification_models()
+            # Load historical data for pattern learning
+            await self._load_historical_patterns()
             
             logger.info("Triage Agent initialized successfully")
             
@@ -160,8 +195,8 @@ class TriageAgent:
             self.background_tasks = {
                 'request_processor': asyncio.create_task(self._request_processing_loop()),
                 'metrics_collector': asyncio.create_task(self._metrics_collection_loop()),
-                'history_manager': asyncio.create_task(self._history_management_loop()),
-                'learning_optimizer': asyncio.create_task(self._learning_optimization_loop())
+                'pattern_learner': asyncio.create_task(self._pattern_learning_loop()),
+                'cleanup_manager': asyncio.create_task(self._cleanup_management_loop())
             }
             
             self.is_running = True
@@ -186,454 +221,423 @@ class TriageAgent:
                 except asyncio.CancelledError:
                     logger.info(f"Cancelled {task_name}")
         
-        # Save processing history
-        await self._save_processing_history()
+        # Save learned patterns
+        await self._save_learned_patterns()
         
         logger.info("Triage Agent shutdown complete")
     
-    async def process_request(self, request: str, metadata: Dict[str, Any] = None) -> ProcessedRequest:
-        """Process a request through triage and routing."""
+    async def process_request(self, request_text: str, context: Dict[str, Any] = None) -> TriageResult:
+        """Process a request through triage analysis."""
         start_time = time.time()
-        request_id = self._generate_request_id(request)
+        request_id = self._generate_request_id(request_text)
         
-        logger.info(f"Processing request {request_id}: {request[:100]}...")
+        logger.info(f"Processing triage request {request_id}: {request_text[:100]}...")
+        
+        # Create triage request
+        triage_request = TriageRequest(
+            request_id=request_id,
+            original_text=request_text,
+            request_type=RequestType.GENERAL_QUERY,  # Will be classified
+            priority=Priority.NORMAL,  # Will be determined
+            status=RequestStatus.RECEIVED,
+            timestamp=time.time(),
+            context=context or {},
+            metadata={}
+        )
+        
+        self.active_requests[request_id] = triage_request
+        self.metrics['total_requests'] += 1
         
         try:
-            # Perform triage
-            triage_start = time.time()
-            triage_result = await self._perform_triage(request, metadata or {})
-            triage_time = time.time() - triage_start
+            # Phase 1: Text preprocessing
+            processed_text = await self._preprocess_text(request_text)
             
-            # Add to active requests
-            self.active_requests[request_id] = {
-                'request': request,
-                'triage_result': triage_result,
-                'start_time': start_time,
-                'metadata': metadata or {}
-            }
+            # Phase 2: Request classification
+            triage_request.status = RequestStatus.ANALYZING
+            classification_result = await self._classify_request(processed_text, context)
             
-            # Route and process request
-            processing_start = time.time()
-            response = await self._route_and_process(request, triage_result)
-            processing_time = time.time() - processing_start
+            triage_request.request_type = classification_result['type']
+            triage_request.confidence = classification_result['confidence']
+            triage_request.status = RequestStatus.CLASSIFIED
             
-            # Create processed request
-            processed_request = ProcessedRequest(
-                request_id=request_id,
-                original_request=request,
-                triage_result=triage_result,
-                response=response,
-                processing_time=time.time() - start_time,
-                status=RequestStatus.COMPLETED,
-                timestamp=time.time(),
-                metadata={
-                    'triage_time': triage_time,
-                    'processing_time': processing_time,
-                    **(metadata or {})
-                }
+            # Phase 3: Priority determination
+            priority = await self._determine_priority(processed_text, classification_result, context)
+            triage_request.priority = priority
+            
+            # Phase 4: Entity extraction
+            entities = await self._extract_entities(processed_text)
+            
+            # Phase 5: Context analysis
+            context_analysis = await self._analyze_context(processed_text, context, entities)
+            
+            # Phase 6: Routing decision
+            routing_target = await self._determine_routing(
+                triage_request.request_type, 
+                entities, 
+                context_analysis
+            )
+            triage_request.routing_target = routing_target
+            triage_request.status = RequestStatus.ROUTED
+            
+            # Phase 7: Generate recommendations
+            recommendations = await self._generate_recommendations(
+                triage_request.request_type,
+                entities,
+                context_analysis
             )
             
-            # Store processed request
-            self.processed_requests[request_id] = processed_request
+            # Create result
+            result = TriageResult(
+                request_id=request_id,
+                classification=triage_request.request_type,
+                priority=triage_request.priority,
+                routing_target=routing_target,
+                confidence=triage_request.confidence,
+                processing_time=time.time() - start_time,
+                extracted_entities=entities,
+                recommended_actions=recommendations,
+                context_analysis=context_analysis
+            )
             
-            # Remove from active requests
-            if request_id in self.active_requests:
-                del self.active_requests[request_id]
+            triage_request.status = RequestStatus.COMPLETED
             
             # Update metrics
-            self._update_metrics(processed_request)
+            self.metrics['successful_classifications'] += 1
+            self.metrics['requests_by_type'][triage_request.request_type.value] += 1
+            self.metrics['requests_by_priority'][triage_request.priority.value] += 1
             
-            # Add to processing history
-            self.processing_history.append(processed_request)
-            if len(self.processing_history) > self.max_history_size:
-                self.processing_history = self.processing_history[-self.max_history_size:]
+            # Update average processing time
+            total_successful = self.metrics['successful_classifications']
+            if total_successful > 1:
+                self.metrics['average_processing_time'] = (
+                    (self.metrics['average_processing_time'] * (total_successful - 1) + result.processing_time) / total_successful
+                )
+            else:
+                self.metrics['average_processing_time'] = result.processing_time
             
-            logger.info(f"Completed request {request_id} in {processed_request.processing_time:.3f}s")
-            return processed_request
+            # Move to history
+            self.request_history.append(triage_request)
+            
+            logger.info(f"Completed triage for request {request_id}: "
+                       f"{result.classification.value} -> {result.routing_target}")
+            
+            return result
             
         except Exception as e:
-            logger.error(f"Error processing request {request_id}: {e}")
+            logger.error(f"Error processing triage request {request_id}: {e}")
             
-            # Create failed request
-            failed_request = ProcessedRequest(
+            triage_request.status = RequestStatus.FAILED
+            self.metrics['failed_classifications'] += 1
+            
+            # Return failed result
+            return TriageResult(
                 request_id=request_id,
-                original_request=request,
-                triage_result=TriageResult(
-                    request_id=request_id,
-                    request_type=RequestType.UNKNOWN,
-                    priority=Priority.NORMAL,
-                    complexity_score=0.0,
-                    confidence=0.0,
-                    routing_destination="error",
-                    estimated_processing_time=0.0,
-                    required_capabilities=[],
-                    metadata={}
-                ),
-                response=f"Error processing request: {str(e)}",
+                classification=RequestType.GENERAL_QUERY,
+                priority=Priority.NORMAL,
+                routing_target='research_agent',
+                confidence=0.0,
                 processing_time=time.time() - start_time,
-                status=RequestStatus.FAILED,
-                timestamp=time.time(),
-                metadata={'error': str(e), **(metadata or {})}
+                extracted_entities={},
+                recommended_actions=['Manual review required'],
+                context_analysis={'error': str(e)}
             )
-            
-            self.processed_requests[request_id] = failed_request
-            
+        
+        finally:
             # Remove from active requests
             if request_id in self.active_requests:
                 del self.active_requests[request_id]
-            
-            return failed_request
     
-    async def _perform_triage(self, request: str, metadata: Dict[str, Any]) -> TriageResult:
-        """Perform triage analysis on a request."""
-        request_id = self._generate_request_id(request)
+    async def _preprocess_text(self, text: str) -> str:
+        """Preprocess text for analysis."""
+        # Convert to lowercase
+        processed = text.lower().strip()
         
-        # Classify request type
-        request_type = self._classify_request_type(request)
+        # Remove extra whitespace
+        processed = re.sub(r'\s+', ' ', processed)
         
-        # Determine priority
-        priority = self._determine_priority(request, request_type, metadata)
+        # Remove special characters (but keep important punctuation)
+        processed = re.sub(r'[^\w\s\-.,!?@#$%^&*()+=\[\]{}|\\:";\'<>/]', '', processed)
         
-        # Calculate complexity score
-        complexity_score = self._calculate_complexity_score(request, request_type)
-        
-        # Determine routing destination
-        routing_destination = self._determine_routing_destination(request_type, complexity_score)
-        
-        # Estimate processing time
-        estimated_time = self._estimate_processing_time(request_type, complexity_score)
-        
-        # Determine required capabilities
-        required_capabilities = self._determine_required_capabilities(request, request_type)
-        
-        # Calculate confidence in triage
-        confidence = self._calculate_triage_confidence(request, request_type, complexity_score)
-        
-        return TriageResult(
-            request_id=request_id,
-            request_type=request_type,
-            priority=priority,
-            complexity_score=complexity_score,
-            confidence=confidence,
-            routing_destination=routing_destination,
-            estimated_processing_time=estimated_time,
-            required_capabilities=required_capabilities,
-            metadata={
-                'request_length': len(request),
-                'word_count': len(request.split()),
-                'has_code': bool(re.search(r'```|`[^`]+`', request)),
-                'has_urls': bool(re.search(r'https?://', request)),
-                'urgency_keywords': self._count_urgency_keywords(request)
-            }
-        )
+        return processed
     
-    def _classify_request_type(self, request: str) -> RequestType:
-        """Classify the type of request."""
-        request_lower = request.lower()
-        type_scores = {}
+    async def _classify_request(self, text: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Classify the request type."""
+        classification_scores = {}
         
-        # Score each request type based on pattern matches
-        for req_type, patterns in self.classification_patterns.items():
+        # Pattern-based classification
+        for request_type, patterns in self.classification_patterns.items():
             score = 0
+            matches = 0
+            
             for pattern in patterns:
-                matches = len(re.findall(pattern, request_lower))
-                score += matches
-            type_scores[req_type] = score
+                if re.search(pattern, text, re.IGNORECASE):
+                    matches += 1
+                    score += 1
+            
+            # Normalize score
+            if patterns:
+                classification_scores[request_type] = score / len(patterns)
         
-        # Return type with highest score, or UNKNOWN if no matches
-        if max(type_scores.values()) > 0:
-            return max(type_scores, key=type_scores.get)
+        # Context-based adjustments
+        if context:
+            # Boost certain types based on context
+            if context.get('source') == 'system_monitor':
+                classification_scores[RequestType.STATUS_CHECK] = classification_scores.get(RequestType.STATUS_CHECK, 0) + 0.3
+            
+            if context.get('urgency') == 'high':
+                classification_scores[RequestType.TROUBLESHOOTING] = classification_scores.get(RequestType.TROUBLESHOOTING, 0) + 0.2
+        
+        # Find best classification
+        if classification_scores:
+            best_type = max(classification_scores, key=classification_scores.get)
+            confidence = classification_scores[best_type]
         else:
-            return RequestType.UNKNOWN
+            best_type = RequestType.GENERAL_QUERY
+            confidence = 0.5
+        
+        return {
+            'type': best_type,
+            'confidence': min(confidence, 1.0),
+            'scores': classification_scores
+        }
     
-    def _determine_priority(self, request: str, request_type: RequestType, metadata: Dict[str, Any]) -> Priority:
+    async def _determine_priority(self, text: str, classification: Dict[str, Any], 
+                                context: Dict[str, Any] = None) -> Priority:
         """Determine request priority."""
         priority_score = 0
         
-        # Base priority by request type
-        type_priorities = {
-            RequestType.SYSTEM_CONTROL: 3,
-            RequestType.MONITORING: 2,
-            RequestType.COMMAND: 2,
-            RequestType.ANALYSIS: 1,
-            RequestType.RESEARCH: 1,
-            RequestType.QUESTION: 0,
-            RequestType.UNKNOWN: 0
-        }
-        priority_score += type_priorities.get(request_type, 0)
+        # Keywords that indicate priority
+        urgent_keywords = ['urgent', 'critical', 'emergency', 'asap', 'immediately']
+        high_keywords = ['important', 'high', 'priority', 'soon', 'quickly']
+        low_keywords = ['low', 'later', 'when possible', 'no rush']
         
-        # Check for urgency keywords
-        urgency_keywords = [
-            r'\burgent\b', r'\bcritical\b', r'\bemergency\b', r'\basap\b',
-            r'\bimmediately\b', r'\bhigh priority\b', r'\bcrash\b', r'\bfail\b'
-        ]
+        text_lower = text.lower()
         
-        for keyword in urgency_keywords:
-            if re.search(keyword, request.lower()):
+        # Check for explicit priority indicators
+        if any(keyword in text_lower for keyword in urgent_keywords):
+            priority_score += 4
+        elif any(keyword in text_lower for keyword in high_keywords):
+            priority_score += 2
+        elif any(keyword in text_lower for keyword in low_keywords):
+            priority_score -= 2
+        
+        # Request type influences priority
+        request_type = classification['type']
+        if request_type == RequestType.TROUBLESHOOTING:
+            priority_score += 2
+        elif request_type == RequestType.SYSTEM_CONTROL:
+            priority_score += 1
+        elif request_type == RequestType.STATUS_CHECK:
+            priority_score += 1
+        
+        # Context influences priority
+        if context:
+            if context.get('source') == 'error_handler':
+                priority_score += 3
+            if context.get('system_health') == 'degraded':
                 priority_score += 2
-                break
         
-        # Check metadata for priority hints
-        if metadata.get('priority'):
-            try:
-                metadata_priority = Priority[metadata['priority'].upper()]
-                priority_score = max(priority_score, metadata_priority.value - 1)
-            except (KeyError, ValueError):
-                pass
-        
-        # Convert score to priority
+        # Map score to priority level
         if priority_score >= 4:
             return Priority.CRITICAL
         elif priority_score >= 3:
             return Priority.URGENT
-        elif priority_score >= 2:
-            return Priority.HIGH
         elif priority_score >= 1:
+            return Priority.HIGH
+        elif priority_score >= 0:
             return Priority.NORMAL
         else:
             return Priority.LOW
     
-    def _calculate_complexity_score(self, request: str, request_type: RequestType) -> float:
-        """Calculate complexity score for the request."""
-        complexity = 0.0
+    async def _extract_entities(self, text: str) -> Dict[str, Any]:
+        """Extract entities from the text."""
+        entities = {}
         
-        # Base complexity by type
-        type_complexity = {
-            RequestType.SYSTEM_CONTROL: 0.8,
-            RequestType.ANALYSIS: 0.7,
-            RequestType.RESEARCH: 0.6,
-            RequestType.MONITORING: 0.4,
-            RequestType.COMMAND: 0.3,
-            RequestType.QUESTION: 0.2,
-            RequestType.UNKNOWN: 0.5
-        }
-        complexity += type_complexity.get(request_type, 0.5)
+        for entity_type, pattern in self.entity_extractors.items():
+            matches = re.findall(pattern, text, re.IGNORECASE)
+            if matches:
+                entities[entity_type] = matches
         
-        # Adjust based on request characteristics
-        word_count = len(request.split())
-        if word_count > 100:
-            complexity += 0.2
-        elif word_count > 50:
-            complexity += 0.1
+        # Additional entity extraction logic
         
-        # Check for complex patterns
-        if re.search(r'```|`[^`]+`', request):  # Code blocks
-            complexity += 0.2
+        # Extract quoted strings (might be filenames, commands, etc.)
+        quoted_strings = re.findall(r'["\']([^"\']+)["\']', text)
+        if quoted_strings:
+            entities['quoted_strings'] = quoted_strings
         
-        if re.search(r'\bmultiple\b|\bseveral\b|\bmany\b', request.lower()):
-            complexity += 0.1
+        # Extract system components mentioned
+        system_components = re.findall(r'\b(agent|service|module|component|system|server|database|api)\b', text, re.IGNORECASE)
+        if system_components:
+            entities['system_components'] = list(set(system_components))
         
-        if re.search(r'\bcomplex\b|\badvanced\b|\bdetailed\b', request.lower()):
-            complexity += 0.2
-        
-        return min(1.0, complexity)
+        return entities
     
-    def _determine_routing_destination(self, request_type: RequestType, complexity_score: float) -> str:
+    async def _analyze_context(self, text: str, context: Dict[str, Any] = None, 
+                             entities: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Analyze request context."""
+        analysis = {
+            'text_length': len(text),
+            'word_count': len(text.split()),
+            'complexity': self._calculate_text_complexity(text),
+            'sentiment': self._analyze_sentiment(text),
+            'technical_level': self._assess_technical_level(text, entities or {})
+        }
+        
+        # Add context information if available
+        if context:
+            analysis['context_provided'] = True
+            analysis['context_keys'] = list(context.keys())
+            
+            # Analyze context relevance
+            if 'timestamp' in context:
+                analysis['time_sensitive'] = time.time() - context['timestamp'] < 3600  # Less than 1 hour
+            
+            if 'user_id' in context:
+                analysis['user_request'] = True
+            
+            if 'system_state' in context:
+                analysis['system_context'] = context['system_state']
+        else:
+            analysis['context_provided'] = False
+        
+        return analysis
+    
+    def _calculate_text_complexity(self, text: str) -> float:
+        """Calculate text complexity score."""
+        words = text.split()
+        if not words:
+            return 0.0
+        
+        # Simple complexity metrics
+        avg_word_length = sum(len(word) for word in words) / len(words)
+        sentence_count = len(re.findall(r'[.!?]+', text))
+        avg_sentence_length = len(words) / max(sentence_count, 1)
+        
+        # Technical terms increase complexity
+        technical_terms = len(re.findall(r'\b(system|process|algorithm|configuration|implementation|architecture)\b', text, re.IGNORECASE))
+        
+        # Normalize to 0-1 scale
+        complexity = min((avg_word_length / 10 + avg_sentence_length / 20 + technical_terms / 10), 1.0)
+        
+        return complexity
+    
+    def _analyze_sentiment(self, text: str) -> str:
+        """Analyze text sentiment (simplified)."""
+        positive_words = ['good', 'great', 'excellent', 'perfect', 'working', 'success', 'complete']
+        negative_words = ['bad', 'terrible', 'broken', 'error', 'fail', 'problem', 'issue', 'wrong']
+        
+        text_lower = text.lower()
+        positive_count = sum(1 for word in positive_words if word in text_lower)
+        negative_count = sum(1 for word in negative_words if word in text_lower)
+        
+        if negative_count > positive_count:
+            return 'negative'
+        elif positive_count > negative_count:
+            return 'positive'
+        else:
+            return 'neutral'
+    
+    def _assess_technical_level(self, text: str, entities: Dict[str, Any]) -> str:
+        """Assess technical level of the request."""
+        technical_indicators = [
+            'api', 'database', 'server', 'configuration', 'implementation',
+            'algorithm', 'architecture', 'deployment', 'optimization',
+            'debugging', 'logging', 'monitoring', 'authentication'
+        ]
+        
+        text_lower = text.lower()
+        technical_count = sum(1 for term in technical_indicators if term in text_lower)
+        
+        # Entity-based technical assessment
+        if entities.get('system_components') or entities.get('file_path'):
+            technical_count += 2
+        
+        if technical_count >= 3:
+            return 'high'
+        elif technical_count >= 1:
+            return 'medium'
+        else:
+            return 'low'
+    
+    async def _determine_routing(self, request_type: RequestType, entities: Dict[str, Any], 
+                               context_analysis: Dict[str, Any]) -> str:
         """Determine where to route the request."""
-        # High complexity requests go to research agent
-        if complexity_score > 0.7:
-            return "research_agent"
+        # Default routing based on request type
+        default_target = self.routing_rules.get(request_type, 'research_agent')
         
-        # Route based on request type
-        routing_map = {
-            RequestType.QUESTION: "rag_engine",
-            RequestType.COMMAND: "orchestration_agent",
-            RequestType.ANALYSIS: "research_agent",
-            RequestType.RESEARCH: "research_agent",
-            RequestType.MONITORING: "system_monitor",
-            RequestType.SYSTEM_CONTROL: "kernel_manager",
-            RequestType.UNKNOWN: "rag_engine"  # Default fallback
-        }
+        # Override routing based on entities and context
+        if entities.get('system_components'):
+            if any('workflow' in comp.lower() for comp in entities['system_components']):
+                return 'orchestration_agent'
+            elif any('monitor' in comp.lower() for comp in entities['system_components']):
+                return 'monitoring_agent'
         
-        return routing_map.get(request_type, "rag_engine")
+        # Route based on technical level
+        if context_analysis.get('technical_level') == 'high':
+            if request_type == RequestType.TROUBLESHOOTING:
+                return 'technical_support_agent'
+        
+        # Route based on urgency
+        if context_analysis.get('time_sensitive'):
+            return 'priority_handler'
+        
+        return default_target
     
-    def _estimate_processing_time(self, request_type: RequestType, complexity_score: float) -> float:
-        """Estimate processing time for the request."""
-        # Base time estimates (in seconds)
-        base_times = {
-            RequestType.QUESTION: 2.0,
-            RequestType.COMMAND: 5.0,
-            RequestType.ANALYSIS: 15.0,
-            RequestType.RESEARCH: 30.0,
-            RequestType.MONITORING: 3.0,
-            RequestType.SYSTEM_CONTROL: 10.0,
-            RequestType.UNKNOWN: 5.0
-        }
+    async def _generate_recommendations(self, request_type: RequestType, 
+                                      entities: Dict[str, Any],
+                                      context_analysis: Dict[str, Any]) -> List[str]:
+        """Generate recommended actions for the request."""
+        recommendations = []
         
-        base_time = base_times.get(request_type, 5.0)
+        # Type-specific recommendations
+        if request_type == RequestType.INFORMATION_REQUEST:
+            recommendations.extend([
+                "Search knowledge base for relevant information",
+                "Consult documentation and resources",
+                "Provide comprehensive and accurate response"
+            ])
+        elif request_type == RequestType.SYSTEM_CONTROL:
+            recommendations.extend([
+                "Verify user permissions for system operations",
+                "Check system state before executing commands",
+                "Log all system control actions"
+            ])
+        elif request_type == RequestType.TROUBLESHOOTING:
+            recommendations.extend([
+                "Gather system logs and diagnostic information",
+                "Identify root cause of the issue",
+                "Provide step-by-step resolution guidance"
+            ])
+        elif request_type == RequestType.RESEARCH_QUERY:
+            recommendations.extend([
+                "Conduct comprehensive research on the topic",
+                "Analyze multiple sources and perspectives",
+                "Synthesize findings into coherent response"
+            ])
         
-        # Adjust based on complexity
-        complexity_multiplier = 1.0 + (complexity_score * 2.0)
+        # Context-based recommendations
+        if context_analysis.get('technical_level') == 'high':
+            recommendations.append("Provide technical details and implementation specifics")
+        elif context_analysis.get('technical_level') == 'low':
+            recommendations.append("Use clear, non-technical language in response")
         
-        return base_time * complexity_multiplier
-    
-    def _determine_required_capabilities(self, request: str, request_type: RequestType) -> List[str]:
-        """Determine what capabilities are required to handle the request."""
-        capabilities = []
+        if context_analysis.get('sentiment') == 'negative':
+            recommendations.append("Address concerns with empathy and provide reassurance")
         
-        # Base capabilities by type
-        type_capabilities = {
-            RequestType.QUESTION: ["rag", "language_model"],
-            RequestType.COMMAND: ["system_control", "orchestration"],
-            RequestType.ANALYSIS: ["data_analysis", "rag", "language_model"],
-            RequestType.RESEARCH: ["rag", "web_search", "language_model"],
-            RequestType.MONITORING: ["system_monitoring", "sensors"],
-            RequestType.SYSTEM_CONTROL: ["kernel_access", "system_control"],
-            RequestType.UNKNOWN: ["language_model"]
-        }
+        # Entity-based recommendations
+        if entities.get('file_path'):
+            recommendations.append("Verify file paths and permissions")
         
-        capabilities.extend(type_capabilities.get(request_type, []))
+        if entities.get('url'):
+            recommendations.append("Validate URLs and check accessibility")
         
-        # Check for specific capability requirements
-        if re.search(r'\bfile\b|\bdocument\b', request.lower()):
-            capabilities.append("file_access")
-        
-        if re.search(r'\bnetwork\b|\binternet\b|\bweb\b', request.lower()):
-            capabilities.append("network_access")
-        
-        if re.search(r'\bdatabase\b|\bsql\b', request.lower()):
-            capabilities.append("database_access")
-        
-        if re.search(r'\bimage\b|\bphoto\b|\bvideo\b', request.lower()):
-            capabilities.append("media_processing")
-        
-        return list(set(capabilities))  # Remove duplicates
-    
-    def _calculate_triage_confidence(self, request: str, request_type: RequestType, complexity_score: float) -> float:
-        """Calculate confidence in the triage result."""
-        confidence = 0.5  # Base confidence
-        
-        # Increase confidence for clear request types
-        if request_type != RequestType.UNKNOWN:
-            confidence += 0.3
-        
-        # Adjust based on request clarity
-        word_count = len(request.split())
-        if 10 <= word_count <= 100:  # Optimal length
-            confidence += 0.1
-        elif word_count < 5 or word_count > 200:  # Too short or too long
-            confidence -= 0.2
-        
-        # Check for clear intent indicators
-        clear_indicators = [
-            r'\bplease\b', r'\bcan you\b', r'\bi need\b', r'\bhelp me\b',
-            r'\bshow me\b', r'\btell me\b', r'\bexplain\b'
-        ]
-        
-        for indicator in clear_indicators:
-            if re.search(indicator, request.lower()):
-                confidence += 0.1
-                break
-        
-        return min(1.0, max(0.0, confidence))
-    
-    def _count_urgency_keywords(self, request: str) -> int:
-        """Count urgency-related keywords in the request."""
-        urgency_keywords = [
-            'urgent', 'critical', 'emergency', 'asap', 'immediately',
-            'quickly', 'fast', 'now', 'help', 'problem', 'issue',
-            'error', 'fail', 'crash', 'down', 'broken'
-        ]
-        
-        count = 0
-        request_lower = request.lower()
-        for keyword in urgency_keywords:
-            count += len(re.findall(rf'\b{keyword}\b', request_lower))
-        
-        return count
-    
-    async def _route_and_process(self, request: str, triage_result: TriageResult) -> str:
-        """Route request to appropriate component and get response."""
-        destination = triage_result.routing_destination
-        
-        try:
-            if destination == "rag_engine":
-                # Use RAG engine for knowledge-based queries
-                rag_result = await self.rag_engine.query(request)
-                return rag_result.generated_response
-                
-            elif destination == "research_agent":
-                # For complex research tasks, use a more sophisticated approach
-                # This would typically involve the research agent
-                return await self._handle_research_request(request, triage_result)
-                
-            elif destination == "orchestration_agent":
-                # For command and orchestration requests
-                return await self._handle_orchestration_request(request, triage_result)
-                
-            elif destination == "system_monitor":
-                # For monitoring requests
-                return await self._handle_monitoring_request(request, triage_result)
-                
-            elif destination == "kernel_manager":
-                # For system control requests
-                return await self._handle_system_control_request(request, triage_result)
-                
-            else:
-                # Fallback to RAG engine
-                rag_result = await self.rag_engine.query(request)
-                return rag_result.generated_response
-                
-        except Exception as e:
-            logger.error(f"Error routing request to {destination}: {e}")
-            return f"I encountered an error while processing your request: {str(e)}"
-    
-    async def _handle_research_request(self, request: str, triage_result: TriageResult) -> str:
-        """Handle research-type requests."""
-        # Use speculative decoder for complex reasoning
-        from ai.speculative_decoder import DecodingRequest, SpeculationStrategy
-        
-        decoding_request = DecodingRequest(
-            prompt=f"Research and provide a comprehensive answer to: {request}",
-            max_tokens=500,
-            temperature=0.3,
-            strategy=SpeculationStrategy.TREE_ATTENTION
-        )
-        
-        result = await self.speculative_decoder.decode(decoding_request)
-        return result.text
-    
-    async def _handle_orchestration_request(self, request: str, triage_result: TriageResult) -> str:
-        """Handle orchestration and command requests."""
-        # This would typically interface with the orchestration agent
-        return f"Command request received: {request}. This would be processed by the orchestration system."
-    
-    async def _handle_monitoring_request(self, request: str, triage_result: TriageResult) -> str:
-        """Handle monitoring requests."""
-        # This would interface with system monitoring components
-        return f"Monitoring request: {request}. Current system status would be provided here."
-    
-    async def _handle_system_control_request(self, request: str, triage_result: TriageResult) -> str:
-        """Handle system control requests."""
-        # This would interface with kernel manager
-        return f"System control request: {request}. This would require appropriate permissions and would be handled by the kernel manager."
-    
-    def _generate_request_id(self, request: str) -> str:
-        """Generate unique request ID."""
-        content = f"{request}_{time.time()}"
-        return hashlib.md5(content.encode()).hexdigest()[:12]
-    
-    def _update_metrics(self, processed_request: ProcessedRequest):
-        """Update performance metrics."""
-        self.metrics['total_requests'] += 1
-        self.metrics['requests_by_type'][processed_request.triage_result.request_type.value] += 1
-        self.metrics['requests_by_priority'][processed_request.triage_result.priority.value] += 1
-        
-        # Update average processing time
-        total_time = (self.metrics['average_processing_time'] * (self.metrics['total_requests'] - 1) + 
-                     processed_request.processing_time)
-        self.metrics['average_processing_time'] = total_time / self.metrics['total_requests']
-        
-        # Update success rate
-        successful_requests = sum(1 for req in self.processed_requests.values() 
-                                if req.status == RequestStatus.COMPLETED)
-        self.metrics['success_rate'] = successful_requests / self.metrics['total_requests']
+        return recommendations[:5]  # Limit to top 5 recommendations
     
     async def _request_processing_loop(self):
         """Background loop for processing queued requests."""
         while self.is_running:
             try:
-                # This could handle queued requests if needed
+                # This could handle batch processing or background analysis
                 await asyncio.sleep(1)
                 
             except asyncio.CancelledError:
@@ -647,9 +651,12 @@ class TriageAgent:
         while self.is_running:
             try:
                 if self.metrics['total_requests'] > 0:
+                    success_rate = (self.metrics['successful_classifications'] / 
+                                  self.metrics['total_requests']) * 100
+                    
                     logger.info(f"Triage Agent Metrics - "
                               f"Total Requests: {self.metrics['total_requests']}, "
-                              f"Success Rate: {self.metrics['success_rate']:.2%}, "
+                              f"Success Rate: {success_rate:.1f}%, "
                               f"Avg Processing Time: {self.metrics['average_processing_time']:.3f}s")
                 
                 await asyncio.sleep(300)  # Log every 5 minutes
@@ -660,93 +667,81 @@ class TriageAgent:
                 logger.error(f"Error in metrics collection: {e}")
                 await asyncio.sleep(300)
     
-    async def _history_management_loop(self):
-        """Background loop for managing processing history."""
+    async def _pattern_learning_loop(self):
+        """Background loop for learning from processed requests."""
         while self.is_running:
             try:
-                # Clean up old processed requests
-                current_time = time.time()
-                old_requests = [
-                    req_id for req_id, req in self.processed_requests.items()
-                    if current_time - req.timestamp > 3600  # 1 hour
-                ]
+                # Analyze recent requests for pattern improvements
+                if len(self.request_history) >= 10:
+                    await self._analyze_classification_patterns()
                 
-                for req_id in old_requests:
-                    del self.processed_requests[req_id]
-                
-                if old_requests:
-                    logger.info(f"Cleaned up {len(old_requests)} old processed requests")
-                
-                await asyncio.sleep(1800)  # Clean every 30 minutes
+                await asyncio.sleep(3600)  # Analyze every hour
                 
             except asyncio.CancelledError:
                 break
             except Exception as e:
-                logger.error(f"Error in history management: {e}")
-                await asyncio.sleep(1800)
-    
-    async def _learning_optimization_loop(self):
-        """Background loop for learning and optimization."""
-        while self.is_running:
-            try:
-                # Analyze processing history to improve triage
-                if len(self.processing_history) > 100:
-                    await self._analyze_and_optimize()
-                
-                await asyncio.sleep(3600)  # Optimize every hour
-                
-            except asyncio.CancelledError:
-                break
-            except Exception as e:
-                logger.error(f"Error in learning optimization: {e}")
+                logger.error(f"Error in pattern learning: {e}")
                 await asyncio.sleep(3600)
     
-    async def _analyze_and_optimize(self):
-        """Analyze processing history and optimize triage."""
-        # This could implement machine learning to improve classification
-        # For now, just log some basic analysis
-        
-        recent_requests = self.processing_history[-100:]
-        
-        # Analyze accuracy of complexity scoring
-        complexity_errors = []
-        for req in recent_requests:
-            estimated_time = req.triage_result.estimated_processing_time
-            actual_time = req.processing_time
-            error = abs(estimated_time - actual_time) / max(actual_time, 0.1)
-            complexity_errors.append(error)
-        
-        avg_complexity_error = sum(complexity_errors) / len(complexity_errors)
-        logger.info(f"Average complexity estimation error: {avg_complexity_error:.2%}")
+    async def _cleanup_management_loop(self):
+        """Background loop for cleanup management."""
+        while self.is_running:
+            try:
+                # Clean up old request history
+                current_time = time.time()
+                max_age = 86400  # 24 hours
+                
+                self.request_history = [
+                    req for req in self.request_history
+                    if current_time - req.timestamp <= max_age
+                ]
+                
+                await asyncio.sleep(3600)  # Clean every hour
+                
+            except asyncio.CancelledError:
+                break
+            except Exception as e:
+                logger.error(f"Error in cleanup management: {e}")
+                await asyncio.sleep(3600)
     
-    async def _initialize_classification_models(self):
-        """Initialize any ML models for classification."""
+    async def _initialize_ml_models(self):
+        """Initialize ML models for classification."""
         # Placeholder for ML model initialization
+        # In a real implementation, this would load trained models
         pass
     
-    async def _load_processing_history(self):
-        """Load historical processing data."""
+    async def _load_historical_patterns(self):
+        """Load historical patterns for classification improvement."""
         # Placeholder for loading historical data
         pass
     
-    async def _save_processing_history(self):
-        """Save processing history to persistent storage."""
-        # Placeholder for saving historical data
+    async def _save_learned_patterns(self):
+        """Save learned patterns for future use."""
+        # Placeholder for saving learned patterns
         pass
+    
+    async def _analyze_classification_patterns(self):
+        """Analyze recent classifications to improve patterns."""
+        # Placeholder for pattern analysis and improvement
+        pass
+    
+    def _generate_request_id(self, text: str) -> str:
+        """Generate unique request ID."""
+        content = f"{text[:50]}_{time.time()}"
+        return hashlib.md5(content.encode()).hexdigest()[:12]
     
     # Public API methods
     
     async def health_check(self) -> str:
         """Perform health check."""
         try:
-            # Test basic functionality
-            test_request = "What is the system status?"
-            test_result = await self._perform_triage(test_request, {})
+            # Test basic triage functionality
+            test_result = await self.process_request("test health check request")
             
-            if test_result.confidence > 0.0:
+            if test_result.confidence > 0:
                 return "healthy"
             else:
-                return "unhealthy"
+                return "degraded"
                 
         except Exception as e:
             logger.error(f"Health check failed: {e}")
@@ -757,33 +752,37 @@ class TriageAgent:
         return {
             'metrics': self.metrics.copy(),
             'active_requests': len(self.active_requests),
-            'processed_requests': len(self.processed_requests),
-            'history_size': len(self.processing_history)
+            'request_history_size': len(self.request_history),
+            'classification_patterns': len(self.classification_patterns),
+            'routing_rules': len(self.routing_rules)
         }
     
     def get_request_status(self, request_id: str) -> Optional[Dict[str, Any]]:
         """Get status of a specific request."""
-        if request_id in self.processed_requests:
-            req = self.processed_requests[request_id]
-            return {
-                'request_id': req.request_id,
-                'status': req.status.value,
-                'processing_time': req.processing_time,
-                'timestamp': req.timestamp,
-                'request_type': req.triage_result.request_type.value,
-                'priority': req.triage_result.priority.value
-            }
-        elif request_id in self.active_requests:
-            req = self.active_requests[request_id]
+        if request_id in self.active_requests:
+            request = self.active_requests[request_id]
             return {
                 'request_id': request_id,
-                'status': 'processing',
-                'processing_time': time.time() - req['start_time'],
-                'request_type': req['triage_result'].request_type.value,
-                'priority': req['triage_result'].priority.value
+                'status': request.status.value,
+                'type': request.request_type.value,
+                'priority': request.priority.value,
+                'confidence': request.confidence,
+                'routing_target': request.routing_target
             }
-        else:
-            return None
+        
+        # Check history
+        for request in self.request_history:
+            if request.request_id == request_id:
+                return {
+                    'request_id': request_id,
+                    'status': request.status.value,
+                    'type': request.request_type.value,
+                    'priority': request.priority.value,
+                    'confidence': request.confidence,
+                    'routing_target': request.routing_target
+                }
+        
+        return None
     
     async def restart(self):
         """Restart the triage agent."""
