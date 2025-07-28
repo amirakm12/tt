@@ -690,11 +690,21 @@ class TriageAgent:
                 # Clean up old request history
                 current_time = time.time()
                 max_age = 86400  # 24 hours
+                max_history_size = 1000  # Maximum number of history entries
                 
+                # Clean by age
                 self.request_history = [
                     req for req in self.request_history
                     if current_time - req.timestamp <= max_age
                 ]
+                
+                # Clean by size (keep most recent entries)
+                if len(self.request_history) > max_history_size:
+                    self.request_history = self.request_history[-max_history_size:]
+                
+                # Also clean classification history
+                if len(self.classification_history) > max_history_size:
+                    self.classification_history = self.classification_history[-max_history_size:]
                 
                 await asyncio.sleep(3600)  # Clean every hour
                 

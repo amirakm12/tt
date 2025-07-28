@@ -48,7 +48,7 @@ def create_icon():
                 # Draw "AI" text
                 try:
                     font = ImageFont.truetype("arial.ttf", 24)
-                except:
+                except (OSError, IOError):
                     font = ImageFont.load_default()
                 
                 # Get text size and center it

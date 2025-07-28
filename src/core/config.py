@@ -320,9 +320,17 @@ class SystemConfig:
         if self.ai_model.temperature < 0 or self.ai_model.temperature > 2:
             errors.append("AI model temperature must be between 0 and 2")
             
+        if self.ai_model.max_tokens <= 0:
+            errors.append("AI model max_tokens must be positive")
+            
         # Validate RAG settings
         if self.rag.similarity_threshold < 0 or self.rag.similarity_threshold > 1:
             errors.append("RAG similarity threshold must be between 0 and 1")
+            
+        # Validate API keys for production environment
+        if self.environment == 'production':
+            if not self.get_api_key('openai'):
+                errors.append("OpenAI API key is required in production environment")
             
         if errors:
             for error in errors:

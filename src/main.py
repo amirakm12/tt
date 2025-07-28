@@ -10,7 +10,14 @@ import signal
 import sys
 from pathlib import Path
 from typing import Dict, Any
-import uvloop
+
+# Import uvloop with fallback
+try:
+    import uvloop
+    UVLOOP_AVAILABLE = True
+except ImportError:
+    UVLOOP_AVAILABLE = False
+    logging.getLogger(__name__).warning("uvloop not available, falling back to standard asyncio")
 
 # Import core system components
 from .core.orchestrator import SystemOrchestrator
@@ -233,8 +240,8 @@ async def main():
     """Main entry point."""
     logger.info("Starting AI System...")
     
-    # Use uvloop for better performance
-    if sys.platform != 'win32':
+    # Use uvloop for better performance if available
+    if sys.platform != 'win32' and UVLOOP_AVAILABLE:
         uvloop.install()
     
     # Create and initialize system
@@ -252,8 +259,8 @@ async def main():
 def run_system():
     """Entry point for running the AI system."""
     try:
-        # Set up uvloop for better performance on Unix systems
-        if sys.platform != 'win32':
+        # Set up uvloop for better performance on Unix systems if available
+        if sys.platform != 'win32' and UVLOOP_AVAILABLE:
             asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
         
         asyncio.run(main())
@@ -264,4 +271,9 @@ def run_system():
         sys.exit(1)
 
 if __name__ == "__main__":
+    # Add proper path handling for direct execution
+    src_path = Path(__file__).parent
+    if str(src_path) not in sys.path:
+        sys.path.insert(0, str(src_path))
+    
     run_system()
