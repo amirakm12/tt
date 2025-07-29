@@ -14,15 +14,54 @@ import hashlib
 from dataclasses import dataclass
 from enum import Enum
 
-# Vector database and embeddings
-import chromadb
-from chromadb.config import Settings
-import numpy as np
-from sentence_transformers import SentenceTransformer
-import openai
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.document_loaders import TextLoader, PDFLoader, CSVLoader
-from langchain.schema import Document
+# Vector database and embeddings - make all optional
+try:
+    import chromadb
+    from chromadb.config import Settings
+    CHROMADB_AVAILABLE = True
+except ImportError:
+    CHROMADB_AVAILABLE = False
+    logging.getLogger(__name__).warning("chromadb not available, vector database features will be disabled")
+
+try:
+    import numpy as np
+    NUMPY_AVAILABLE = True
+except ImportError:
+    NUMPY_AVAILABLE = False
+    logging.getLogger(__name__).warning("numpy not available, some features will be limited")
+
+try:
+    from sentence_transformers import SentenceTransformer
+    SENTENCE_TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    SENTENCE_TRANSFORMERS_AVAILABLE = False
+    logging.getLogger(__name__).warning("sentence-transformers not available, embedding features will be disabled")
+
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    logging.getLogger(__name__).warning("openai not available, API features will be disabled")
+
+try:
+    from langchain.text_splitter import RecursiveCharacterTextSplitter
+    from langchain.document_loaders import TextLoader, PDFLoader, CSVLoader
+    from langchain.schema import Document
+    LANGCHAIN_AVAILABLE = True
+except ImportError:
+    LANGCHAIN_AVAILABLE = False
+    logging.getLogger(__name__).warning("langchain not available, document processing features will be limited")
+    
+    # Fallback Document class
+    @dataclass
+    class Document:
+        page_content: str
+        metadata: Dict[str, Any] = None
+        
+        def __post_init__(self):
+            if self.metadata is None:
+                self.metadata = {}
 
 from ..core.config import SystemConfig
 

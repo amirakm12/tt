@@ -12,7 +12,15 @@ import ctypes
 import sys
 from typing import Dict, Any, Optional, List
 from pathlib import Path
-import psutil
+
+# Make psutil import optional
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    logging.getLogger(__name__).warning("psutil not available, system monitoring features will be limited")
+
 import signal
 
 from ..core.config import SystemConfig
@@ -130,37 +138,39 @@ class KernelManager:
             'architecture': self.architecture,
             'kernel_version': platform.release(),
             'python_version': sys.version,
-            'cpu_count': psutil.cpu_count(),
-            'memory_total': psutil.virtual_memory().total,
+            'cpu_count': psutil.cpu_count() if PSUTIL_AVAILABLE else "N/A",
+            'memory_total': psutil.virtual_memory().total if PSUTIL_AVAILABLE else "N/A",
             'disk_usage': {},
             'network_interfaces': {},
-            'boot_time': psutil.boot_time(),
+            'boot_time': psutil.boot_time() if PSUTIL_AVAILABLE else "N/A",
             'admin_privileges': self.is_admin
         }
         
         # Get disk usage for all mounted drives
-        for partition in psutil.disk_partitions():
-            try:
-                usage = psutil.disk_usage(partition.mountpoint)
-                self.system_info['disk_usage'][partition.device] = {
-                    'total': usage.total,
-                    'used': usage.used,
-                    'free': usage.free,
-                    'percent': (usage.used / usage.total) * 100
-                }
-            except Exception as e:
-                logger.warning(f"Could not get disk usage for {partition.device}: {e}")
+        if PSUTIL_AVAILABLE:
+            for partition in psutil.disk_partitions():
+                try:
+                    usage = psutil.disk_usage(partition.mountpoint)
+                    self.system_info['disk_usage'][partition.device] = {
+                        'total': usage.total,
+                        'used': usage.used,
+                        'free': usage.free,
+                        'percent': (usage.used / usage.total) * 100
+                    }
+                except Exception as e:
+                    logger.warning(f"Could not get disk usage for {partition.device}: {e}")
         
         # Get network interfaces
-        for interface, addresses in psutil.net_if_addrs().items():
-            self.system_info['network_interfaces'][interface] = []
-            for addr in addresses:
-                self.system_info['network_interfaces'][interface].append({
-                    'family': str(addr.family),
-                    'address': addr.address,
-                    'netmask': addr.netmask,
-                    'broadcast': addr.broadcast
-                })
+        if PSUTIL_AVAILABLE:
+            for interface, addresses in psutil.net_if_addrs().items():
+                self.system_info['network_interfaces'][interface] = []
+                for addr in addresses:
+                    self.system_info['network_interfaces'][interface].append({
+                        'family': str(addr.family),
+                        'address': addr.address,
+                        'netmask': addr.netmask,
+                        'broadcast': addr.broadcast
+                    })
     
     async def _initialize_monitoring(self):
         """Initialize system monitoring capabilities."""
@@ -177,12 +187,13 @@ class KernelManager:
         }
         
         # Initialize baseline measurements
-        self.baseline_metrics = {
-            'cpu_times': psutil.cpu_times(),
-            'memory': psutil.virtual_memory(),
-            'disk_io': psutil.disk_io_counters(),
-            'network_io': psutil.net_io_counters()
-        }
+        if PSUTIL_AVAILABLE:
+            self.baseline_metrics = {
+                'cpu_times': psutil.cpu_times(),
+                'memory': psutil.virtual_memory(),
+                'disk_io': psutil.disk_io_counters(),
+                'network_io': psutil.net_io_counters()
+            }
     
     async def _load_drivers(self):
         """Load kernel drivers if available."""
@@ -314,10 +325,10 @@ class KernelManager:
         while self.is_running:
             try:
                 # Collect system metrics
-                cpu_percent = psutil.cpu_percent(interval=1)
-                memory = psutil.virtual_memory()
-                disk_io = psutil.disk_io_counters()
-                net_io = psutil.net_io_counters()
+                cpu_percent = psutil.cpu_percent(interval=1) if PSUTIL_AVAILABLE else 0
+                memory = psutil.virtual_memory() if PSUTIL_AVAILABLE else psutil.virtual_memory() # Placeholder
+                disk_io = psutil.disk_io_counters() if PSUTIL_AVAILABLE else psutil.disk_io_counters() # Placeholder
+                net_io = psutil.net_io_counters() if PSUTIL_AVAILABLE else psutil.net_io_counters() # Placeholder
                 
                 # Update performance counters
                 self.performance_counters['cpu_usage'].append(cpu_percent)
@@ -345,20 +356,22 @@ class KernelManager:
         while self.is_running:
             try:
                 # Monitor disk usage
-                for device, usage_info in self.system_info['disk_usage'].items():
-                    try:
-                        current_usage = psutil.disk_usage(device)
-                        usage_percent = (current_usage.used / current_usage.total) * 100
-                        
-                        if usage_percent > 90:
-                            logger.warning(f"High disk usage on {device}: {usage_percent:.1f}%")
-                    except Exception:
-                        pass
+                if PSUTIL_AVAILABLE:
+                    for device, usage_info in self.system_info['disk_usage'].items():
+                        try:
+                            current_usage = psutil.disk_usage(device)
+                            usage_percent = (current_usage.used / current_usage.total) * 100
+                            
+                            if usage_percent > 90:
+                                logger.warning(f"High disk usage on {device}: {usage_percent:.1f}%")
+                        except Exception:
+                            pass
                 
                 # Monitor memory usage
-                memory = psutil.virtual_memory()
-                if memory.percent > 85:
-                    logger.warning(f"High memory usage: {memory.percent:.1f}%")
+                if PSUTIL_AVAILABLE:
+                    memory = psutil.virtual_memory()
+                    if memory.percent > 85:
+                        logger.warning(f"High memory usage: {memory.percent:.1f}%")
                 
                 await asyncio.sleep(60)  # Check every minute
                 
@@ -374,11 +387,12 @@ class KernelManager:
             try:
                 # Get process information
                 processes = []
-                for proc in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent']):
-                    try:
-                        processes.append(proc.info)
-                    except (psutil.NoSuchProcess, psutil.AccessDenied):
-                        pass
+                if PSUTIL_AVAILABLE:
+                    for proc in psutil.process_iter(['pid', 'name', 'cpu_percent', 'memory_percent']):
+                        try:
+                            processes.append(proc.info)
+                        except (psutil.NoSuchProcess, psutil.AccessDenied):
+                            pass
                 
                 # Update process count
                 self.performance_counters['process_count'].append(len(processes))
@@ -406,19 +420,20 @@ class KernelManager:
             try:
                 # Monitor for suspicious processes
                 suspicious_processes = []
-                for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
-                    try:
-                        # Check for suspicious process names or command lines
-                        if self._is_suspicious_process(proc.info):
-                            suspicious_processes.append(proc.info)
-                    except (psutil.NoSuchProcess, psutil.AccessDenied):
-                        pass
+                if PSUTIL_AVAILABLE:
+                    for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                        try:
+                            # Check for suspicious process names or command lines
+                            if self._is_suspicious_process(proc.info):
+                                suspicious_processes.append(proc.info)
+                        except (psutil.NoSuchProcess, psutil.AccessDenied):
+                            pass
                 
                 if suspicious_processes:
                     logger.warning(f"Suspicious processes detected: {suspicious_processes}")
                 
                 # Monitor network connections
-                connections = psutil.net_connections()
+                connections = psutil.net_connections() if PSUTIL_AVAILABLE else [] # Placeholder
                 suspicious_connections = [
                     conn for conn in connections
                     if self._is_suspicious_connection(conn)
@@ -489,16 +504,19 @@ class KernelManager:
     def get_performance_metrics(self) -> Dict[str, Any]:
         """Get current performance metrics."""
         try:
-            return {
-                'cpu_usage': psutil.cpu_percent(),
-                'memory_usage': psutil.virtual_memory().percent,
-                'disk_usage': {
-                    device: (usage['used'] / usage['total']) * 100
-                    for device, usage in self.system_info['disk_usage'].items()
-                },
-                'process_count': len(psutil.pids()),
-                'uptime': psutil.boot_time()
-            }
+            if PSUTIL_AVAILABLE:
+                return {
+                    'cpu_usage': psutil.cpu_percent(),
+                    'memory_usage': psutil.virtual_memory().percent,
+                    'disk_usage': {
+                        device: (usage['used'] / usage['total']) * 100
+                        for device, usage in self.system_info['disk_usage'].items()
+                    },
+                    'process_count': len(psutil.pids()),
+                    'uptime': psutil.boot_time()
+                }
+            else:
+                return {}
         except Exception as e:
             logger.error(f"Error getting performance metrics: {e}")
             return {}

@@ -6,7 +6,15 @@ Comprehensive system monitoring and performance tracking
 import asyncio
 import logging
 import time
-import psutil
+
+# Make psutil import optional
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    logging.getLogger(__name__).warning("psutil not available, system monitoring features will be limited")
+
 import platform
 from typing import Dict, Any, List, Optional
 from dataclasses import dataclass

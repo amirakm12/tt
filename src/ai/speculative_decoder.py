@@ -10,12 +10,41 @@ import random
 from typing import Dict, Any, List, Optional, Tuple, Union
 from dataclasses import dataclass
 from enum import Enum
-import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from transformers import AutoTokenizer, AutoModelForCausalLM
-import openai
+
+# NumPy - make optional
+try:
+    import numpy as np
+    NUMPY_AVAILABLE = True
+except ImportError:
+    NUMPY_AVAILABLE = False
+    logging.getLogger(__name__).warning("numpy not available, some features will be limited")
+
+# PyTorch - make optional
+try:
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    logging.getLogger(__name__).warning("torch not available, ML features will be disabled")
+
+# Transformers - make optional
+try:
+    from transformers import AutoTokenizer, AutoModelForCausalLM
+    TRANSFORMERS_AVAILABLE = True
+except ImportError:
+    TRANSFORMERS_AVAILABLE = False
+    logging.getLogger(__name__).warning("transformers not available, model features will be disabled")
+
+# OpenAI - make optional
+try:
+    import openai
+    OPENAI_AVAILABLE = True
+except ImportError:
+    OPENAI_AVAILABLE = False
+    logging.getLogger(__name__).warning("openai not available, API features will be disabled")
+
 from concurrent.futures import ThreadPoolExecutor
 import threading
 

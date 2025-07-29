@@ -6,10 +6,18 @@ Manages all system settings, parameters, and environment variables
 import os
 import json
 import logging
+import secrets
 from typing import Dict, Any, Optional
 from pathlib import Path
 from dataclasses import dataclass, asdict
-from cryptography.fernet import Fernet
+
+# Make cryptography import optional
+try:
+    from cryptography.fernet import Fernet
+    CRYPTOGRAPHY_AVAILABLE = True
+except ImportError:
+    CRYPTOGRAPHY_AVAILABLE = False
+    logging.getLogger(__name__).warning("cryptography not available, encryption features will be disabled")
 
 logger = logging.getLogger(__name__)
 
@@ -164,6 +172,12 @@ class SystemConfig:
             
     def _init_encryption(self):
         """Initialize encryption system."""
+        if not CRYPTOGRAPHY_AVAILABLE:
+            logger.warning("Cryptography not available, encryption disabled")
+            self.encryption_key = None
+            self.cipher_suite = None
+            return
+            
         key_file = self.config_dir / "encryption.key"
         
         if key_file.exists() and self.security.encryption_enabled:
@@ -259,13 +273,13 @@ class SystemConfig:
                     
     def encrypt_data(self, data: str) -> str:
         """Encrypt sensitive data."""
-        if not self.security.encryption_enabled or not self.cipher_suite:
+        if not CRYPTOGRAPHY_AVAILABLE or not self.security.encryption_enabled or not self.cipher_suite:
             return data
         return self.cipher_suite.encrypt(data.encode()).decode()
         
     def decrypt_data(self, encrypted_data: str) -> str:
         """Decrypt sensitive data."""
-        if not self.security.encryption_enabled or not self.cipher_suite:
+        if not CRYPTOGRAPHY_AVAILABLE or not self.security.encryption_enabled or not self.cipher_suite:
             return encrypted_data
         return self.cipher_suite.decrypt(encrypted_data.encode()).decode()
         

@@ -9,11 +9,39 @@ import json
 import time
 from typing import Dict, Any, Optional
 from pathlib import Path
-import aiohttp
-from aiohttp import web, WSMsgType
-import aiohttp_cors
-import jinja2
-import aiofiles
+
+# aiohttp - make optional
+try:
+    import aiohttp
+    from aiohttp import web, WSMsgType
+    AIOHTTP_AVAILABLE = True
+except ImportError:
+    AIOHTTP_AVAILABLE = False
+    logging.getLogger(__name__).warning("aiohttp not available, web features will be disabled")
+
+# aiohttp_cors - make optional
+try:
+    import aiohttp_cors
+    AIOHTTP_CORS_AVAILABLE = True
+except ImportError:
+    AIOHTTP_CORS_AVAILABLE = False
+    logging.getLogger(__name__).warning("aiohttp_cors not available, CORS features will be disabled")
+
+# jinja2 - make optional
+try:
+    import jinja2
+    JINJA2_AVAILABLE = True
+except ImportError:
+    JINJA2_AVAILABLE = False
+    logging.getLogger(__name__).warning("jinja2 not available, template features will be disabled")
+
+# aiofiles - make optional
+try:
+    import aiofiles
+    AIOFILES_AVAILABLE = True
+except ImportError:
+    AIOFILES_AVAILABLE = False
+    logging.getLogger(__name__).warning("aiofiles not available, file operations will be limited")
 
 from ..core.config import SystemConfig
 

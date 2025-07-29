@@ -14,7 +14,15 @@ from dataclasses import dataclass
 from enum import Enum
 import json
 from collections import deque, defaultdict
-import psutil
+
+# Make psutil import optional
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    logging.getLogger(__name__).warning("psutil not available, security monitoring features will be limited")
+
 import socket
 import re
 

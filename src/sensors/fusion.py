@@ -11,7 +11,15 @@ from typing import Dict, Any, List, Optional, Tuple
 from dataclasses import dataclass
 from enum import Enum
 import json
-import psutil
+
+# Make psutil import optional
+try:
+    import psutil
+    PSUTIL_AVAILABLE = True
+except ImportError:
+    PSUTIL_AVAILABLE = False
+    logging.getLogger(__name__).warning("psutil not available, sensor monitoring features will be limited")
+
 import threading
 from collections import deque
 import statistics
