@@ -1,0 +1,71 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <!-- QML Files -->
+        <file>qml/main.qml</file>
+        <file>qml/components/HeaderBar.qml</file>
+        <file>qml/components/SideBar.qml</file>
+        <file>qml/components/NotificationPopup.qml</file>
+        <file>qml/components/GlassCard.qml</file>
+        <file>qml/components/MetricCard.qml</file>
+        <file>qml/components/CircularProgress.qml</file>
+        <file>qml/components/NeuralNode.qml</file>
+        <file>qml/components/ChatBubble.qml</file>
+        
+        <!-- Pages -->
+        <file>qml/pages/DashboardPage.qml</file>
+        <file>qml/pages/AIAgentsPage.qml</file>
+        <file>qml/pages/NeuralNetworkPage.qml</file>
+        <file>qml/pages/ChatPage.qml</file>
+        <file>qml/pages/SettingsPage.qml</file>
+        
+        <!-- Charts -->
+        <file>qml/charts/LineChart.qml</file>
+        <file>qml/charts/BarChart.qml</file>
+        <file>qml/charts/PieChart.qml</file>
+        
+        <!-- 3D Components -->
+        <file>qml/3d/NeuralNetwork3D.qml</file>
+        <file>qml/3d/SystemTopology3D.qml</file>
+        
+        <!-- Assets -->
+        <file>assets/icons/logo.png</file>
+        <file>assets/icons/cpu.png</file>
+        <file>assets/icons/memory.png</file>
+        <file>assets/icons/gpu.png</file>
+        <file>assets/icons/network.png</file>
+        <file>assets/icons/ai.png</file>
+        <file>assets/icons/agent.png</file>
+        <file>assets/icons/chat.png</file>
+        <file>assets/icons/settings.png</file>
+        <file>assets/icons/dashboard.png</file>
+        <file>assets/icons/neural.png</file>
+        
+        <!-- Particles and Effects -->
+        <file>assets/particles/particle.png</file>
+        <file>assets/particles/glow.png</file>
+        <file>assets/particles/spark.png</file>
+        
+        <!-- Shaders -->
+        <file>assets/shaders/glass.frag</file>
+        <file>assets/shaders/glow.frag</file>
+        <file>assets/shaders/wave.vert</file>
+        
+        <!-- Fonts -->
+        <file>assets/fonts/Inter-Regular.ttf</file>
+        <file>assets/fonts/Inter-Medium.ttf</file>
+        <file>assets/fonts/Inter-Bold.ttf</file>
+        <file>assets/fonts/JetBrainsMono-Regular.ttf</file>
+        
+        <!-- Sounds -->
+        <file>assets/sounds/notification.wav</file>
+        <file>assets/sounds/click.wav</file>
+        <file>assets/sounds/success.wav</file>
+        <file>assets/sounds/error.wav</file>
+        
+        <!-- 3D Models -->
+        <file>assets/models/neuron.obj</file>
+        <file>assets/models/connection.obj</file>
+        <file>assets/models/brain.obj</file>
+    </qresource>
+</RCC>
