@@ -114,6 +114,65 @@ class HUDController(QObject):
                 activity['intensity']
             )
 
+    @Slot()
+    def boostPerformance(self):
+        """Activate performance boost mode"""
+        self.athena.set_performance_mode("boost")
+        self.systemModeChanged.emit("BOOST")
+        
+    @Slot()
+    def activateShield(self):
+        """Activate security shield"""
+        for agent_id, agent in self.athena.agents.items():
+            if agent.agent_type == AgentType.SEC_SENTINEL:
+                agent.activate_shield()
+                
+    @Slot()
+    def enterTargetingMode(self):
+        """Enter targeting mode for precise operations"""
+        self.targetingModeActivated.emit()
+        
+    @Slot()
+    def synchronizeAgents(self):
+        """Synchronize all agents"""
+        self.athena.synchronize_all()
+        
+    @Slot()
+    def toggleAlertMode(self):
+        """Toggle alert monitoring mode"""
+        self.alertModeToggled.emit()
+        
+    @Slot(str, str)
+    def investigateAlert(self, message: str, alert_type: str):
+        """Investigate an alert"""
+        task = {
+            'type': 'investigate_alert',
+            'agent_type': 'sec_sentinel',
+            'payload': {
+                'message': message,
+                'alert_type': alert_type
+            }
+        }
+        self.athena.submit_task(task)
+        
+    @Slot()
+    def startupSequence(self):
+        """Run startup sequence"""
+        # Initialize agents
+        self.athena.initialize_agents()
+        
+        # Start monitoring
+        self.consciousness.inject_context({'command': 'System startup initiated'})
+        
+        # Emit startup complete
+        self.startupComplete.emit()
+    
+    # Additional signals
+    systemModeChanged = Signal(str)
+    targetingModeActivated = Signal()
+    alertModeToggled = Signal()
+    startupComplete = Signal()
+
 def setup_vulkan():
     """Configure Vulkan for Qt"""
     # Set up surface format for Vulkan

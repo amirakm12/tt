@@ -64,6 +64,14 @@ ApplicationWindow {
                     threshold: 0.3
                     intensity: 0.8
                     bloom: 0.3
+                },
+                ChromaticAberration {
+                    aberrationAmount: 0.5
+                },
+                Vignette {
+                    vignetteStrength: 0.3
+                    vignetteColor: "#001122"
+                    vignetteRadius: 1.5
                 }
             ]
         }
@@ -108,9 +116,46 @@ ApplicationWindow {
         }
     }
     
+    // Quantum Field Overlay
+    QuantumFieldOverlay {
+        id: quantumField
+        opacity: 0.5
+        z: 1
+    }
+    
     // Main HUD Layer
     Item {
         anchors.fill: parent
+        z: 2
+        
+        // Holographic grid effect
+        ShaderEffect {
+            anchors.fill: parent
+            opacity: 0.05
+            
+            property real gridSize: 50
+            property color gridColor: "#00ffff"
+            
+            fragmentShader: "
+                #version 440
+                layout(location = 0) in vec2 qt_TexCoord0;
+                layout(location = 0) out vec4 fragColor;
+                layout(std140, binding = 0) uniform buf {
+                    mat4 qt_Matrix;
+                    float qt_Opacity;
+                    float gridSize;
+                    vec4 gridColor;
+                };
+                
+                void main() {
+                    vec2 uv = qt_TexCoord0;
+                    vec2 grid = abs(fract(uv * gridSize) - 0.5);
+                    float line = min(grid.x, grid.y);
+                    float alpha = 1.0 - smoothstep(0.0, 0.02, line);
+                    fragColor = vec4(gridColor.rgb, alpha * qt_Opacity);
+                }
+            "
+        }
         
         // Scanline effect overlay
         ShaderEffect {
@@ -215,6 +260,52 @@ ApplicationWindow {
             width: 300
             height: 100
         }
+        
+        // System Status Display
+        SystemStatus {
+            id: systemStatus
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.margins: 20
+            width: 200
+            height: 100
+        }
+        
+        // Alert System
+        AlertOverlay {
+            id: alertOverlay
+            anchors.fill: parent
+            visible: false
+        }
+        
+        // Performance Monitor
+        PerformanceMonitor {
+            id: perfMonitor
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.margins: 20
+            width: 150
+            height: 80
+        }
+    }
+    
+    // Edge glow effect
+    Rectangle {
+        anchors.fill: parent
+        color: "transparent"
+        border.width: 2
+        border.color: "#00ffff"
+        opacity: 0.3
+        z: 100
+        
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: 10
+            color: "transparent"
+            border.width: 1
+            border.color: "#00ffff"
+            opacity: 0.5
+        }
     }
     
     // Keyboard shortcuts
@@ -238,6 +329,68 @@ ApplicationWindow {
                 mainWindow.visibility = Window.Windowed
             } else {
                 Qt.quit()
+            }
+        }
+    }
+    
+    Shortcut {
+        sequence: "Ctrl+Q"
+        onActivated: {
+            quantumField.visible = !quantumField.visible
+        }
+    }
+    
+    Shortcut {
+        sequence: "Ctrl+M"
+        onActivated: {
+            memoryVault.unlock("")
+        }
+    }
+    
+    Shortcut {
+        sequence: "F1"
+        onActivated: {
+            helpOverlay.visible = !helpOverlay.visible
+        }
+    }
+    
+    // Help Overlay
+    HelpOverlay {
+        id: helpOverlay
+        anchors.fill: parent
+        visible: false
+        z: 1000
+    }
+    
+    // Startup animation
+    SequentialAnimation {
+        running: true
+        
+        PauseAnimation { duration: 500 }
+        
+        ParallelAnimation {
+            NumberAnimation {
+                target: mainWindow
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 1000
+            }
+            
+            NumberAnimation {
+                target: neuralBg
+                property: "scale"
+                from: 0.5
+                to: 1.0
+                duration: 2000
+                easing.type: Easing.OutElastic
+            }
+        }
+        
+        ScriptAction {
+            script: {
+                console.log("AI-ARTWORKS Neural Interface initialized")
+                hudController.startupSequence()
             }
         }
     }
