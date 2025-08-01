@@ -1990,7 +1990,7 @@ ATHENA = None
 AGENTS = {}
 
 def get_athena():
-    """Get Athena orchestrator instance"""
+    """Get singleton Athena instance"""
     global ATHENA
     if ATHENA is None:
         ATHENA, AGENTS = initialize_multi_agent_system()
