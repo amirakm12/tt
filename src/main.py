@@ -32,7 +32,7 @@ try:
     from .agents.triage_agent import TriageAgent
     from .agents.research_agent import ResearchAgent
     from .agents.orchestration_agent import OrchestrationAgent
-    from .ui.dashboard import DashboardServer
+    from .ui.modern_dashboard import ModernDashboardServer
     from .ui.voice_interface import VoiceInterface
 except ImportError:
     from src.core.orchestrator import SystemOrchestrator
@@ -44,7 +44,7 @@ except ImportError:
     from src.agents.triage_agent import TriageAgent
     from src.agents.research_agent import ResearchAgent
     from src.agents.orchestration_agent import OrchestrationAgent
-    from src.ui.dashboard import DashboardServer
+    from src.ui.modern_dashboard import ModernDashboardServer
     from src.ui.voice_interface import VoiceInterface
     from src.monitoring.system_monitor import SystemMonitor
     from src.monitoring.security_monitor import SecurityMonitor
@@ -122,9 +122,8 @@ class AISystem:
             )
             
             # 7. Initialize user interfaces
-            self.components['dashboard'] = DashboardServer(
-                self.config,
-                self.components['orchestrator']
+            self.components['dashboard'] = ModernDashboardServer(
+                self.config
             )
             
             self.components['voice_interface'] = VoiceInterface(
