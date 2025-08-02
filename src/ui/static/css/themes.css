@@ -1,0 +1,247 @@
+/* Theme System for Neural Dashboard */
+
+/* Light Theme */
+.theme-light {
+    --neural-primary: #0066cc;
+    --neural-secondary: #9933ff;
+    --neural-accent: #00aa44;
+    --neural-warning: #ff8800;
+    --neural-danger: #dd0033;
+    
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --bg-elevated: #ffffff;
+    
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-muted: #adb5bd;
+}
+
+/* Dark Theme (Default) */
+.theme-dark {
+    --neural-primary: #00d4ff;
+    --neural-secondary: #ff00ff;
+    --neural-accent: #00ff88;
+    --neural-warning: #ffaa00;
+    --neural-danger: #ff0044;
+    
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #141414;
+    --bg-tertiary: #1a1a1a;
+    --bg-elevated: #202020;
+    
+    --glass-bg: rgba(20, 20, 20, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 212, 255, 0.2);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-muted: #666666;
+}
+
+/* Cyberpunk Theme */
+.theme-cyberpunk {
+    --neural-primary: #ff0080;
+    --neural-secondary: #00ffff;
+    --neural-accent: #ffff00;
+    --neural-warning: #ff8000;
+    --neural-danger: #ff0000;
+    
+    --bg-primary: #0a0014;
+    --bg-secondary: #14001f;
+    --bg-tertiary: #1f0029;
+    --bg-elevated: #290033;
+    
+    --glass-bg: rgba(20, 0, 40, 0.8);
+    --glass-border: rgba(255, 0, 128, 0.3);
+    --glass-shadow: 0 8px 32px 0 rgba(255, 0, 128, 0.3);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #ff0080;
+    --text-muted: #8000ff;
+}
+
+/* Matrix Theme */
+.theme-matrix {
+    --neural-primary: #00ff00;
+    --neural-secondary: #00cc00;
+    --neural-accent: #00ff00;
+    --neural-warning: #88ff00;
+    --neural-danger: #ffff00;
+    
+    --bg-primary: #000000;
+    --bg-secondary: #001100;
+    --bg-tertiary: #002200;
+    --bg-elevated: #003300;
+    
+    --glass-bg: rgba(0, 20, 0, 0.8);
+    --glass-border: rgba(0, 255, 0, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 255, 0, 0.3);
+    
+    --text-primary: #00ff00;
+    --text-secondary: #00cc00;
+    --text-muted: #008800;
+}
+
+/* Ocean Theme */
+.theme-ocean {
+    --neural-primary: #00bcd4;
+    --neural-secondary: #0288d1;
+    --neural-accent: #00acc1;
+    --neural-warning: #ffc107;
+    --neural-danger: #f44336;
+    
+    --bg-primary: #001f3f;
+    --bg-secondary: #002a5a;
+    --bg-tertiary: #003574;
+    --bg-elevated: #00408f;
+    
+    --glass-bg: rgba(0, 31, 63, 0.8);
+    --glass-border: rgba(0, 188, 212, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 188, 212, 0.2);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #b3e5fc;
+    --text-muted: #4fc3f7;
+}
+
+/* Sunset Theme */
+.theme-sunset {
+    --neural-primary: #ff6b6b;
+    --neural-secondary: #feca57;
+    --neural-accent: #ff9ff3;
+    --neural-warning: #ffa502;
+    --neural-danger: #ee5a6f;
+    
+    --bg-primary: #2c003e;
+    --bg-secondary: #3d0059;
+    --bg-tertiary: #4e0073;
+    --bg-elevated: #5f008d;
+    
+    --glass-bg: rgba(44, 0, 62, 0.8);
+    --glass-border: rgba(255, 107, 107, 0.2);
+    --glass-shadow: 0 8px 32px 0 rgba(255, 107, 107, 0.2);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #ffd93d;
+    --text-muted: #ff6b6b;
+}
+
+/* Theme transition animations */
+* {
+    transition: 
+        background-color 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+/* Theme-specific adjustments */
+.theme-light .neural-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.theme-light .neural-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.theme-cyberpunk .neural-card::before {
+    background: linear-gradient(90deg, 
+        transparent, 
+        var(--neural-primary), 
+        var(--neural-secondary),
+        transparent
+    );
+}
+
+.theme-matrix .neural-card {
+    border-color: var(--neural-primary);
+    text-shadow: 0 0 10px var(--neural-primary);
+}
+
+.theme-matrix .metric-value {
+    animation: matrixGlow 2s ease-in-out infinite;
+}
+
+@keyframes matrixGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px var(--neural-primary);
+    }
+    50% {
+        text-shadow: 0 0 20px var(--neural-primary), 0 0 30px var(--neural-primary);
+    }
+}
+
+.theme-ocean .visualization-3d {
+    background: radial-gradient(ellipse at center, #003574 0%, #001f3f 100%);
+}
+
+.theme-sunset .neural-header {
+    background: linear-gradient(135deg, 
+        rgba(44, 0, 62, 0.9), 
+        rgba(95, 0, 141, 0.9)
+    );
+}
+
+/* Accessibility improvements for light theme */
+.theme-light .status-active {
+    background: rgba(0, 170, 68, 0.15);
+    color: #00aa44;
+}
+
+.theme-light .status-warning {
+    background: rgba(255, 136, 0, 0.15);
+    color: #ff8800;
+}
+
+.theme-light .status-error {
+    background: rgba(221, 0, 51, 0.15);
+    color: #dd0033;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+    :root {
+        --glass-border: rgba(255, 255, 255, 0.5);
+    }
+    
+    .neural-card {
+        border-width: 2px;
+    }
+    
+    .metric-value {
+        font-weight: 900;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Custom theme builder variables */
+.theme-custom {
+    --neural-primary: var(--custom-primary, #00d4ff);
+    --neural-secondary: var(--custom-secondary, #ff00ff);
+    --neural-accent: var(--custom-accent, #00ff88);
+    --neural-warning: var(--custom-warning, #ffaa00);
+    --neural-danger: var(--custom-danger, #ff0044);
+    
+    --bg-primary: var(--custom-bg-primary, #0a0a0a);
+    --bg-secondary: var(--custom-bg-secondary, #141414);
+    --bg-tertiary: var(--custom-bg-tertiary, #1a1a1a);
+    --bg-elevated: var(--custom-bg-elevated, #202020);
+    
+    --text-primary: var(--custom-text-primary, #ffffff);
+    --text-secondary: var(--custom-text-secondary, #b0b0b0);
+    --text-muted: var(--custom-text-muted, #666666);
+}
